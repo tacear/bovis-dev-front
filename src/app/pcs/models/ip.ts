@@ -28,3 +28,18 @@ export interface IEmpleado{
   puesto: string;
   empresa: string;
 }
+
+
+export interface IEmpleadoNew{
+  nukid_empleado: number;
+  idPersona: number;
+  cvePuesto: string;
+  idEmpresa: number;
+  activo: boolean;
+  chnombre: string;
+  chap_paterno: string;
+  chap_materno: string;
+  idNivel: number;
+  chpuesto: string;
+  empresa: string;
+}

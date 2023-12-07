@@ -5,12 +5,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MsalGuard, MsalInterceptor } from '@azure/msal-angular';
 import { DorCapturaComponent } from './components/dor-captura/dor-captura.component';
 import { DorObjetivosComponent } from './components/dor-objetivos/dor-objetivos.component';
-import { DorEvaluacionComponent } from './components/dor-evaluacion/dor-evaluacion.component';
+import { DorEvaluacionNuevoComponent } from './components/dor-evaluacion-nuevo/dor-evaluacion-nuevo.component';
 
 const routes: Routes = [
   { path: '', component: DorComponent },
   { path: 'captura', component: DorCapturaComponent, canActivate: [MsalGuard] },
-  { path: 'evaluacion', component: DorEvaluacionComponent, canActivate: [MsalGuard] },
+  { path: 'evaluacion', component: DorEvaluacionNuevoComponent, canActivate: [MsalGuard] },
+  //{ path: 'evaluacion', component: DorEvaluacionComponent, canActivate: [MsalGuard] },
   { path: 'objetivos', component: DorObjetivosComponent, canActivate: [MsalGuard] }
 ];
 

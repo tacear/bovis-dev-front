@@ -1,7 +1,9 @@
 export const environment = {
   production: true,
-  urlApiBovis: 'https://bovis-api-dev.azurewebsites.net/',
-  redirectUri: 'https://yellow-hill-014b60a0f.2.azurestaticapps.net/',
-  clientID: 'f2a13822-1d07-4f2f-9a78-06ad219b1d03',  
-  urlAuthority: 'https://login.microsoftonline.com/1c1824e1-a1d5-4bb4-9e3f-5cbbe420b4dc'
+  urlApiBovis: 'https://bovis-dev-api-up.azurewebsites.net/',
+  redirectUri: 'https://purple-grass-0a7dafc0f.2.azurestaticapps.net/',
+  clientID: '2a3addef-64ef-407c-a86a-b9913237e5c5',  
+  urlAuthority: 'https://login.microsoftonline.com/48986ced-d307-4c91-85be-933ccbcbaeb3',
+  tokenUser: 'B0V1$-2023',
+  tokenSecret: 'P4$w0RD_2023'
 };

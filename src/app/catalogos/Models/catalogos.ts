@@ -21,3 +21,11 @@ export interface Estatus {
   value: boolean
 }
 
+
+export interface CatalogoOpcion {
+  catalogo:     string,
+  id:           null,
+  nombre:       string,
+  // orden:        number,
+  nameService:  string
+}

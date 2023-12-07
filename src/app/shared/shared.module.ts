@@ -7,23 +7,32 @@ import { PrimengModule } from './primeng.module';
 import { FailedComponent } from './components/failed/failed.component';
 import { MenuSidebarComponent } from './components/menu-sidebar/menu-sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
-
+import { BackdropComponent } from './components/backdrop/backdrop.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { LoadingRolesComponent } from './components/loading-roles/loading-roles.component';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FailedComponent,
-    MenuSidebarComponent
+    MenuSidebarComponent,
+    BackdropComponent,
+    LoadingRolesComponent
   ],
   imports: [
     CommonModule,
-    PrimengModule
+    PrimengModule,
+    ProgressSpinnerModule,
+    CardModule
   ],
   exports: [
     HeaderComponent,
     FailedComponent,
-    MenuSidebarComponent
+    MenuSidebarComponent,
+    BackdropComponent,
+    LoadingRolesComponent
   ]
 })
 export class SharedModule { }

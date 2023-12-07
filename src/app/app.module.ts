@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { environment } from 'src/environments/environment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 const isIE = window.navigator.userAgent.indexOf("MSIE ") > -1 || window.navigator.userAgent.indexOf("Trident/") > -1; // Remove this line to use Angular Universal
 
@@ -64,7 +66,7 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     interactionType: InteractionType.Redirect,
     //protectedResourceMap
     protectedResourceMap: new Map<string, Array<string> | null>([
-      ['https://bovis-api-dev.azurewebsites.net/api/*', ['api://e264ed0b-c9d3-4bea-a9d9-7ff456cc23f7/apibovis.scope']],
+      ['https://bovis-dev-api.azurewebsites.net/api/*', ['api://f0ab1f6a-a436-4722-a2a1-4156b7bd8b90/apibovis.scope']],
     ]),
   };
 }
@@ -106,6 +108,11 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       multi: true
     },
     {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
       provide: MSAL_INSTANCE,
       useFactory: MSALInstanceFactory
     },
@@ -116,6 +123,10 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     {
       provide: MSAL_INTERCEPTOR_CONFIG,
       useFactory: MSALInterceptorConfigFactory
+    },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
     },
     MsalService,
     MsalGuard,

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Objetivos, ObjetivosGenerales, Subordinados, EstatusObjetivosPorProyecto, MensajesObjetivosCualitativos } from '../../Models/subordinados';
 import { DorService } from '../../Services/dor.service';
 import { MessageService } from 'primeng/api';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { finalize } from 'rxjs';
+import { TITLES } from 'src/utils/constants';
 
 interface EmpleadosSub {
   name: string,
@@ -37,31 +40,38 @@ export class DorCapturaComponent implements OnInit {
   motivoRechazoObjetivos: string = '';
   isMotivoRechazo: boolean = false;
   anio: number = 2023;
-  constructor(private docService: DorService, private messageService: MessageService) {
+  constructor(private docService: DorService, private messageService: MessageService, private sharedService: SharedService) {
     //console.log(localStorage.getItem('userMail'));
     this.userMail = localStorage.getItem('userMail');
   }
 
   ngOnInit(): void {
-    this.getInicialDatosEjecutivo();
+    this.getInicialDatosEjecutivo()
   }
 
   getInicialDatosEjecutivo() {
+    this.sharedService.cambiarEstado(true)
     this.docService.getDatosEjecutivo(this.userMail).subscribe(data => {
-    //  this.docService.getDatosEjecutivo('jmmorales@hunkabann.com.mx').subscribe(data => {
-    //console.log(data);
-      const str = 'data' as any;
-      let datos = data[str as keyof typeof data];
-      //console.log(datos['nombre' as keyof typeof datos]);
-      let nombre = datos['nombre' as keyof typeof datos];
-      this.docService.getDatosSubordinados(nombre).subscribe(dataSub => {
-        //console.log(dataSub);
-        this.listSubordinados = <Subordinados[]>dataSub.data;
-        //console.log(this.listSubordinados);
-        this.listSubordinados.forEach(element => {
-          this.empleadosSub.push({ name: String(element.nombre), value: String(element.nombre) })
-        });
-      });
+      const dataMod = data as any
+      if(dataMod.success) {
+        const str = 'data' as any;
+        let datos = data[str as keyof typeof data];
+        let nombre = datos['nombre' as keyof typeof datos];
+        this.docService.getDatosSubordinados(nombre)
+        .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+        .subscribe({
+          next: (dataSub) => {
+              this.listSubordinados = <Subordinados[]>dataSub.data;
+              this.listSubordinados.forEach(element => {
+                this.empleadosSub.push({ name: String(element.nombre), value: String(element.nombre) })
+              });
+          },
+          error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+        })
+      } else {
+        this.sharedService.cambiarEstado(false)
+        this.messageService.add({severity: 'error', summary: TITLES.error, detail: dataMod.message})
+      }
     });
   }
 
@@ -69,6 +79,8 @@ export class DorCapturaComponent implements OnInit {
     /*console.log('event :' + event);
      console.log(event.value);*/
     if (event.value) {
+
+      this.sharedService.cambiarEstado(true)
 
       let select = <EmpleadosSub>event.value
       //console.log(this.listSubordinados);
@@ -90,12 +102,14 @@ export class DorCapturaComponent implements OnInit {
           this.getTablasObjetivosGenerales(gpm);
         });
       }); */
-      this.docService.getConsultarMetasProyecto(this.subComple.centrosdeCostos, subordinado.nivel).subscribe(gpm => {
+      this.docService.getConsultarMetasProyecto(this.subComple.centrosdeCostos, subordinado.nivel)
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe(gpm => {
       //  this.docService.getConsultarMetasProyecto('274', '4').subscribe(gpm => {
-        console.log(gpm);
+        // console.log(gpm);
         this.docService.getObjetivosGenerales(subordinado.nivel || '', subordinado?.unidadDeNegocio || '').subscribe(generales => {
           this.listObjGenrales = generales.data;
-          console.log(this.listObjGenrales);
+          // console.log(this.listObjGenrales);
           this.getTablasObjetivosGenerales(gpm);
         });
       });
@@ -182,7 +196,7 @@ export class DorCapturaComponent implements OnInit {
       //console.log('objGPM');
       //console.log(objGPM);
       objGPM.forEach(function (value) {
-        value.meta = value.meta +' %'
+        value.meta = value.meta ? value.meta +' %' : '-'
       });
 
       //this.listObjGenralesTipoDos.splice(0,0, objGPM);

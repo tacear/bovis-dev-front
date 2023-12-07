@@ -44,7 +44,7 @@ export class FacturacionService {
   }
 
   getProyectos() {
-    return this.http.get<any>(`${this.baseUrl}api/pcs/proyectos/`);
+    return this.http.get<any>(`${this.baseUrl}api/pcs/proyectos/true`);
   }
 
   getEmpresas() {
@@ -57,6 +57,19 @@ export class FacturacionService {
 
   facturaCancelacion(cancelacion: facturaCancelacion) {
     return this.http.post<any>(`${this.baseUrl}api/factura/cancelar`,cancelacion, { headers: this.httpHeaders });
+  }
+
+  cancelarComplemento(esPago: boolean, body: any) {
+    const modulo = esPago ? 'Cobranza' : 'Nota'
+    return this.http.put<any>(`${this.baseUrl}api/Factura/${modulo}/Cancelar`, body)
+  }
+
+  cargarNotaSinFactura(body: any) {
+    return this.http.post<any>(`${this.baseUrl}api/Factura/NotaCredito`, body)
+  }
+
+  obtenerNotasSinFactura(numProyecto: number = 0, mes: number = 0, anio: number = 0) {
+    return this.http.get<any>(`${this.baseUrl}api/Factura/NotaCredito/${numProyecto}/${mes}/${anio}`);
   }
 
 }

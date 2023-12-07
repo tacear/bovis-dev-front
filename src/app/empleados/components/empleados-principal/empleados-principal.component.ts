@@ -1,182 +1,102 @@
 import { Component, OnInit } from '@angular/core';
 import { EmpleadosService } from '../../services/empleados.service';
-import { CatEmpleadoDetalle, CatEmpleadoDetalleExcel } from '../../Models/empleados';
-import * as FileSaver from 'file-saver';
-import * as XLSX from 'xlsx';
-const EXCEL_EXTENSION = '.xlsx';
+import { CatEmpleado, UpEmpleado } from '../../Models/empleados';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { finalize, forkJoin } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { SUBJECTS, TITLES } from 'src/utils/constants';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { Item } from 'src/models/general.model';
+import { Table } from 'primeng/table';
+import { DialogService } from 'primeng/dynamicdialog';
+import { MostrarProyectosComponent } from '../mostrar-proyectos/mostrar-proyectos.component';
 
 @Component({
   selector: 'app-empleados-principal',
   templateUrl: './empleados-principal.component.html',
-  styleUrls: ['./empleados-principal.component.css']
+  styleUrls: ['./empleados-principal.component.css'],
+  providers: [MessageService, DialogService]
 })
 export class EmpleadosPrincipalComponent implements OnInit {
 
-  header = [
-    'Número de empleado RRHH',
-    'Persona',
-    'Tipo empleado',
-    'Categoria',
-    'Tipo de contrato',
-    'Puesto',
-    'Empresa',
-    'Ciudad',
-    'Nivel de estudios',
-    'Forma de pago',
-    'Jornada',
-    'Departamento',
-    'Clasificación',
-    'Número de directo',
-    'Número de negocio',
-    'Número de sat',
-    'Número de empleado',
-    'Fecha de ingreso',
-    'Fecha de salida',
-    'Fecha de reingreso',
-    'Nss',
-    'Email Bovis',
-    'Experiencias',
-    'Habilidades',
-    'Repositorio',
-    'Salario',
-    'Profesión',
-    'Antiguedad',
-    'Turno',
-    'Unidad medica',
-    'Registro patronal',
-    'Cotización',
-    'Duración',
-    'Activo',
-    'Descuento de pension',
-    'Pension',
-    'Fondo fijo',
-    'Número de infonavit',
-    'Tipo descuento',
-    'Descuento',
-    'Número de noi'
-  ];
+  empleados:  UpEmpleado[] = []
+  puestos:    Item[] = []
+  estados:    Item[] = [
+    {label: 'Activo', value: true},
+    {label: 'Inactivo', value: false}
+  ]
 
-  listEmpleados: Array<CatEmpleadoDetalle> = new Array<CatEmpleadoDetalle>();
-  selectedRegistros: Array<CatEmpleadoDetalle> = new Array<CatEmpleadoDetalle>();
-  listEmpleadosExcel: Array<CatEmpleadoDetalleExcel> = new Array<CatEmpleadoDetalleExcel>();
-
-  constructor(private empleadosServ: EmpleadosService) { }
+  constructor( 
+    private empleadosServ: EmpleadosService,
+    private sharedService: SharedService,
+    private messageService: MessageService,
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private dialogService: DialogService
+  ) { }
 
   ngOnInit(): void {
-    this.getDataEmpleados();
+    this.verificarEstado()
+
+    this.sharedService.cambiarEstado(true)
+
+    forkJoin([
+      this.empleadosServ.getEmpleados(),
+      this.empleadosServ.getPuestos()
+    ])
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
+        next: (value) => {
+          const [empleadosR, puestosR] = value
+          this.empleados = empleadosR.data
+          this.puestos = puestosR.data.map(puesto => ({value: puesto.chpuesto, label: puesto.chpuesto}))
+        },
+        error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+      })
   }
 
-  getDataEmpleados() {
-    this.listEmpleados = [];
-    this.empleadosServ.getEmpleadosDetalle().subscribe((emp) => {
-      this.listEmpleados = emp.data;
+  verificarEstado() {
 
-      if (this.listEmpleados.length > 0) {
-        this.listEmpleadosExcel = new Array<CatEmpleadoDetalleExcel>();
-        this.listEmpleados.forEach(element => {
-          let objExport: CatEmpleadoDetalleExcel = new CatEmpleadoDetalleExcel();
+    this.activatedRoute.queryParams.subscribe(params => {
+      // Access query parameters
+      const success = params['success']
 
-          objExport.numEmpleadoRrHh = element.numEmpleadoRrHh;
-          objExport.nombre = element.nombre;
-          objExport.apPaterno = element.apPaterno;
-          objExport.apMaterno = element.apMaterno;
-          objExport.categoria = element.categoria;
-          objExport.tipoContrato = element.tipoContrato;
-          objExport.cvePuesto = element.cvePuesto;
-          objExport.empresa = element.empresa;
-          objExport.ciudad = element.ciudad;
-          objExport.nivelEstudios = element.nivelEstudios;
-          objExport.formaPago = element.formaPago;
-          objExport.jornada = element.jornada;
-          objExport.departamento = element.departamento;
-          objExport.clasificacion = element.clasificacion;
-          objExport.jefeDirecto = element.jefeDirecto;
-          objExport.unidadNegocio = element.unidadNegocio;
-          objExport.tipoContratoSat = element.tipoContratoSat;
-          objExport.numEmpleado = element.numEmpleado;
-          objExport.fechaIngreso = element.fechaIngreso;
-          objExport.fechaSalida = element.fechaSalida;
-          objExport.fechaUltimoReingreso = element.fechaUltimoReingreso;
-          objExport.nss = element.nss;
-          objExport.emailBovis = element.emailBovis;
-          objExport.experiencias = element.experiencias;
-          objExport.habilidades = element.habilidades;
-          objExport.urlRepositorio = element.urlRepositorio;
-          objExport.salario = element.salario;
-          objExport.profesion = element.profesion;
-          objExport.antiguedad = element.antiguedad;
-          objExport.turno = element.turno;
-          objExport.unidadMedica = element.unidadMedica;
-          objExport.registroPatronal = element.registroPatronal;
-          objExport.cotizacion = element.cotizacion;
-          objExport.duracion = element.duracion;
-          objExport.activo = element.activo;
-          objExport.descuentoPension = element.descuentoPension;
-          objExport.porcentajePension = element.porcentajePension;
-          objExport.fondoFijo = element.fondoFijo;
-          objExport.creditoInfonavit = element.creditoInfonavit;
-          objExport.tipoDescuento = element.tipoDescuento;
-          objExport.valorDescuento = element.valorDescuento;
-          objExport.empleadoNoi = objExport.empleadoNoi;
-
-
-          this.listEmpleadosExcel.push(objExport);
-        });
+      if(success) {
+        Promise.resolve().then(() => this.messageService.add({ severity: 'success', summary: 'Registro guardado', detail: 'El registro ha sido guardado.' }))
       }
 
-
+      const urlWithoutQueryParams = this.location.path().split('?')[0];
+      this.location.replaceState(urlWithoutQueryParams);
     });
   }
-
-  public exportJsonToExcel(fileName: string = 'empleados'): void {
-    // inserting first blank row
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
-      this.listEmpleadosExcel,
-      this.getOptions(this.listEmpleadosExcel)
-    );
-
-    //for (let i = 1, length = this.listBusquedaCompleto.length; i < length; i++) {
-    // adding a dummy row for separation
-    XLSX.utils.sheet_add_json(
-      worksheet,
-      [{}],
-      this.getOptions(
-        {
-          data: [],
-          skipHeader: true,
-        },
-        -1
-      )
-    );
-    XLSX.utils.sheet_add_json(
-      worksheet,
-      this.listEmpleadosExcel,
-      this.getOptions(this.listEmpleadosExcel, 1)
-    );
-    //}
-    const workbook: XLSX.WorkBook = {
-      Sheets: { Sheet1: worksheet },
-      SheetNames: ['Sheet1'],
-    };
-    // save to file
-    XLSX.writeFile(workbook, `${fileName}${EXCEL_EXTENSION}`);
+  
+  toggleActivo(id: number, activo: boolean) {
+    console.log(activo)
+    const index = this.empleados.findIndex(({nunum_empleado_rr_hh}) => nunum_empleado_rr_hh === id)
+    if(index >= 0) {
+      this.sharedService.cambiarEstado(true)
+      this.empleadosServ.toggleEstado(!activo, id, false)
+        .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+        .subscribe({
+          next: (data) => {
+            this.empleados.at(index).boactivo = !activo
+            this.messageService.add({ severity: 'success', summary: 'Registro actualizado', detail: `El registro ha sido ${activo ? 'deshabilitado' : 'habilitado'}.` })
+          },
+          error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+        })
+    }
   }
 
-  private getOptions(json: any, origin?: number): any {
-    // adding actual data
-    const options = {
-      skipHeader: true,
-      origin: 1,
-      header: ([] = []),
-    };
-    options.skipHeader = json.skipHeader ? json.skipHeader : false;
-    if (!options.skipHeader && json.header && json.header.length) {
-      options.header = json.header;
-    }
-    if (origin) {
-      options.origin = origin ? origin : 1;
-    }
-    return options;
+  mostrarProyectos(id: number) {
+    this.dialogService.open(MostrarProyectosComponent, {
+      header: 'Proyectos del empleado',
+      width: '50%',
+      contentStyle: {overflow: 'auto'},
+      data: {
+        id
+      }
+    })
   }
 
 }

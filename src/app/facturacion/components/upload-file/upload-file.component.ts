@@ -2,6 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FacturacionService } from '../../services/facturacion.service';
 import { CargaFile, InfoProyecto, InfoProyectoFacturas, LstFacturas, ResponseXML } from '../../Models/FacturacionModels';
 import { MessageService } from 'primeng/api';
+import { TimesheetService } from 'src/app/timesheet/services/timesheet.service';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { finalize, forkJoin } from 'rxjs';
+import { Opcion } from 'src/models/general.model';
+import { SUBJECTS, TITLES } from 'src/utils/constants';
 
 @Component({
   selector: 'app-upload-file',
@@ -16,10 +21,15 @@ export class UploadFileComponent implements OnInit {
   numProyecto: number;
   infoProyecto: InfoProyecto = new InfoProyecto();
   listFacturasBase64: Array<LstFacturas> = new Array<LstFacturas>();
+  proyectos:  Opcion[] = []
+  proyecto: any
 
   constructor(private cargaFileServ: FacturacionService,
     private messageService: MessageService,
-    private msgs: MessageService) { }
+    private msgs: MessageService,
+    private sharedService: SharedService,
+    private timesheetService: TimesheetService
+    ) { }
   strFileBase64: string = '';
   isClear: boolean = false;
   isLoadingGPM: boolean = false;
@@ -29,6 +39,20 @@ export class UploadFileComponent implements OnInit {
   listResponse: Array<ResponseXML>;
   errorMEssageFile: string = '';
   ngOnInit(): void {
+    
+    this.sharedService.cambiarEstado(true)
+
+    forkJoin([
+      this.timesheetService.getCatProyectos()
+    ])
+    .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+    .subscribe({
+      next: (value) => {
+        const [proyectosR] = value
+        this.proyectos = proyectosR.data.map(proyecto => ({code: proyecto.numProyecto.toString(), name: `${proyecto.numProyecto.toString()} - ${proyecto.nombre}`}))
+      },
+      error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
+    })
   }
 
   async onBasicUpload(event: any) {
@@ -132,13 +156,15 @@ export class UploadFileComponent implements OnInit {
     this.listResponse = new Array<ResponseXML>();
     this.errorMEssageFile = '';
     this.numProyecto = null;
+    this.proyecto = null
+    this.isXml = true
     this.listFacturasBase64 = new Array<LstFacturas>();
     this.listResponse = new Array<ResponseXML>();
   }
 
   changeEnter(val: any) {
-    if (val.keyCode == 13 && this.numProyecto > 0) {
-      console.log(this.numProyecto);
+    if (val.value > 0) {
+      this.numProyecto = val.value
       this.isLoadingGPM = true;
       this.getInfoProyecto();
     }

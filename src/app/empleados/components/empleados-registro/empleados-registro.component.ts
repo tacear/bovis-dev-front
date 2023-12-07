@@ -1,53 +1,55 @@
 import { Component, OnInit } from '@angular/core';
 // import { NgbCalendar, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { CatEmpleado, ICatalogo, Empleado, IEmpresa, ICatalogoCombos, ICatPersona } from '../../Models/empleados';
+import { CatEmpleado, Catalogo, Empleado, Puesto } from '../../Models/empleados';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message, MessageService, PrimeNGConfig } from 'primeng/api';
 import { EmpleadosService } from '../../services/empleados.service';
+import { CALENDAR, SUBJECTS, TITLES, errorsArray } from 'src/utils/constants';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { SharedService } from 'src/app/shared/services/shared.service';
+import { finalize, forkJoin } from 'rxjs';
+import { CieService } from 'src/app/cie/services/cie.service';
+import { Opcion } from 'src/models/general.model';
+import { differenceInCalendarYears, format } from 'date-fns';
 
-
+interface ICatalogo {
+  name: string;
+  value: string;
+}
 @Component({
   selector: 'app-empleados-registro',
   templateUrl: './empleados-registro.component.html',
   styleUrls: ['./empleados-registro.component.css'],
 })
-
 export class EmpleadosRegistroComponent implements OnInit {
+  esActualizacion = false
 
-  empleadoModel: Empleado = new Empleado();
-  idEmpleado: number;
-  disabled = false;
-  isEditar = true;
-  isConsulta: boolean = false;
-  isConsultaButons: boolean = false;
-  isUpdate: boolean = false;
-  listPersonas: Array<ICatPersona> = [];
-  listTipoEmpleados: Array<ICatalogo> = [];
-  listCategorias: Array<ICatalogo> = [];
-  listTipoContratos: Array<ICatalogo> = [];
-  listEmpresas: Array<IEmpresa> = [];
-  listCiudades: Array<ICatalogo> = [];
-  listNivelEstudios: Array<ICatalogo> = [];
-  listFormasPago: Array<ICatalogo> = [];
-  listJornadas: Array<ICatalogo> = [];
-  listDepartamentos: Array<ICatalogo> = [];
-  listClasificacion: Array<ICatalogo> = [];
-  listJefesDirecto: Array<ICatalogo> = [];
-  listUnidadNegocio: Array<ICatalogo> = [];
-
-  catPersonas: ICatalogoCombos[] = [];
-  catTipoEmpleados: ICatalogoCombos[] = [];
-  catCategorias: ICatalogoCombos[] = [];
-  catTipoContratos: ICatalogoCombos[] = [];
-  catEmpresas: ICatalogoCombos[] = [];
-  catCiudades: ICatalogoCombos[] = [];
-  catNivelEstudios: ICatalogoCombos[] = [];
-  catFormasPago: ICatalogoCombos[] = [];
-  catJornadas: ICatalogoCombos[] = [];
-  catDepartamentos: ICatalogoCombos[] = [];
-  catClasificacion: ICatalogoCombos[] = [];
-  catJefesDirecto: ICatalogoCombos[] = [];
-  catUnidadNegocio: ICatalogoCombos[] = [];
+  catPersonas:      ICatalogo[] = []
+  catTipoEmpleados: ICatalogo[] = []
+  catCategorias:    ICatalogo[] = []
+  catTipoContratos: ICatalogo[] = []
+  catEmpresas:      ICatalogo[] = []
+  catCiudades:      ICatalogo[] = []
+  catNivelEstudios: ICatalogo[] = []
+  catFormasPago:    ICatalogo[] = []
+  catJornadas:      ICatalogo[] = []
+  catDepartamentos: ICatalogo[] = []
+  catClasificacion: ICatalogo[] = []
+  catJefesDirecto:  ICatalogo[] = []
+  catUnidadNegocio: ICatalogo[] = []
+  catTurno:         ICatalogo[] = []
+  catJefes:         ICatalogo[] = []
+  habilidades:      Opcion[] = []
+  experiencias:     Opcion[] = []
+  profesiones:      Opcion[] = []
+  puestos:          Opcion[] = []
+  estados:          Opcion[] = []
+  paises:           Opcion[] = []
+  pensionOpciones:  Opcion[] = [
+    {code: 'SI', name: 'SI'},
+    {code: 'NO', name: 'NO'},
+    {code: 'NA', name: 'N/A'}
+  ]
 
   fechaIngreso: Date;
   fechaSalida: Date;
@@ -57,567 +59,475 @@ export class EmpleadosRegistroComponent implements OnInit {
   mensajeCamposRequeridos: string = '';
   isCamposRequeridos = false;
   messages1: Message[];
-  selectedPersona: string = '';
-  numEmpleadoRrHh: number;
 
-  sPersonas: ICatalogoCombos;
-  sTipoEmpleado: ICatalogoCombos;
-  sCategoria: ICatalogoCombos;
-  sTipoContrato: ICatalogoCombos;
-  sEmpresa: ICatalogoCombos;
-  sCiudad: ICatalogoCombos;
-  sNivelEstudios: ICatalogoCombos;
-  sFormaPago: ICatalogoCombos;
-  sJornada: ICatalogoCombos;
-  sDepartamento: ICatalogoCombos;
-  sClasificacion: ICatalogoCombos;
-  sUnidadNegocio: ICatalogoCombos;
+  puestosInfo:    Puesto[] = []
+  tiposDescuento: Opcion[] = [
+    {code: 'Porcentaje' , name: 'Porcentaje'},
+    {code: 'Cuota fija', name: 'Cuota fija'},
+    {code: 'Factor de descuento', name: 'Factor de descuento'}
+  ];
+
+  form = this.fb.group({
+    id_requerimiento:       [0],
+    num_empleado_rr_hh:     ['', Validators.required],
+    id_persona:             ['', Validators.required],// 1,
+    id_tipo_empleado:       ['', Validators.required],// 1,
+    id_categoria:           ['', Validators.required],// 1,
+    id_tipo_contrato:       ['', Validators.required],// 1,
+    cve_puesto:             ['', Validators.required],// 1,
+    id_empresa:             ['', Validators.required],// 1,
+    calle:                  ['', Validators.required],
+    numero_interior:        [null],
+    numero_exterior:        ['', Validators.required],
+    colonia:                ['', Validators.required],
+    alcaldia:               [null],
+    id_ciudad:              ['', Validators.required],// 1,
+    id_estado:              ['', Validators.required],//42,
+    codigo_postal:          ['', Validators.required],//"03550",
+    id_pais:                ['', Validators.required],//1,
+    id_nivel_estudios:      [null], // no requerido
+    id_forma_pago:          ['', Validators.required],// 1,
+    id_jornada:             ['', Validators.required],// 1,
+    id_departamento:        ['', Validators.required],// 1,
+    id_clasificacion:       [null], // no requerido
+    id_jefe_directo:        ['', Validators.required],// 1,
+    id_unidad_negocio:      ['', Validators.required],// 1,
+    id_tipo_contrato_sat:   [0],// 1,
+    num_empleado:           [null],// 1,
+    fecha_ingreso:          ['', Validators.required],// "22/06/2022",
+    fecha_salida:           [null],// "22/12/2022",
+    fecha_ultimo_reingreso: [null],// "10/02/2023",
+    nss:                    ['', Validators.required],// 123456789,
+    email_bovis:            ['', Validators.email],// "empleado@bovis.com",
+    url_repo:               [null], // no requerido
+    salario:                ['', Validators.required],// 10000.50,
+    id_profesion:           [null], // no requerido
+    antiguedad:             [null], // no requerido
+    id_turno:               [null], // no requerido
+    unidad_medica:          [null], // no requerido
+    registro_patronal:      ['', Validators.required],// "ABCD123",
+    cotizacion:             [null],// "ABCD1234567890",
+    duracion:               [null], // no requerido
+    descuento_pension:      [null], // requerido si porcentaje es SI
+    porcentaje_pension:     ['', Validators.required],// 5,
+    fondo_fijo:             [null], // no requerido
+    credito_infonavit:      [null], // no requerido
+    tipo_descuento:         [null], // no requerido
+    valor_descuento:        [null], // no requerido
+    no_empleado_noi:        [null], // no requerido
+    rol:                    [null], // no requerido
+    habilidades:            [null], // no requerido ['']
+    experiencias:           [null], // no requerido ['']
+    persona_nombre:         [null]
+  })
 
   constructor(
-    private params: ActivatedRoute,
     private config: PrimeNGConfig,
     private empleadosServ: EmpleadosService,
     private messageService: MessageService,
     private router: Router,
-    private route: ActivatedRoute
-  ) { }
-
-  poblarCombos() {
-    this.getConfigCalendar();
-    this.getCatPersonas();
-    this.getCatTipoEmpleado();
-    this.getCatCategorias();
-    this.getCatTipoContratos();
-    this.getCatEmpresas();
-    this.getCatCiudades();
-    this.getCatNivelEstuidios();
-    this.getCatFormasPago();
-    this.getCatJornadas();
-    this.getCatDepartamentos();
-    this.getCatClasificacion();
-    //this.getCatJefeDirecto();//falta servicio
-    this.getCatUnidadNegocio();
-  }
+    private fb: FormBuilder,
+    private sharedService: SharedService,
+    private cieService: CieService,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.poblarCombos();
-    this.route.paramMap.subscribe(paramMap => {
-      //console.log(paramMap.get('id'));
-      if (paramMap.get('id') != null) {
-        this.isUpdate = true;
-        this.numEmpleadoRrHh = Number(paramMap.get('id').toString());
-        this.getEmpleados();
-      } else {
-        this.numEmpleadoRrHh = null;
-      }
-    });
+    this.getConfigCalendar();
+    this.sharedService.cambiarEstado(true)
+    
+    this.activatedRoute.params
+      .subscribe(({id}) => {
+        forkJoin([
+          id ? this.empleadosServ.getPersonas() : this.empleadosServ.getPersonasDisponibles(),
+          this.empleadosServ.getCatEmpleados(),
+          this.empleadosServ.getCatCategorias(),
+          this.empleadosServ.getCatTiposContratos(),
+          this.cieService.getEmpresas(),
+          this.empleadosServ.getCatNivelEstudios(),
+          this.empleadosServ.getCatFormasPago(),
+          this.empleadosServ.getCatJornadas(),
+          this.empleadosServ.getCatDepartamentos(),
+          this.empleadosServ.getCatClasificacion(),
+          this.empleadosServ.getCatUnidadNegocio(),
+          this.empleadosServ.getCatTurno(),
+          this.empleadosServ.getHabilidades(),
+          this.empleadosServ.getExperiencias(),
+          this.empleadosServ.getProfesiones(),
+          this.empleadosServ.getPuestos(),
+          this.empleadosServ.getEmpleados(),
+          this.empleadosServ.getCatEstados(),
+          this.empleadosServ.getCatPaises()
+        ])
+        .pipe(finalize(() => this.verificarActualizacion()))
+        .subscribe({
+          next: ([
+            personaR, 
+            tipoEmpleadoR,
+            categoriaR,
+            tipoContratoR,
+            empresaR,
+            nivelEstudiosR,
+            formaPagoR,
+            jornadaR,
+            departamentoR,
+            clasificacionR,
+            unidadNegocioR, 
+            turnoR,
+            habilidadesR, 
+            experienciasR, 
+            profesionesR,
+            puestoR,
+            empleadosR,
+            estadosR,
+            paisesR
+          ]) => {
+            this.setCatPersonas(personaR.data)
+            this.setCatTipoEmpleado(tipoEmpleadoR.data)
+            this.setCatCategorias(categoriaR.data)
+            this.setCatTipoContratos(tipoContratoR.data)
+            this.setCatEmpresas(empresaR.data)
+            this.setCatNivelEstudios(nivelEstudiosR.data)
+            this.setCatFormasPago(formaPagoR.data)
+            this.setCatJornadas(jornadaR.data)
+            this.setCatDepartamentos(departamentoR.data)
+            this.setCatClasificacion(clasificacionR.data)
+            this.setCatUnidadNegocio(unidadNegocioR.data)
+            this.setCatTurno(turnoR.data)
+            this.habilidades = habilidadesR.data.map(habilidad => ({name: habilidad.descripcion, code: habilidad.id.toString()}))
+            this.experiencias = experienciasR.data.map(experiencia => ({name: experiencia.descripcion, code: experiencia.id.toString()}))
+            this.profesiones = profesionesR.data.map(profesion => ({name: profesion.descripcion, code: profesion.id.toString()})),
+            this.puestos = puestoR.data.map(puesto => ({name: puesto.chpuesto, code: puesto.nukid_puesto.toString()}))
+            this.puestosInfo = puestoR.data
+            this.catJefes = empleadosR.data.map(empleado => ({name: empleado.nombre_persona, value: empleado.nunum_empleado_rr_hh.toString()}))
+            this.estados = estadosR.data.map(estado => ({name: estado.estado, code: estado.idEstado.toString()}))
+            this.paises = paisesR.data.map(pais => ({name: pais.descripcion, code: pais.id.toString()}))
+          },
+          error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+        })
+      })
   }
 
-  getEmpleados() {
-    this.empleadosServ.getEmpleados().subscribe((emp) => {
-      let listEmpleado: Array<CatEmpleado> = emp.data;
-      this.empleado = listEmpleado.find(xx => xx.numEmpleadoRrHh == this.numEmpleadoRrHh);
-      console.log(this.empleado);
-      this.fechaSalida = new Date(this.empleado.fechaSalida);
-      this.fechaReingreso = new Date(this.empleado.fechaUltimoReingreso);
-      this.fechaIngreso = new Date(this.empleado.fechaIngreso);
+  verificarActualizacion() {
+    this.activatedRoute.params
+      .subscribe(({id}) => {
+        if(id) {
+          this.esActualizacion = true
+          this.empleadosServ.getEmpleado(id)
+            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+            .subscribe({
+              next: ({data}) => {
+                // console.log(data)
+              const habilidades = data.habilidades.map(habilidad => habilidad.idHabilidad.toString())
+              const experiencias = data.experiencias.map(experiencia => experiencia.idExperiencia.toString())
+                this.form.patchValue({
+                  num_empleado_rr_hh:     data.nunum_empleado_rr_hh?.toString(),
+                  id_persona:             data.nukidpersona?.toString(),
+                  id_tipo_empleado:       data.nukidtipo_empleado?.toString(),
+                  id_categoria:           data.nukidcategoria?.toString(),
+                  id_tipo_contrato:       data.nukidtipo_contrato?.toString(),
+                  cve_puesto:             data.chcve_puesto?.toString(),
+                  id_empresa:             data.nukidempresa?.toString(),
+                  calle:                  data.chcalle,
+                  numero_interior:        data.nunumero_interior,
+                  numero_exterior:        data.nunumero_exterior,
+                  colonia:                data.chcolonia,
+                  alcaldia:               data.chalcaldia,
+                  id_ciudad:              data.nukidciudad?.toString(),
+                  id_estado:              data.nukidestado?.toString(),
+                  codigo_postal:          data.chcp,
+                  id_pais:                data.nukidpais?.toString(),
+                  id_nivel_estudios:      data.nukidnivel_estudios?.toString(),
+                  id_forma_pago:          data.nukidforma_pago?.toString(),
+                  id_jornada:             data.nukidjornada?.toString(),
+                  id_departamento:        data.nukiddepartamento?.toString(),
+                  id_clasificacion:       data.nukidclasificacion?.toString(),
+                  id_jefe_directo:        data.nukidjefe_directo?.toString(),
+                  // id_jefe_directo:        1,
+                  id_unidad_negocio:      data.nukidunidad_negocio?.toString(),
+                  // id_tipo_contrato_sat:   data.nukidtipo_contrato_sat?.toString(),
+                  // num_empleado:           data.nunum_empleado?.toString(),
+                  fecha_ingreso:          new Date(data.dtfecha_ingreso) as any,
+                  fecha_salida:           data.dtfecha_salida != '' ? new Date(data.dtfecha_salida) as any : null,
+                  fecha_ultimo_reingreso: data.dtfecha_ultimo_reingreso != '' ? new Date(data.dtfecha_ultimo_reingreso) as any : null,
+                  nss:                    data.chnss?.toString(),
+                  email_bovis:            data.chemail_bovis,
+                  url_repo:               data.churl_repositorio,
+                  salario:                data.nusalario?.toString(),
+                  id_profesion:           data.nukidprofesion?.toString(),
+                  // antiguedad:             data.nuantiguedad?.toString(),
+                  id_turno:               data.nukidturno?.toString(),
+                  unidad_medica:          data.nuunidad_medica?.toString(),
+                  registro_patronal:      data.chregistro_patronal,
+                  cotizacion:             data.chcotizacion,
+                  duracion:               data.nuduracion?.toString(),
+                  descuento_pension:      (+data.nudescuento_pension)?.toString(),//(+data.bodescuento_pension)?.toString(),
+                  porcentaje_pension:     data.chporcentaje_pension ? data.chporcentaje_pension?.toString() : 'NA',
+                  fondo_fijo:             data.nufondo_fijo?.toString(),
+                  credito_infonavit:      data.nucredito_infonavit != '' ? data.nucredito_infonavit?.toString() : null,
+                  tipo_descuento:         data.chtipo_descuento,
+                  valor_descuento:        data.nuvalor_descuento?.toString(),
+                  no_empleado_noi:        data.nuno_empleado_noi != '' ? data.nuno_empleado_noi?.toString() : null,
+                  rol:                    data.chrol,
+                  habilidades:            habilidades as any,
+                  experiencias:           experiencias as any,
+                  persona_nombre:         data.nombre_persona
+                })
 
-      this.sPersonas = this.catPersonas.find((xx => Number(xx.value) == this.empleado.idPersona));
-      this.sTipoEmpleado = this.catTipoEmpleados.find((xx => Number(xx.value) == this.empleado.idTipoEmpleado));
-      this.sCategoria = this.catCategorias.find((xx => Number(xx.value) == this.empleado.idCategoria));
-      this.sTipoContrato = this.catTipoContratos.find((xx => Number(xx.value) == this.empleado.idTipoContrato));
-      this.sEmpresa = this.catEmpresas.find((xx => Number(xx.value) == this.empleado.idEmpresa));
-      this.sCiudad = this.catCiudades.find((xx => Number(xx.value) == this.empleado.idCiudad));
-      this.sNivelEstudios = this.catNivelEstudios.find((xx => Number(xx.value) == this.empleado.idNivelEstudios));
-      this.sFormaPago = this.catFormasPago.find((xx => Number(xx.value) == this.empleado.idFormaPago));
-      this.sJornada = this.catJornadas.find((xx => Number(xx.value) == this.empleado.idJornada));
-      this.sDepartamento = this.catDepartamentos.find((xx => Number(xx.value) == this.empleado.idDepartamento));
-      this.sClasificacion = this.catClasificacion.find((xx => Number(xx.value) == this.empleado.idClasificacion));
-      this.sUnidadNegocio = this.catUnidadNegocio.find((xx => Number(xx.value) == this.empleado.idUnidadNegocio));
+                this.buscarCiudades({value: this.form.value.id_estado})
+              },
+              error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+            })
+        } else {
+          this.form.patchValue({habilidades: [], experiencias: []})
+          this.activatedRoute.queryParams
+            .subscribe({
+              next: ({id_persona, id_requerimiento}) => {
+                if(id_persona && id_requerimiento) {
+                  this.getInfoDeAsignacion(id_persona, id_requerimiento)
+                } else {
+                  this.sharedService.cambiarEstado(false)
+                }
+              },
+              error: (err) => {
+                this.sharedService.cambiarEstado(false)
+              }
+            })
+        }
+    })
+  }
 
-    });
+  getInfoDeAsignacion(id_persona: number, id_requerimiento: number) {
+    forkJoin([
+      this.empleadosServ.getPersona(id_persona),
+      this.empleadosServ.getRequerimiento(id_requerimiento)
+    ])
+    .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+    .subscribe({
+      next: ([personaR, requerimientoR]) => {
+        // const salario = ((requerimientoR.data.nusueldo_max + requerimientoR.data.nusueldo_min) / 2).toString()
+        const requerimiento = requerimientoR.data
+
+        const habilidades = requerimiento.habilidades.map(habilidad => habilidad.idHabilidad.toString())
+        const experiencias = requerimiento.experiencias.map(experiencia => experiencia.idExperiencia.toString())
+
+        this.form.patchValue({
+          id_requerimiento:   requerimiento.nukidrequerimiento,
+          id_persona:         personaR.data.nukidpersona.toString(),
+          id_categoria:       requerimiento.nukidcategoria.toString(),
+          cve_puesto:         requerimiento.nukidpuesto.toString(),
+          id_nivel_estudios:  requerimiento.nukidnivel_estudios.toString(),
+          id_jornada:         requerimiento.nukidjornada.toString(),
+          id_profesion:       requerimiento.nukidprofesion.toString(),
+          id_tipo_contrato:   requerimiento.nukidtipo_contrato.toString(),
+          id_ciudad:          requerimiento.nukidciudad.toString(),
+          id_jefe_directo:    requerimiento.nukidjefe_inmediato.toString(),
+          salario:            requerimiento.nusueldo_real.toString(),
+          habilidades,
+          experiencias
+        })
+      },
+      error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+    })
   }
 
   getConfigCalendar() {
     this.config.setTranslation({
       firstDayOfWeek: 1,
-      dayNames: [
-        'domingo',
-        'lunes',
-        'martes',
-        'miércoles',
-        'jueves',
-        'viernes',
-        'sábado',
-      ],
-      dayNamesShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
-      dayNamesMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
-      monthNames: [
-        'Enero',
-        'Febrero',
-        'Marzo',
-        'Abril',
-        'Mayo',
-        'Junio',
-        'Julio',
-        'Agosto',
-        'Septiembre',
-        'Octubre',
-        'Noviembre',
-        'Diciembre',
-      ],
-      monthNamesShort: [
-        'ene',
-        'feb',
-        'mar',
-        'abr',
-        'may',
-        'jun',
-        'jul',
-        'ago',
-        'sep',
-        'oct',
-        'nov',
-        'dic',
-      ],
+      dayNames: CALENDAR.dayNames,
+      dayNamesShort: CALENDAR.dayNamesShort,
+      dayNamesMin: CALENDAR.dayNamesMin,
+      monthNames: CALENDAR.monthNames,
+      monthNamesShort: CALENDAR.monthNamesShort,
       today: 'Hoy',
       clear: 'Limpiar',
-    });
+    })
   }
 
   guardar() {
-    console.log(this.empleado);
-    this.camposRequeridos();
+    if(!this.form.valid) {
+      this.form.markAllAsTouched()
+      return
+    }
 
-    if (this.mensajeCamposRequeridos == '') {
-      console.log('todo bien....');
-      this.isCamposRequeridos = false;
-      this.asignaValuesFechas();
+    this.sharedService.cambiarEstado(true)
 
-      this.empleadosServ.saveEmpleado(this.empleado).subscribe({
+    const body = {
+      ...this.form.value,
+      fecha_ingreso:          format(new Date(this.form.value.fecha_ingreso || null), 'Y/MM/dd'),
+      fecha_salida:           this.form.value.fecha_salida ? format(new Date(this.form.value.fecha_salida), 'Y/MM/dd') : null,
+      fecha_ultimo_reingreso: this.form.value.fecha_ultimo_reingreso ? format(new Date(this.form.value.fecha_ultimo_reingreso), 'Y/MM/dd') : null
+    }
+    // console.log(body)
+
+    this.empleadosServ.guardarEmpleado(body, this.esActualizacion)
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
         next: (data) => {
-          console.log(data);
-          if (data.success) {
-
-            this.messageService.add({
-              severity: "success",
-              summary: "Empleado",
-              detail: "Registro guardado correctamente",
-              life: 2000
-            });
-            setTimeout(
-              () => {
-                this.router.navigate(['/empleados', 'empleado-pri']);
-              }, 1500);
-          } else {
-            console.log(data);
-            //this.menssageError(error);
-          }
+          this.form.reset()
+          this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
         },
-        error: (e) => {
-          console.log(e);
-          let error = `${e.message} <br/> ${e.error.errors}`
-          this.menssageError(error);
+        error: (err) => {
+          this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
         }
-      });
-    } else {
-      this.isCamposRequeridos = true;
-      this.messages1 = [
-        {
-          severity: 'error',
-          summary: 'Campos requeridos',
-          detail: this.mensajeCamposRequeridos,
+      })
+  }
+
+  limpiar() {
+    this.form.reset()
+  }
+
+  esInvalido(campo: string): boolean {
+    return this.form.get(campo).invalid && 
+            (this.form.get(campo).dirty || this.form.get(campo).touched)
+  }
+
+  obtenerMensajeError(campo: string): string {
+    let mensaje = ''
+
+    errorsArray.forEach((error) => {
+      if(this.form.get(campo).hasError(error.tipo))
+        mensaje = error.mensaje.toString()
+    })
+
+    return mensaje
+  }
+
+  setCatPersonas(data: any[]) {
+    data.forEach((element) => this.catPersonas.push({
+        name:   `${element.chnombre} ${element.chap_paterno} ${element.chap_materno || ''}`,
+        value:  String(element.nukidpersona),
+      })
+    )
+  }
+
+  setCatTipoEmpleado(data: any[]) {
+    data.forEach((element) => this.catTipoEmpleados.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    );
+  }
+
+  setCatCategorias(data: any[]) {
+    data.forEach((element) => this.catCategorias.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatTipoContratos(data: any[]) {
+    data.forEach((element) => this.catTipoContratos.push({
+        name: String(element.chve_contrato),
+        value: String(element.nukid_contrato),
+      })
+    )
+  }
+
+  setCatEmpresas(data: any[]) {
+    data.forEach((element) => this.catEmpresas.push({
+        name: String(element.chempresa),
+        value: String(element.nukidempresa),
+      })
+    )
+  }
+
+  setCatCiudades(data: any[]) {
+    this.catCiudades = []
+    data.forEach((element) => this.catCiudades.push({
+        name: String(element.ciudad),
+        value: String(element.idCiudad),
+      })
+    )
+  }
+
+  setCatNivelEstudios(data: any[]) {
+    data.forEach((element) => this.catNivelEstudios.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatFormasPago(data: any[]) {
+    data.forEach((element) => this.catFormasPago.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatJornadas(data: any[]) {
+    data.forEach((element) => this.catJornadas.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatDepartamentos(data: any[]) {
+    data.forEach((element) => this.catDepartamentos.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatClasificacion(data: any[]) {
+    data.forEach((element) => this.catClasificacion.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatUnidadNegocio(data: any[]) {
+    data.forEach((element) => this.catUnidadNegocio.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  setCatTurno(data: any[]) {
+    data.forEach((element) => this.catTurno.push({
+        name: String(element.descripcion),
+        value: String(element.id),
+      })
+    )
+  }
+
+  buscarCiudades(event: any) {
+
+    this.sharedService.cambiarEstado(true)
+
+    this.empleadosServ.getCatCiudades(event.value)
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
+        next: ({data}) => {
+          this.setCatCiudades(data)
         },
-      ];
+        error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+      })
+  }
+
+  setearSalarios({value}: any){
+    const index = this.puestosInfo.findIndex(puesto => puesto.nukid_puesto === +value)
+    if(index >= 0) {
+      const puesto = this.puestosInfo.at(index)
+      const sueldoReal = ((puesto.nusalario_min + puesto.nusalario_max) / 2).toString()
+      this.form.patchValue({
+        salario: sueldoReal
+      })
     }
   }
 
-  asignaValuesFechas() {
-    this.fechaIngreso != undefined && this.fechaIngreso != null
-      ? (this.empleado.fechaIngreso = this.fechaIngreso
-        .toJSON()
-        .slice(0, 10)
-        .replace(/-/g, '-'))
-      : '';
-
-    this.fechaReingreso != undefined && this.fechaReingreso != null
-      ? (this.empleado.fechaUltimoReingreso = this.fechaReingreso
-        .toJSON()
-        .slice(0, 10)
-        .replace(/-/g, '-'))
-      : '';
-
-    this.fechaSalida != undefined && this.fechaSalida != null
-      ? (this.empleado.fechaSalida = this.fechaSalida
-        .toJSON()
-        .slice(0, 10)
-        .replace(/-/g, '-'))
-      : '';
-
-  }
-
-  menssageError(mensaje: string) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: mensaje,
-      life: 4000,
-    });
-  }
-
-  camposRequeridos() {
-    this.mensajeCamposRequeridos = '';
-    this.empleado.numEmpleadoRrHh == null
-      ? (this.mensajeCamposRequeridos += 'Numero de empleado RRHH, ')
-      : '';
-    this.empleado.idPersona == null
-      ? (this.mensajeCamposRequeridos += 'Persona, ')
-      : '';
-    this.empleado.idTipoEmpleado == null
-      ? (this.mensajeCamposRequeridos += 'Tipo empleado, ')
-      : '';
-    this.empleado.idCategoria == null
-      ? (this.mensajeCamposRequeridos += 'Categoria, ')
-      : '';
-    this.empleado.idTipoContrato == null
-      ? (this.mensajeCamposRequeridos += 'Tipo Contrato, ')
-      : '';
-    this.empleado.cvePuesto == ''
-      ? (this.mensajeCamposRequeridos += 'Puesto, ')
-      : '';
-    this.empleado.idEmpresa == null
-      ? (this.mensajeCamposRequeridos += 'Empresa, ')
-      : '';
-    this.empleado.idCiudad == null
-      ? (this.mensajeCamposRequeridos += 'Ciudad, ')
-      : '';
-    this.empleado.idNivelEstudios == null
-      ? (this.mensajeCamposRequeridos += 'Nivel de Estudios, ')
-      : '';
-    this.empleado.idFormaPago == null
-      ? (this.mensajeCamposRequeridos += 'Forma de pago, ')
-      : '';
-    this.fechaIngreso == undefined
-      ? (this.mensajeCamposRequeridos += 'Fecha Ingreso, ')
-      : '';
-    this.empleado.salario == null
-      ? (this.mensajeCamposRequeridos += 'Salario, ')
-      : '';
-    this.empleado.profesion == ''
-      ? (this.mensajeCamposRequeridos += 'Profesión, ')
-      : '';
-    this.empleado.antiguedad == null
-      ? (this.mensajeCamposRequeridos += 'Antiguedad, ')
-      : '';
-    /*  this.empleado.turno == ''
-      ? (this.mensajeCamposRequeridos += 'Turno, ')
-      : ''; */
-  }
-
-  clear() {
-    this.empleado = new CatEmpleado();
-    this.fechaIngreso = null;
-    this.fechaSalida = null;
-    this.fechaReingreso = null;
-  }
-
-  getCatPersonas() {
-    this.listPersonas = [];
-    this.empleadosServ.getCatPersonas().subscribe((data) => {
-      //console.log(data);
-      if (data.success) {
-        this.listPersonas = <ICatPersona[]>data['data'];
-        this.listPersonas.forEach((element) => {
-          this.catPersonas.push({
-            name: String(`${element.nombre} ${element.apMaterno} ${element.apMaterno}`),
-            value: String(element.idPersona),
-          });
-        });
-      }
-    });
-  }
-
-  getCatTipoEmpleado() {
-    this.listTipoEmpleados = [];
-    this.empleadosServ.getCatEmpleados().subscribe((data) => {
-      if (data.success) {
-        this.listTipoEmpleados = <ICatalogo[]>data['data'];
-        this.listTipoEmpleados.forEach((element) => {
-          this.catTipoEmpleados.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatCategorias() {
-    this.listCategorias = [];
-    this.empleadosServ.getCatCategorias().subscribe((data) => {
-      if (data.success) {
-        this.listCategorias = <ICatalogo[]>data['data'];
-        this.listCategorias.forEach((element) => {
-          this.catCategorias.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatTipoContratos() {
-    this.listTipoContratos = [];
-    this.empleadosServ.getCatTiposContratos().subscribe((data) => {
-      if (data.success) {
-        this.listTipoContratos = <ICatalogo[]>data['data'];
-        this.listTipoContratos.forEach((element) => {
-          this.catTipoContratos.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatEmpresas() {
-    this.listEmpresas = [];
-    this.empleadosServ.getCatEmpresas().subscribe((data) => {
-      if (data.success) {
-        this.listEmpresas = <IEmpresa[]>data['data'];
-        this.listEmpresas.forEach((element) => {
-          this.catEmpresas.push({
-            name: String(`${element.empresa} / ${element.rfc}`),
-            value: String(element.idEmpresa),
-          });
-        });
-      }
-    });
-  }
-
-  getCatCiudades() {
-    this.listCiudades = [];
-    this.empleadosServ.getCatCiudades().subscribe((data) => {
-      if (data.success) {
-        this.listCiudades = <ICatalogo[]>data['data'];
-        this.listCiudades.forEach((element) => {
-          this.catCiudades.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatNivelEstuidios() {
-    this.listNivelEstudios = [];
-    this.empleadosServ.getCatNivelEstudios().subscribe((data) => {
-      if (data.success) {
-        this.listNivelEstudios = <ICatalogo[]>data['data'];
-        this.listNivelEstudios.forEach((element) => {
-          this.catNivelEstudios.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatFormasPago() {
-    this.listFormasPago = [];
-    this.empleadosServ.getCatFormasPago().subscribe((data) => {
-      if (data.success) {
-        this.listFormasPago = <ICatalogo[]>data['data'];
-        this.listFormasPago.forEach((element) => {
-          this.catFormasPago.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatJornadas() {
-    this.listJornadas = [];
-    this.empleadosServ.getCatJornadas().subscribe((data) => {
-      if (data.success) {
-        this.listJornadas = <ICatalogo[]>data['data'];
-        this.listJornadas.forEach((element) => {
-          this.catJornadas.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatDepartamentos() {
-    this.listDepartamentos = [];
-    this.empleadosServ.getCatDepartamentos().subscribe((data) => {
-      if (data.success) {
-        this.listDepartamentos = <ICatalogo[]>data['data'];
-        this.listDepartamentos.forEach((element) => {
-          this.catDepartamentos.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatClasificacion() {
-    this.listClasificacion = [];
-    this.empleadosServ.getCatClasificacion().subscribe((data) => {
-      if (data.success) {
-        this.listClasificacion = <ICatalogo[]>data['data'];
-        this.listClasificacion.forEach((element) => {
-          this.catClasificacion.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatJefeDirecto() {
-    this.listJefesDirecto = [];
-    this.empleadosServ.getCatClasificacion().subscribe((data) => {
-      if (data.success) {
-        this.listJefesDirecto = <ICatalogo[]>data['data'];
-        this.listJefesDirecto.forEach((element) => {
-          this.catJefesDirecto.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  getCatUnidadNegocio() {
-    this.listUnidadNegocio = [];
-    this.empleadosServ.getCatUnidadNegocio().subscribe((data) => {
-      if (data.success) {
-        this.listUnidadNegocio = <ICatalogo[]>data['data'];
-        this.listUnidadNegocio.forEach((element) => {
-          this.catUnidadNegocio.push({
-            name: String(element.descripcion),
-            value: String(element.id),
-          });
-        });
-      }
-    });
-  }
-
-  onChangeComboPersona(event: any) {
-    /* console.log('event :' + event);
-    console.log(event.value); */
-    if (event.value != null) {
-      this.empleado.idPersona = Number.parseInt(String(event.value['value']));
-    } else {
-      console.log(event);
-      this.empleado.idPersona = null;
-      this.selectedPersona = '';
-    }
-  }
-
-  onChangeTipoEmpleado(event: any) {
-    if (event.value != null) {
-      this.empleado.idTipoEmpleado = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idTipoEmpleado = null;
-    }
-  }
-
-  onChangeCategoria(event: any) {
-    if (event.value != null) {
-      this.empleado.idCategoria = Number.parseInt(String(event.value['value']));
-    } else {
-      this.empleado.idCategoria = null;
-    }
-  }
-
-  onChangeTipoContrato(event: any) {
-    if (event.value != null) {
-      this.empleado.idTipoContrato = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idTipoContrato = null;
-    }
-  }
-
-  onChangeCiudad(event: any) {
-    if (event.value != null) {
-      this.empleado.idCiudad = Number.parseInt(String(event.value['value']));
-    } else {
-      this.empleado.idCiudad = null;
-    }
-  }
-
-  onChangeNivelEstudios(event: any) {
-    if (event.value != null) {
-      this.empleado.idNivelEstudios = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idNivelEstudios = null;
-    }
-  }
-
-  onChangeFormaPago(event: any) {
-    if (event.value != null) {
-      this.empleado.idFormaPago = Number.parseInt(String(event.value['value']));
-    } else {
-      this.empleado.idFormaPago = null;
-    }
-  }
-
-  onChangeJornada(event: any) {
-    if (event.value != null) {
-      this.empleado.idJornada = Number.parseInt(String(event.value['value']));
-    } else {
-      this.empleado.idJornada = null;
-    }
-  }
-
-  onChangeDepartamento(event: any) {
-    if (event.value != null) {
-      this.empleado.idDepartamento = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idDepartamento = null;
-    }
-  }
-
-  onChangeClasificacion(event: any) {
-    if (event.value != null) {
-      this.empleado.idClasificacion = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idClasificacion = null;
-    }
-  }
-
-  onChangeNumeroNegocio(event: any) {
-    if (event.value != null) {
-      this.empleado.idUnidadNegocio = Number.parseInt(
-        String(event.value['value'])
-      );
-    } else {
-      this.empleado.idUnidadNegocio = null;
-    }
+  calcularAntiguedad(event: any) {
+    const ahora = new Date()
+    const diferencia = differenceInCalendarYears(ahora, new Date(event))
+    this.form.patchValue({
+      antiguedad: diferencia
+    })
   }
 }

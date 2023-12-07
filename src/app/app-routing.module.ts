@@ -5,6 +5,8 @@ import { BrowserUtils } from '@azure/msal-browser';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { FailedComponent } from './shared/components/failed/failed.component';
+import { RoleResolver } from './resolver/role.resolver';
+import { TokenResolver } from './resolver/token.resolver';
 
 const routes: Routes = [
  /*  {
@@ -16,14 +18,39 @@ const routes: Routes = [
     path: '',
     children: [
       {
+        path: 'auditoria',
+        loadChildren: () => 
+          import('./auditoria/auditoria.module').then((m) => m.AuditoriaModule),
+      },
+      {
+        path: 'contratos',
+        loadChildren: () =>
+          import('./contratos/contratos.module').then((m) => m.ContratosModule),
+      },
+      {
+        path: 'costos',
+        loadChildren: () =>
+          import('./costos/costos.module').then((m) => m.CostosModule),
+      },
+      {
         path: 'empleados',
         loadChildren: () =>
           import('./empleados/empleados.module').then((m) => m.EmpleadosModule),
       },
       {
+        path: 'cie',
+        loadChildren: () =>
+          import('./cie/cie.module').then((m) => m.CieModule),
+      },
+      {
         path: 'pec',
         loadChildren: () =>
           import('./dor/dor.module').then((m) => m.DorModule),
+      },
+      {
+        path: 'pcs',
+        loadChildren: () =>
+          import('./pcs/pcs.module').then((m) => m.PcsModule),
       },
       {
         path: 'catalogos',
@@ -36,16 +63,25 @@ const routes: Routes = [
           import('./facturacion/facturacion.module').then((m) => m.FacturacionModule),
       },
       {
-        path: 'pcs',
-        loadChildren: () =>
-          import('./pcs/pcs.module').then((m) => m.PcsModule),
+        path: 'reportes',
+        loadChildren: () => 
+          import('./reportes/reportes.module').then((m) => m.ReportesModule)
       },
       {
         path: 'timesheet',
-        loadChildren: () =>
-          import('./timesheet/timesheet.module').then((m) => m.TimesheetModule),
+        loadChildren: () => 
+          import('./timesheet/timesheet.module').then((m) => m.TimesheetModule)
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () => 
+          import('./usuario/usuario.module').then((m) => m.UsuarioModule)
       }
     ],
+    resolve: {
+      token: TokenResolver,
+      roles: RoleResolver
+    },
     canActivate: [MsalGuard]
   },
  /*  {

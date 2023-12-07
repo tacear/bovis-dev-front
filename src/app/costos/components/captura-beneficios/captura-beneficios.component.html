@@ -1,0 +1,385 @@
+
+<p-toast></p-toast>
+
+<form [formGroup]="form" (ngSubmit)="guardar()">
+    <div class="main-container">
+        <div class="buttons-container">
+            <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!form.valid">Guardar</button>
+        </div>
+    
+        <div class="row">
+            <div class="col-12">
+                <label for="num_empleado">Empleado:</label>
+                <p-dropdown 
+                    id="num_empleado" 
+                    [options]="empleados"
+                    placeholder="Seleccionar una empleado" 
+                    optionLabel="name"
+                    [showClear]="true"
+                    [style]="{ width: '100%' }"
+                    formControlName="num_empleado"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('num_empleado')}"
+                    [filter]="true" 
+                    filterBy="name"
+                    optionValue="code"
+                ></p-dropdown>
+                <div *ngIf="esInvalido('num_empleado')">
+                    <small
+                    class="error-msg"
+                    >
+                    {{ obtenerMensajeError('num_empleado') }}
+                    </small>
+                </div>
+            </div>
+
+            <div class="col-3">
+                <label for="vivienda">Vivienda:</label>
+                <p-inputNumber 
+                    id="vivienda"
+                    class="full-width" 
+                    formControlName="vivienda"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('vivienda')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('vivienda')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('vivienda') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="automovil">Automóvil:</label>
+                <p-inputNumber 
+                    id="automovil"
+                    class="full-width" 
+                    formControlName="automovil"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('automovil')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('automovil')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('automovil') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="viaticos_a_comprobar">Viáticos a comprobar:</label>
+                <p-inputNumber 
+                    id="viaticos_a_comprobar"
+                    class="full-width" 
+                    formControlName="viaticos_a_comprobar"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('viaticos_a_comprobar')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('viaticos_a_comprobar')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('viaticos_a_comprobar') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="bono_adicional_reubicacion">Bono Adicional Reubicación:</label>
+                <p-inputNumber 
+                    id="bono_adicional_reubicacion"
+                    class="full-width" 
+                    formControlName="bono_adicional_reubicacion"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('bono_adicional_reubicacion')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('bono_adicional_reubicacion')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('bono_adicional_reubicacion') }}
+                </small>
+                </div>
+            </div>
+
+            <!-- Siguiente Fila -->
+
+            <div class="col-3">
+                <label for="gasolina">Gasolina:</label>
+                <p-inputNumber 
+                    id="gasolina"
+                    class="full-width" 
+                    formControlName="gasolina"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('gasolina')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('gasolina')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('gasolina') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="casetas">Casetas:</label>
+                <p-inputNumber 
+                    id="casetas"
+                    class="full-width" 
+                    formControlName="casetas"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('casetas')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('casetas')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('casetas') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="ayuda_de_transporte">Ayuda de transporte:</label>
+                <p-inputNumber 
+                    id="ayuda_de_transporte"
+                    class="full-width" 
+                    formControlName="ayuda_de_transporte"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('ayuda_de_transporte')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('ayuda_de_transporte')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('ayuda_de_transporte') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="vuelos_de_avion">Vuelos de Avión:</label>
+                <p-inputNumber 
+                    id="vuelos_de_avion"
+                    class="full-width" 
+                    formControlName="vuelos_de_avion"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('vuelos_de_avion')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('vuelos_de_avion')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('vuelos_de_avion') }}
+                </small>
+                </div>
+            </div>
+
+            <!-- Siguiente Fila -->
+
+            <div class="col-3">
+                <label for="provision_impuestos_expats">Provisión Impuestos Expats:</label>
+                <p-inputNumber 
+                    id="provision_impuestos_expats"
+                    class="full-width" 
+                    formControlName="provision_impuestos_expats"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('provision_impuestos_expats')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('provision_impuestos_expats')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('provision_impuestos_expats') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="fringe_expats">Fringe Expats:</label>
+                <p-inputNumber 
+                    id="fringe_expats"
+                    class="full-width" 
+                    formControlName="fringe_expats"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('fringe_expats')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('fringe_expats')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('fringe_expats') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="programa_de_entretenimiento">Programa de Entrenamiento:</label>
+                <p-inputNumber 
+                    id="programa_de_entretenimiento"
+                    class="full-width" 
+                    formControlName="programa_de_entretenimiento"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('programa_de_entretenimiento')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('programa_de_entretenimiento')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('programa_de_entretenimiento') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="eventos_especiales">Eventos Especiales:</label>
+                <p-inputNumber 
+                    id="eventos_especiales"
+                    class="full-width" 
+                    formControlName="eventos_especiales"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('eventos_especiales')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('eventos_especiales')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('eventos_especiales') }}
+                </small>
+                </div>
+            </div>
+
+            <!-- Siguiente Fila -->
+
+            <div class="col-3">
+                <label for="otros">Otros:</label>
+                <p-inputNumber 
+                    id="otros"
+                    class="full-width" 
+                    formControlName="otros"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('otros')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('otros')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('otros') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="costo_it">Costo IT:</label>
+                <p-inputNumber 
+                    id="costo_it"
+                    class="full-width" 
+                    formControlName="costo_it"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('costo_it')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('costo_it')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('costo_it') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="costo_telefonia">Costo telefonía:</label>
+                <p-inputNumber 
+                    id="costo_telefonia"
+                    class="full-width" 
+                    formControlName="costo_telefonia"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('costo_telefonia')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('costo_telefonia')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('costo_telefonia') }}
+                </small>
+                </div>
+            </div>
+            
+            <div class="col-3">
+                <label for="sv_directivos">S.V. Directivos:</label>
+                <p-inputNumber 
+                    id="sv_directivos"
+                    class="full-width" 
+                    formControlName="sv_directivos"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('sv_directivos')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('sv_directivos')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('sv_directivos') }}
+                </small>
+                </div>
+            </div>
+
+            <!-- Siguiente Fila -->
+
+            <div class="col-3">
+                <label for="facturacion_bpm">Facturación BPM:</label>
+                <p-inputNumber 
+                    id="facturacion_bpm"
+                    class="full-width" 
+                    formControlName="facturacion_bpm"
+                    mode="decimal"
+                    [minFractionDigits]="2"
+                    [maxFractionDigits]="5"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('facturacion_bpm')}"
+                ></p-inputNumber>
+                <div *ngIf="esInvalido('facturacion_bpm')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('facturacion_bpm') }}
+                </small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

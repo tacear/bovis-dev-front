@@ -1,413 +1,223 @@
-<div class="content" style="margin: 2%">
-  <div class="d-flex justify-content-end">
-    <button
-      type="button"
+
+<p-toast></p-toast>
+
+<div class="main-container">
+
+  <h1>Empleados</h1>
+
+  <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2">  
+    <button 
+      type="submit" 
       class="btn btn-info"
       routerLink="/empleados/registro-empleado"
     >
       Nuevo
     </button>
-  </div>
-
-  <br />
-
-  <div>
-    <div class="table-responsive" *ngIf="false">
-      <table class="table">
-        <thead>
-          <tr>
-            <th *ngFor="let h of header">{{ h }}</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let empleado of listEmpleados">
-          <tr>
-            <td>
-              {{ empleado.numEmpleadoRrHh }}
-            </td>
-            <td>{{ empleado.nombre }} {{ empleado.apPaterno }} {{ empleado.apMaterno }}</td>
-            <td>{{ empleado.tipoEmpleado }}</td>
-
-            <td>{{ empleado.categoria }}</td>
-            <td>{{ empleado.tipoContrato }}</td>
-            <td>{{ empleado.cvePuesto }}</td>
-            <td>
-              <p class="text-center">{{ empleado.empresa }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.ciudad }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.nivelEstudios }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.formaPago }}</p>
-            </td>
-
-            <td>
-              <p class="text-center">{{ empleado.jornada }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.departamento }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.clasificacion }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.jefeDirecto }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.unidadNegocio }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.tipoContratoSat }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.numEmpleado }}</p>
-            </td>
-            <td>
-              <p class="text-center">
-                {{ empleado.fechaIngreso | date : "dd/MM/yyyy" }}
-              </p>
-            </td>
-            <td>
-              <p class="text-center">
-                {{ empleado.fechaSalida | date : "dd/MM/yyyy" }}
-              </p>
-            </td>
-            <td>
-              <p class="text-center">
-                {{ empleado.fechaUltimoReingreso | date : "dd/MM/yyyy" }}
-              </p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.nss }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.emailBovis }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.experiencias }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.habilidades }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.urlRepositorio }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.salario }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.profesion }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.antiguedad }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.turno }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.unidadMedica }}</p>
-            </td>
-
-            <td>
-              <p class="text-center">{{ empleado.registroPatronal }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.cotizacion }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.duracion }}</p>
-            </td>
-
-              <ng-container>
-                <td *ngIf="empleado.activo"> <p class="text-center">Activo</p></td>
-                <td *ngIf="!empleado.activo"><p class="text-center">Inactivo</p></td>
-              </ng-container>
-
-            <td>
-              <p class="text-center">{{ empleado.descuentoPension }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.porcentajePension }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.fondoFijo }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.creditoInfonavit }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.tipoDescuento }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.valorDescuento }}</p>
-            </td>
-            <td>
-              <p class="text-center">{{ empleado.empleadoNoi }}</p>
-            </td>
-            <td>
-              <a  [routerLink]="['/empleados/registro-empleado', empleado.numEmpleadoRrHh]" ngbTooltip="Editar registro">
-                <i class="fas fa-edit"></i>
-              </a>
-            </td>
-            <td>
-              <!-- (click)="confirm($event, empleado)" -->
-              <i
-                *ngIf="false"
-                class="pi pi-trash c-del"
-                ngbTooltip="Eliminar registro"
-                pTooltip="Da clic para eliminar el registro capturado"
-                tooltipPosition="left"
-              ></i>
-            </td>
-            <td *ngIf="false">
-              <!-- [routerLink]="['consulta', empleado.id]" -->
-              <a
-                ngbTooltip="Consultar empleado"
-
-              >
-                <i class="fas fa-eye"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-
-
-  </div>
-
-  <div class="card">
-    <p-toolbar styleClass="p-mb-4">
-      <ng-template pTemplate="left">
-        <p-button *ngIf="listEmpleadosExcel.length > 0"
-          icon="pi pi-file-excel"
-          pTooltip="Exportar Excel"
-          styleClass="p-button-success f-2x"
-          (click)="exportJsonToExcel()">
-        </p-button>
-
-        <!--  <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
-      </ng-template>
-
-      <ng-template pTemplate="right">
-        <!--  <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="p-mr-2 p-d-inline-block"></p-fileUpload>
-          <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button> -->
-      </ng-template>
-    </p-toolbar>
-
-    <p-table #dt [value]="listEmpleados" [rows]="10" [paginator]="true" [(selection)]="selectedRegistros"
-      selectionMode="single" [responsive]="true" [rowHover]="true" dataKey="id"
-      currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} elementos" [lazy]="false"
-      [scrollable]="true" [showCurrentPageReport]="true" [globalFilterFields]="['descripcion', 'id']"
-      [rowsPerPageOptions]="[10,25,50]" selectionMode="single">
-      <ng-template pTemplate="caption" *ngIf="false">
-         <div class="table-header">
-
-            <span class="p-input-icon-left">
+  </p-toolbar>
+  <div class="table-container">
+    <p-table 
+      #tablaPrincipal
+      class="tabla-filtro"
+      [value]="empleados" 
+      [paginator]="true"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [rows]="10"
+      [globalFilterFields]="['nunum_empleado_rr_hh', 'nombre_persona', 'chpuesto', 'boactivo']"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex">
+            <span class="p-input-icon-left ml-auto">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-                 placeholder="Búsqueda por descripción" />
+                <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
             </span>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="numEmpleadoRrHh">Número de empleado RRHH <p-sortIcon field="numEmpleadoRrHh"></p-sortIcon></th>
-          <th pSortableColumn="rfc">Persona <p-sortIcon field="rfc"></p-sortIcon></th>
-          <th pSortableColumn="fechaNacimiento">Tipo empleado <p-sortIcon field="fechaNacimiento"></p-sortIcon></th>
-          <th pSortableColumn="email">Categoria <p-sortIcon field="email"></p-sortIcon></th>
-          <th pSortableColumn="telefono">Tipo de contrato <p-sortIcon field="telefono"></p-sortIcon></th>
-          <th pSortableColumn="celular">Puesto <p-sortIcon field="celular"></p-sortIcon></th>
-          <th pSortableColumn="curp">Empresa <p-sortIcon field="curp"></p-sortIcon></th>
-          <th pSortableColumn="sexo">Ciudad <p-sortIcon field="sexo"></p-sortIcon></th>
-          <th pSortableColumn="tipoPersona">Nivel de estudios <p-sortIcon field="tipoPersona"></p-sortIcon></th>
-          <th pSortableColumn="edoCivil">Forma de pago<p-sortIcon field="edoCivil"></p-sortIcon></th>
-          <th pSortableColumn="tipoSangre">Jornada <p-sortIcon field="tipoSangre"></p-sortIcon></th>
-          <th pSortableColumn="activo">Departamento <p-sortIcon field="activo"></p-sortIcon></th>
-
-          <th pSortableColumn="numEmpleadoRrHh">Clasificación <p-sortIcon field="numEmpleadoRrHh"></p-sortIcon></th>
-          <th pSortableColumn="rfc">Número de directo <p-sortIcon field="rfc"></p-sortIcon></th>
-          <th pSortableColumn="fechaNacimiento">Número de negocio <p-sortIcon field="fechaNacimiento"></p-sortIcon></th>
-          <th pSortableColumn="email">Número de sat <p-sortIcon field="email"></p-sortIcon></th>
-          <th pSortableColumn="telefono">Número de empleado <p-sortIcon field="telefono"></p-sortIcon></th>
-          <th pSortableColumn="celular">Fecha de ingreso <p-sortIcon field="celular"></p-sortIcon></th>
-          <th pSortableColumn="curp">Fecha de salida <p-sortIcon field="curp"></p-sortIcon></th>
-          <th pSortableColumn="sexo">Fecha de reingreso <p-sortIcon field="sexo"></p-sortIcon></th>
-          <th pSortableColumn="tipoPersona">Nss <p-sortIcon field="tipoPersona"></p-sortIcon></th>
-          <th pSortableColumn="edoCivil">Email Bovis<p-sortIcon field="edoCivil"></p-sortIcon></th>
-          <th pSortableColumn="tipoSangre">Experiencias <p-sortIcon field="tipoSangre"></p-sortIcon></th>
-          <th pSortableColumn="activo">Habilidades <p-sortIcon field="activo"></p-sortIcon></th>
-
-          <th pSortableColumn="numEmpleadoRrHh">Repositorio <p-sortIcon field="numEmpleadoRrHh"></p-sortIcon></th>
-          <th pSortableColumn="rfc">Salario <p-sortIcon field="rfc"></p-sortIcon></th>
-          <th pSortableColumn="fechaNacimiento">Profesión <p-sortIcon field="fechaNacimiento"></p-sortIcon></th>
-          <th pSortableColumn="email">Antiguedad <p-sortIcon field="email"></p-sortIcon></th>
-          <th pSortableColumn="telefono">Turno <p-sortIcon field="telefono"></p-sortIcon></th>
-          <th pSortableColumn="celular">Unidad medica <p-sortIcon field="celular"></p-sortIcon></th>
-          <th pSortableColumn="curp">Registro patronal <p-sortIcon field="curp"></p-sortIcon></th>
-          <th pSortableColumn="sexo">Cotización <p-sortIcon field="sexo"></p-sortIcon></th>
-          <th pSortableColumn="tipoPersona">Duración <p-sortIcon field="tipoPersona"></p-sortIcon></th>
-          <th pSortableColumn="edoCivil">Activo<p-sortIcon field="edoCivil"></p-sortIcon></th>
-          <th pSortableColumn="tipoSangre">Descuento de pension <p-sortIcon field="tipoSangre"></p-sortIcon></th>
-          <th pSortableColumn="activo">Pension <p-sortIcon field="activo"></p-sortIcon></th>
-
-          <th pSortableColumn="sexo">Fondo fijo <p-sortIcon field="sexo"></p-sortIcon></th>
-          <th pSortableColumn="tipoPersona">Número de infonavit <p-sortIcon field="tipoPersona"></p-sortIcon></th>
-          <th pSortableColumn="edoCivil">Tipo descuento<p-sortIcon field="edoCivil"></p-sortIcon></th>
-          <th pSortableColumn="tipoSangre">Descuento <p-sortIcon field="tipoSangre"></p-sortIcon></th>
-          <th pSortableColumn="activo">Número de noi <p-sortIcon field="activo"></p-sortIcon></th>
-
+          <th pSortableColumn="nunum_empleado_rr_hh"><div class="d-flex align-items-center">Número de empleado RRHH <p-sortIcon field="nunum_empleado_rr_hh"></p-sortIcon></div></th>
+          <th pSortableColumn="nombre_persona"><div class="d-flex align-items-center">Persona <p-sortIcon field="nombre_persona"></p-sortIcon></div></th>
+          <th pSortableColumn="chtipo_emplado"><div class="d-flex align-items-center">Tipo empleado <p-sortIcon field="chtipo_emplado"></p-sortIcon></div></th>
+          <th pSortableColumn="chcategoria"><div class="d-flex align-items-center">Categoría <p-sortIcon field="chcategoria"></p-sortIcon></div></th>
+          <th pSortableColumn="chtipo_contrato"><div class="d-flex align-items-center">Tipo de contrato <p-sortIcon field="chtipo_contrato"></p-sortIcon></div></th>
+          <!-- <th>Puesto</th> -->
+          <th pSortableColumn="chpuesto"><div class="d-flex align-items-center">Puesto <p-sortIcon field="chpuesto"></p-sortIcon></div></th>
+          <th pSortableColumn="chempresa"><div class="d-flex align-items-center">Empresa <p-sortIcon field="chempresa"></p-sortIcon></div></th>
+          <th pSortableColumn="chciudad"><div class="d-flex align-items-center">Ciudad <p-sortIcon field="chciudad"></p-sortIcon></div></th>
+          <!-- <th pSortableColumn="chnivel_estudios"><div class="d-flex align-items-center">Nivel de estudios <p-sortIcon field="chnivel_estudios"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chforma_pago"><div class="d-flex align-items-center">Forma de pago <p-sortIcon field="chforma_pago"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chjornada"><div class="d-flex align-items-center">Jornada <p-sortIcon field="chjornada"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chdepartamento"><div class="d-flex align-items-center">Departamento <p-sortIcon field="chdepartamento"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chclasificacion"><div class="d-flex align-items-center">Clasificación <p-sortIcon field="chclasificacion"></p-sortIcon></div></th> -->
+          <th pSortableColumn="nukidjefe_directo"><div class="d-flex align-items-center">Jefe directo <p-sortIcon field="nukidjefe_directo"></p-sortIcon></div></th>
+          <th pSortableColumn="chunidad_negocio"><div class="d-flex align-items-center">Unidad de negocio <p-sortIcon field="chunidad_negocio"></p-sortIcon></div></th>
+          <!-- <th pSortableColumn="chtipo_contrato_sat"><div class="d-flex align-items-center">Número de sat <p-sortIcon field="chtipo_contrato_sat"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nunum_empleado"><div class="d-flex align-items-center">Número de empleado <p-sortIcon field="nunum_empleado"></p-sortIcon></div></th> -->
+          <th pSortableColumn="dtfecha_ingreso"><div class="d-flex align-items-center">Fecha de ingreso <p-sortIcon field="dtfecha_ingreso"></p-sortIcon></div></th>
+          <th pSortableColumn="dtfecha_salida"><div class="d-flex align-items-center">Fecha de salida <p-sortIcon field="dtfecha_salida"></p-sortIcon></div></th>
+          <th pSortableColumn="dtfecha_ultimo_reingreso"><div class="d-flex align-items-center">Fecha de reingreso <p-sortIcon field="dtfecha_ultimo_reingreso"></p-sortIcon></div></th>
+          <th pSortableColumn="chnss"><div class="d-flex align-items-center">Nss <p-sortIcon field="chnss"></p-sortIcon></div></th>
+          <th pSortableColumn="chemail_bovis"><div class="d-flex align-items-center">Email Bovis <p-sortIcon field="chemail_bovis"></p-sortIcon></div></th>
+          <!-- <th pSortableColumn="chexperiencias"><div class="d-flex align-items-center">Experiencias <p-sortIcon field="chexperiencias"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chhabilidades"><div class="d-flex align-items-center">Habilidades <p-sortIcon field="chhabilidades"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="churl_repositorio"><div class="d-flex align-items-center">Repositorio <p-sortIcon field="churl_repositorio"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nusalario"><div class="d-flex align-items-center">Salario <p-sortIcon field="nusalario"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chprofesion"><div class="d-flex align-items-center">Profesión <p-sortIcon field="chprofesion"></p-sortIcon></div></th> -->
+          <th pSortableColumn="nuantiguedad"><div class="d-flex align-items-center">Antiguedad <p-sortIcon field="nuantiguedad"></p-sortIcon></div></th>
+          <!-- <th pSortableColumn="chturno"><div class="d-flex align-items-center">Turno <p-sortIcon field="chturno"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nuunidad_medica"><div class="d-flex align-items-center">Unidad medica <p-sortIcon field="nuunidad_medica"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chregistro_patronal"><div class="d-flex align-items-center">Registro patronal <p-sortIcon field="chregistro_patronal"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chcotizacion"><div class="d-flex align-items-center">Cotización <p-sortIcon field="chcotizacion"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nuduracion"><div class="d-flex align-items-center">Duración <p-sortIcon field="nuduracion"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nuporcentaje_pension"><div class="d-flex align-items-center">Pensión <p-sortIcon field="nuporcentaje_pension"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="bodescuento_pension"><div class="d-flex align-items-center">Descuento de pensión <p-sortIcon field="bodescuento_pension"></p-sortIcon></div></th> -->
+          <th pSortableColumn="nufondo_fijo"><div class="d-flex align-items-center">Fondo fijo <p-sortIcon field="nufondo_fijo"></p-sortIcon></div></th>
+          <!-- <th pSortableColumn="nucredito_infonavit"><div class="d-flex align-items-center">Número de infonavit <p-sortIcon field="nucredito_infonavit"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="chtipo_descuento"><div class="d-flex align-items-center">Tipo descuento <p-sortIcon field="chtipo_descuento"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nuvalor_descuento"><div class="d-flex align-items-center">Descuento <p-sortIcon field="nuvalor_descuento"></p-sortIcon></div></th> -->
+          <!-- <th pSortableColumn="nuno_empleado_noi"><div class="d-flex align-items-center">Número de noi <p-sortIcon field="nuno_empleado_noi"></p-sortIcon></div></th> -->
+          <th class="text-center">Estatus</th>
+          <th class="text-center">Opciones</th>
+        </tr>
+        <tr>
+          <th colspan="5"></th>
+          <th>
+            <p-columnFilter field="puesto" matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-dropdown 
+                      #lista 
+                      [ngModel]="value" 
+                      [options]="puestos" 
+                      (onChange)="tablaPrincipal.filter(lista.value, 'chpuesto', 'equals')" 
+                      placeholder="Puesto" 
+                      [showClear]="true" 
+                      [filter]="true" 
+                      filterBy="value"
+                      appendTo="body"
+                    >
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option.value" severity="success"></p-tag>
+                        </ng-template>
+                    </p-dropdown>
+                </ng-template>
+            </p-columnFilter>
+          </th>
+          <th colspan="11"></th>
+          <th>
+            <p-columnFilter field="activo" matchMode="equals" [showMenu]="false">
+              <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                  <p-dropdown 
+                    #listaEstados 
+                    [ngModel]="value" 
+                    [options]="estados" 
+                    (onChange)="tablaPrincipal.filter(listaEstados.value, 'boactivo', 'equals')" 
+                    placeholder="Estatus" 
+                    [showClear]="true" 
+                    [filter]="true" 
+                    filterBy="value"
+                    appendTo="body"
+                  >
+                      <ng-template let-option pTemplate="item">
+                          <p-tag [value]="option.label" severity="success"></p-tag>
+                      </ng-template>
+                  </p-dropdown>
+              </ng-template>
+          </p-columnFilter>
+          </th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-empleado>
         <tr>
-          <td>{{ empleado.nombre }} {{ empleado.apPaterno }} {{ empleado.apMaterno }}</td>
-          <td>{{ empleado.tipoEmpleado }}</td>
-
-          <td>{{ empleado.categoria }}</td>
-          <td>{{ empleado.tipoContrato }}</td>
-          <td>{{ empleado.cvePuesto }}</td>
           <td>
-            <p class="text-center">{{ empleado.empresa }}</p>
+            <a 
+              class="text-success font-bold"
+              [routerLink]="['/empleados/edicion-empleado', empleado.nunum_empleado_rr_hh]"
+            >
+              {{ empleado.nunum_empleado_rr_hh }}
+            </a>
           </td>
-          <td>
-            <p class="text-center">{{ empleado.ciudad }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.nivelEstudios }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.formaPago }}</p>
-          </td>
-
-          <td>
-            <p class="text-center">{{ empleado.jornada }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.departamento }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.clasificacion }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.jefeDirecto }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.unidadNegocio }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.tipoContratoSat }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.numEmpleado }}</p>
-          </td>
-          <td>
-            <p class="text-center">
-              {{ empleado.fechaIngreso | date : "dd/MM/yyyy" }}
-            </p>
-          </td>
-          <td>
-            <p class="text-center">
-              {{ empleado.fechaSalida | date : "dd/MM/yyyy" }}
-            </p>
-          </td>
-          <td>
-            <p class="text-center">
-              {{ empleado.fechaUltimoReingreso | date : "dd/MM/yyyy" }}
-            </p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.nss }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.emailBovis }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.experiencias }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.habilidades }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.urlRepositorio }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.salario }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.profesion }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.antiguedad }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.turno }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.unidadMedica }}</p>
-          </td>
-
-          <td>
-            <p class="text-center">{{ empleado.registroPatronal }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.cotizacion }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.duracion }}</p>
-          </td>
-
-            <ng-container>
-              <td *ngIf="empleado.activo"> <p class="text-center">Activo</p></td>
-              <td *ngIf="!empleado.activo"><p class="text-center">Inactivo</p></td>
-            </ng-container>
-
-          <td>
-            <p class="text-center">{{ empleado.descuentoPension }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.porcentajePension }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.fondoFijo }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.creditoInfonavit }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.tipoDescuento }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.valorDescuento }}</p>
-          </td>
-          <td>
-            <p class="text-center">{{ empleado.empleadoNoi }}</p>
-          </td>
-          <!-- <td>
-            <p-tag severity="success" *ngIf="elemento.activo == 1">Activo</p-tag>
-            <p-tag severity="danger" *ngIf="elemento.activo == 0">Inactivo</p-tag>
+          <td>{{ empleado.nombre_persona }}</td>
+          <td>{{ empleado.chtipo_emplado }}</td>
+          <td>{{ empleado.chcategoria }}</td>
+          <td>{{ empleado.chtipo_contrato }}</td>
+          <td>{{ empleado.chpuesto }}</td>
+          <td>{{ empleado.chempresa }}</td>
+          <td>{{ empleado.chciudad }}</td>
+          <!-- <td>{{ empleado.chnivel_estudios || '-' }}</td> -->
+          <!-- <td>{{ empleado.chforma_pago }}</td> -->
+          <!-- <td>{{ empleado.chjornada }}</td> -->
+          <!-- <td>{{ empleado.chdepartamento }}</td> -->
+          <!-- <td>{{ empleado.chclasificacion || '-' }}</td> -->
+          <td>{{ empleado.chjefe_directo || '-' }}</td>
+          <td>{{ empleado.chunidad_negocio }}</td>
+          <!-- <td>{{ empleado.chtipo_contrato_sat || '-' }}</td> -->
+          <!-- <td>{{ empleado.nunum_empleado }}</td> -->
+          <td>{{ empleado.dtfecha_ingreso | date:'Y/MM/dd' }}</td>
+          <td>{{ empleado.dtfecha_salida | date:'Y/MM/dd' }}</td>
+          <td>{{ empleado.dtfecha_ultimo_reingreso | date:'Y/MM/dd' }}</td>
+          <td>{{ empleado.chnss }}</td>
+          <td>{{ empleado.chemail_bovis }}</td>
+          <!-- <td>{{ empleado.chexperiencias }}</td> -->
+          <!-- <td>{{ empleado.chhabilidades }}</td> -->
+          <!-- <td>{{ empleado.churl_repositorio || '-' }}</td> -->
+          <!-- <td>{{ empleado.nusalario | currency }}</td> -->
+          <!-- <td>{{ empleado.chprofesion || '-' }}</td> -->
+          <td>{{ empleado.nuantiguedad }}</td>
+          <!-- <td>{{ empleado.chturno || '-' }}</td> -->
+          <!-- <td>{{ empleado.nuunidad_medica }}</td> -->
+          <!-- <td>{{ empleado.chregistro_patronal }}</td> -->
+          <!-- <td>{{ empleado.chcotizacion }}</td> -->
+          <!-- <td>{{ empleado.nuduracion }}</td> -->
+          <!-- <td>{{ empleado.chporcentaje_pension || '-' }}</td> -->
+          <!-- <td>{{ empleado.nudescuento_pension | currency }}</td> -->
+          <td>{{ empleado.nufondo_fijo | currency }}</td>
+          <!-- <td>{{ empleado.nucredito_infonavit || '-' }}</td> -->
+          <!-- <td>{{ empleado.chtipo_descuento || '-' }}</td> -->
+          <!-- <td>{{ empleado.nuvalor_descuento | currency }}</td> -->
+          <!-- <td>{{ empleado.nuno_empleado_noi || '-' }}</td> -->
+          <!-- <td [ngClass]="{'text-danger': !empleado.boactivo, 'text-success': empleado.boactivo}">
+            {{ empleado.boactivo ? 'Activo' : 'Inactivo' }}
           </td> -->
-          <!-- <td>
-            <button title="txtEditar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-              (click)="openDialog(elemento)"></button>
-            &nbsp;&nbsp; <button title="btnEliminar" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-              (click)="eliminarRegistro(elemento)"></button>
-          </td> -->
+          <td class="text-center">
+            <p-inputSwitch 
+              [ngModel]="empleado.boactivo"
+              (click)="toggleActivo(empleado.nunum_empleado_rr_hh, empleado.boactivo)"
+              [readonly]="true"
+            ></p-inputSwitch>
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              <button 
+                title="Modificar empleado" 
+                pButton 
+                pRipple 
+                icon="pi pi-pencil" 
+                class="p-button-rounded p-button-success p-mr-2"
+                [routerLink]="['/empleados/edicion-empleado', empleado.nunum_empleado_rr_hh]"
+              ></button>
+              <button 
+                title="Contratos del empleado" 
+                pButton 
+                pRipple 
+                icon="pi pi-file" 
+                class="p-button-rounded p-button-success p-mr-2"
+                [routerLink]="['/empleados/contratos', empleado.nunum_empleado_rr_hh]"
+              ></button>
+              <button 
+                title="Proyectos del empleado" 
+                pButton 
+                pRipple 
+                icon="pi pi-eye" 
+                class="p-button-rounded p-button-success p-mr-2"
+                (click)="mostrarProyectos(empleado.nunum_empleado_rr_hh)"
+              ></button>
+            </div>
+          </td>
         </tr>
-      </ng-template>
-      <ng-template pTemplate="summary">
-        <!--  <div class="p-d-flex p-ai-center p-jc-between">
-              In total there are {{products ? products.length : 0 }} products.
-          </div> -->
       </ng-template>
     </p-table>
   </div>
-
-
+  
 </div>
-
-<p-toast></p-toast>
-<p-confirmPopup></p-confirmPopup>

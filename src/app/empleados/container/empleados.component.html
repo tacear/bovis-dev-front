@@ -1,228 +1,98 @@
-<div class="content" style="margin: 2%">
-  <div class="d-flex justify-content-end">
-    <button
-      type="button"
+
+<p-toast></p-toast>
+
+<div class="main-container">
+
+  <h1>Personas</h1>
+
+  <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2">  
+    <button 
+      type="submit" 
       class="btn btn-info"
       routerLink="/empleados/registro-persona"
     >
       Nuevo
     </button>
-  </div>
-
-  <br />
-
-  <div class="busqueda" *ngIf="false">
-    <ng-container >
-      <div class="head-busqueda">
-        <p style="color: white">Parámetros de búsqueda</p>
+  </p-toolbar>
+  <p-table 
+    #tablaPrincipal
+    [value]="personas" 
+    [paginator]="true"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [rows]="10"
+    [globalFilterFields]="['chnombre_completo', 'chrfc']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex">
+          <span class="p-input-icon-left ml-auto">
+              <i class="pi pi-search"></i>
+              <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
+          </span>
       </div>
-      <br />
-      <div class="row">
-        <div class="col-6 relative">
-          <label for="">Apellido:</label>
-          <input
-            type="search"
-            class="form-control"
-            [(ngModel)]="filtroApellido"
-            placeholder="Ingrese Apellido Paterno ó Materno"
-          />
-        </div>
-
-        <div class="col-6" *ngIf="false"></div>
-        <div class="col-6 relative" *ngIf="false"></div>
-      </div>
-      <div class="d-flex justify-content-end">
-        <button
-          type="button"
-          class="btn btn-info"
-          routerLink="/empleados/registro-persona"
-        >
-          Buscar
-        </button>
-      </div>
-    </ng-container>
-    <br />
-
-    <br />
-    <div class="d-flex justify-content-end align-items-center pb-3">
-      <div class="p-1"></div>
-      <div class="d-flex justify-content-center align-items-center" *ngIf="false">
-        <span class="mr-2">Mostrar: </span>
-        <p-dropdown
-          [options]="[
-            { size: 10 },
-            { size: 20 },
-            { size: 30 },
-            { size: 50 },
-            { size: 100 }
-          ]"
-          optionLabel="size"
-          optionValue="size"
-          [(ngModel)]="size"
-        ></p-dropdown>
-      </div>
-    </div>
-    <br />
-    <div class="table-responsive" *ngIf="false">
-      <table class="table">
-        <thead>
-          <tr>
-            <th *ngFor="let h of header">{{ h }}</th>
-          </tr>
-        </thead>
-        <tbody *ngFor="let persona of listPersonas">
-          <tr>
-            <td>
-              {{ persona.nombre }} {{ persona.apPaterno }}
-              {{ persona.apMaterno }}
-            </td>
-            <td>{{ persona.rfc }}</td>
-            <td>{{ persona.fechaNacimiento | date : "dd/MM/yyyy" }}</td>
-            <td>{{ persona.email }}</td>
-
-            <td>{{ persona.telefono }}</td>
-            <td>{{ persona.celular }}</td>
-            <td>{{ persona.curp }}</td>
-            <td>
-              <p class="text-center">{{ persona.sexo }}</p>
-              </td>
-            <td>
-              <p class="text-center">{{ persona.tipoPersona }}</p>
-              </td>
-            <td>
-              <p class="text-center">{{ persona.edoCivil }}</p>
-             </td>
-            <td>
-              <p class="text-center">{{ persona.tipoSangre }}</p>
-             </td>
-            <ng-container>
-              <td *ngIf="persona.activo">Activo</td>
-              <td *ngIf="!persona.activo">Inactivo</td>
-            </ng-container>
-            <!-- <td>
-              <p-progressBar [value]="porcentaje"></p-progressBar>
-            </td> -->
-            <td>
-              <a [routerLink]="['/empleados/registro-persona', persona.idPersona]" pTooltip="Editar registro" tooltipPosition="left"
-               >
-               <i class="fas fa-edit"></i>
-              </a>
-            </td>
-            <td  *ngIf="false">
-              <!-- (click)="confirm($event, persona)" -->
-              <i
-                class="pi pi-trash c-del"
-                ngbTooltip="Eliminar registro"
-
-                pTooltip="Da clic para eliminar el registro capturado"
-                tooltipPosition="left"
-              ></i>
-            </td>
-            <td  *ngIf="false">
-              <!-- [routerLink]="['consulta', persona.id]" -->
-              <a
-                ngbTooltip="Consultar persona"
-
-              >
-                <i class="fas fa-eye"></i>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="d-flex justify-content-center align-items-center"></div>
-  </div>
-
-  <div class="card">
-    <p-toolbar styleClass="p-mb-4">
-      <ng-template pTemplate="left">
-        <p-button *ngIf="listPersonas.length > 0"
-          icon="pi pi-file-excel"
-          pTooltip="Exportar Excel"
-          styleClass="p-button-success f-2x"
-          (click)="exportJsonToExcel()">
-        </p-button>
-
-        <!--  <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button> -->
-      </ng-template>
-
-      <ng-template pTemplate="right">
-        <!--  <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="p-mr-2 p-d-inline-block"></p-fileUpload>
-          <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button> -->
-      </ng-template>
-    </p-toolbar>
-
-    <p-table #dt [value]="listPersonas" [rows]="10" [paginator]="true" [(selection)]="selectedRegistros"
-      selectionMode="single" [responsive]="true" [rowHover]="true" dataKey="id"
-      currentPageReportTemplate="Mostrando {first} de {last} de {totalRecords} elementos" [lazy]="false"
-      [scrollable]="true" [showCurrentPageReport]="true" [globalFilterFields]="['descripcion', 'id']"
-      [rowsPerPageOptions]="[10,25,50]" selectionMode="single">
-      <ng-template pTemplate="caption" *ngIf="false">
-         <div class="table-header">
-
-            <span class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-                 placeholder="Búsqueda por descripción" />
-            </span>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="id">Nombre <p-sortIcon field="id"></p-sortIcon></th>
-          <th pSortableColumn="rfc">RFC <p-sortIcon field="rfc"></p-sortIcon></th>
-          <th pSortableColumn="fechaNacimiento">Fecha de Nacimiento <p-sortIcon field="fechaNacimiento"></p-sortIcon></th>
-          <th pSortableColumn="email">Email <p-sortIcon field="email"></p-sortIcon></th>
-          <th pSortableColumn="telefono">Telefono <p-sortIcon field="telefono"></p-sortIcon></th>
-          <th pSortableColumn="celular">Celular <p-sortIcon field="celular"></p-sortIcon></th>
-          <th pSortableColumn="curp">Curp <p-sortIcon field="curp"></p-sortIcon></th>
-          <th pSortableColumn="sexo">Sexo <p-sortIcon field="sexo"></p-sortIcon></th>
-          <th pSortableColumn="tipoPersona">Tipo Persona <p-sortIcon field="tipoPersona"></p-sortIcon></th>
-          <th pSortableColumn="edoCivil">Edo. Civil <p-sortIcon field="edoCivil"></p-sortIcon></th>
-          <th pSortableColumn="tipoSangre">Tipo Sangre <p-sortIcon field="tipoSangre"></p-sortIcon></th>
-          <th pSortableColumn="activo">Estatus <p-sortIcon field="activo"></p-sortIcon></th>
-
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-elemento>
-        <tr>
-          <td>{{elemento.nombre}} {{elemento.apPaterno}} {{elemento.apMaterno}}</td>
-          <td>{{elemento.rfc}}</td>
-          <td>{{elemento.fechaNacimiento | date : "dd/MM/yyyy" }}</td>
-          <td>{{elemento.email}}</td>
-          <td>{{elemento.telefono}}</td>
-          <td>{{elemento.celular}}</td>
-          <td>{{elemento.curp}}</td>
-          <td>{{elemento.sexo}}</td>
-          <td>{{elemento.tipoPersona}}</td>
-          <td>{{elemento.edoCivil}}</td>
-          <td>{{elemento.tipoSangre}}</td>
-          <ng-container>
-            <td *ngIf="elemento.activo">Activo</td>
-            <td *ngIf="!elemento.activo">Inactivo</td>
-          </ng-container>
-          <!-- <td>
-            <p-tag severity="success" *ngIf="elemento.activo == 1">Activo</p-tag>
-            <p-tag severity="danger" *ngIf="elemento.activo == 0">Inactivo</p-tag>
-          </td> -->
-          <!-- <td>
-            <button title="txtEditar" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-              (click)="openDialog(elemento)"></button>
-            &nbsp;&nbsp; <button title="btnEliminar" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
-              (click)="eliminarRegistro(elemento)"></button>
-          </td> -->
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="summary">
-        <!--  <div class="p-d-flex p-ai-center p-jc-between">
-              In total there are {{products ? products.length : 0 }} products.
-          </div> -->
-      </ng-template>
-    </p-table>
-  </div>
-
-
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="chnombre"><div class="d-flex align-items-center">Nombre <p-sortIcon field="chnombre"></p-sortIcon></div></th>
+        <th pSortableColumn="chrfc"><div class="d-flex align-items-center">RFC <p-sortIcon field="chrfc"></p-sortIcon></div></th>
+        <th pSortableColumn="dtfecha_nacimiento"><div class="d-flex align-items-center">Fecha de Nacimiento <p-sortIcon field="dtfecha_nacimiento"></p-sortIcon></div></th>
+        <th pSortableColumn="chemail"><div class="d-flex align-items-center">Email <p-sortIcon field="chemail"></p-sortIcon></div></th>
+        <th pSortableColumn="chtelefono"><div class="d-flex align-items-center">Teléfono <p-sortIcon field="chtelefono"></p-sortIcon></div></th>
+        <th pSortableColumn="chcelular"><div class="d-flex align-items-center">Celular <p-sortIcon field="chcelular"></p-sortIcon></div></th>
+        <th pSortableColumn="chcurp"><div class="d-flex align-items-center">CURP <p-sortIcon field="chcurp"></p-sortIcon></div></th>
+        <th pSortableColumn="chsexo"><div class="d-flex align-items-center">Sexo <p-sortIcon field="chsexo"></p-sortIcon></div></th>
+        <th pSortableColumn="chtipo_persona"><div class="d-flex align-items-center">Tipo Persona <p-sortIcon field="chtipo_persona"></p-sortIcon></div></th>
+        <th pSortableColumn="chedo_civil"><div class="d-flex align-items-center">EdoCivil <p-sortIcon field="chedo_civil"></p-sortIcon></div></th>
+        <th pSortableColumn="chtipo_sangre"><div class="d-flex align-items-center">TipoSangre <p-sortIcon field="chtipo_sangre"></p-sortIcon></div></th>
+        <th pSortableColumn="boempleado"><div class="d-flex align-items-center">Es Empleado <p-sortIcon field="boempleado"></p-sortIcon></div></th>
+        <th class="text-center">Estatus</th>
+        <th class="text-center">Opciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-empleado>
+      <tr>
+        <td>
+          <a 
+            class="text-success font-bold"
+            [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]"
+          >
+            {{ empleado | fullName }}
+          </a>
+        </td>
+        <td>{{ empleado.chrfc }}</td>
+        <td>{{ empleado.dtfecha_nacimiento | date:'Y/MM/dd' }}</td>
+        <td>{{ empleado.chemail }}</td>
+        <td>{{ empleado.chtelefono }}</td>
+        <td>{{ empleado.chcelular }}</td>
+        <td>{{ empleado.chcurp }}</td>
+        <td>{{ empleado.chsexo }}</td>
+        <td>{{ empleado.chtipo_persona }}</td>
+        <td>{{ empleado.chedo_civil }}</td>
+        <td>{{ empleado.chtipo_sangre }}</td>
+        <td>{{ empleado.boempleado ? 'Sí' : 'No' }}</td>
+        <!--<td [ngClass]="{'text-danger': !empleado.boactivo, 'text-success': empleado.boactivo}">
+          {{ empleado.boactivo ? 'Activo' : 'Inactivo' }}
+        </td>-->
+        <td class="text-center">
+          <p-inputSwitch 
+            [ngModel]="empleado.boactivo"
+            (click)="toggleActivo(empleado.nukidpersona, empleado.boactivo)"
+            [readonly]="true"
+          ></p-inputSwitch>
+        </td>
+        <td class="text-center">
+          <button 
+            title="Modificar persona" 
+            pButton 
+            pRipple 
+            icon="pi pi-pencil" 
+            class="p-button-rounded p-button-success p-mr-2"
+            [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  
 </div>
-<p-toast></p-toast>
-<p-confirmPopup></p-confirmPopup>

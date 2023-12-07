@@ -1,23 +1,32 @@
-<div class="content" style="margin:2%">
+<div class="main-container">
 
 
   <div class="">
 
     <div class="formgroup-inline">
       <div class="field">
-        <label for="firstname2">Número de Proyecto:</label>
+        <label for="firstname2">Proyecto:</label>
         <br>
-        <p-inputNumber id="firstname2" mode="decimal" inputId="withoutgrouping" [useGrouping]="false"
-          [(ngModel)]="numProyecto" styleClass="input-styling"
-          placeholder="Ingresa el número de proyecto y presiona la tecla 'enter'" (keydown)="changeEnter($event)">
-        </p-inputNumber>
+        <p-dropdown 
+          id="id_proyecto" 
+          [options]="proyectos" 
+          (onChange)="changeEnter($event)"
+          placeholder="Seleccionar un proyecto" 
+          optionLabel="name" 
+          [showClear]="true"
+          [style]="{ width: '100%' }"
+          optionValue="code"
+          [filter]="true" 
+          filterBy="name"
+          [(ngModel)]="proyecto"
+        ></p-dropdown>
       </div>
       <div class="field" *ngIf="isLoadingGPM">
         <br>
         <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
       </div>
       <div class="field">
-        <label for="concepto">Seleccion de Facturas:</label>
+        <label for="concepto">Selección de Facturas:</label>
         <p-fileUpload #fileUpload mode="basic" [customUpload]="true" accept=".xml" (onSelect)="onBasicUpload($event)"
           [multiple]="true" [maxFileSize]="fileSizeMax" chooseLabel="Cargar XML" [disabled]="isXml"></p-fileUpload>
       </div>
@@ -27,11 +36,6 @@
       </div>
     </div>
     <div class="formgroup-inline">
-      <div class="field">
-        <label for="nombre">Nombre del Proyecto:</label>
-        <br>
-        <input id="disabled-input" class="form-control"  type="text" pInputText  [(ngModel)]="infoProyecto.nombre" [disabled]="true" />
-      </div>
       <div class="field">
         <br>
         <p-button *ngIf="isClear" icon="pi pi-refresh" (onClick)="clearFile()" label="Limpiar carga"></p-button>

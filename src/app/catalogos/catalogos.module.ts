@@ -33,12 +33,16 @@ import { ViaticosService } from './services/viaticos.service';
 import { TooltipModule } from 'primeng/tooltip';
 import { TagModule } from 'primeng/tag';
 import { CatalogosGeneralesComponent } from './components/catalogos-generales/catalogos-generales.component';
+import { RegistroComponent } from './components/clientes/registro/registro.component';
+import { PrincipalComponent } from './components/clientes/principal/principal.component';
 
 @NgModule({
   declarations: [
     CatalogosComponent,
     ViaticosComponent,
-    CatalogosGeneralesComponent
+    CatalogosGeneralesComponent,
+    RegistroComponent,
+    PrincipalComponent
   ],
   imports: [
     CommonModule,

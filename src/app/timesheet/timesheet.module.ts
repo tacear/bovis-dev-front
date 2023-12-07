@@ -1,30 +1,40 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { TimesheetRoutingModule } from './timesheet-routing.module';
-import { CargaHorasComponent } from './components/carga-horas/carga-horas.component';
-import { FormsModule } from '@angular/forms';
-import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { CheckboxModule } from 'primeng/checkbox';
+import { CargarHorasComponent } from './views/cargar-horas/cargar-horas.component';
+import { ConsultarComponent } from './views/consultar/consultar.component';
+import { PrimengModule } from '../shared/primeng.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import {TableModule} from 'primeng/table';
+import { ProyectoJoinPipe } from './pipes/proyecto-join.pipe';
+import { SummaryComponent } from './views/summary/summary.component';
+import { ModificarComponent } from './views/modificar/modificar.component';
+import { SumaPorcentajesPipe } from './pipes/suma-porcentajes.pipe';
+import { AgregarProyectoComponent } from './views/agregar-proyecto/agregar-proyecto.component';
+import { DiasTimesheetComponent } from './views/dias-timesheet/dias-timesheet.component';
+import { ModificarFeriadosComponent } from './components/modificar-feriados/modificar-feriados.component';
 
 
 @NgModule({
   declarations: [
-    CargaHorasComponent
+    CargarHorasComponent,
+    ConsultarComponent,
+    ProyectoJoinPipe,
+    SummaryComponent,
+    ModificarComponent,
+    SumaPorcentajesPipe,
+    AgregarProyectoComponent,
+    DiasTimesheetComponent,
+    ModificarFeriadosComponent
   ],
   imports: [
     CommonModule,
-    FormsModule,
     TimesheetRoutingModule,
-    DropdownModule,
-    CalendarModule,
-    CheckboxModule,
-    RadioButtonModule,
-    TableModule
-  ],
-  providers: [ConfirmationService, MessageService]
+    PrimengModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RadioButtonModule
+  ]
 })
 export class TimesheetModule { }

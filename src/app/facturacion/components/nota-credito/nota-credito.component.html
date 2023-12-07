@@ -5,7 +5,7 @@
     <div class="formgroup-inline">
 
       <div class="field">
-        <label for="concepto">Seleccion de Factruras:</label>
+        <label for="concepto">Selección de Facturas:</label>
         <p-fileUpload #fileUpload mode="basic" [customUpload]="true" accept=".xml" (onSelect)="onBasicUpload($event)"
           [multiple]="true" [maxFileSize]="fileSizeMax" chooseLabel="Cargar XML"></p-fileUpload>
       </div>

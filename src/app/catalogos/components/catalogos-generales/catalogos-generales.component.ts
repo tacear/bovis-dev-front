@@ -8,12 +8,12 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   templateUrl: './catalogos-generales.component.html',
   styleUrls: ['./catalogos-generales.component.scss'],
   styles: [`
-  :host ::ng-deep .p-dialog .product-image {
-      width: 150px;
-      margin: 0 auto 2rem auto;
-      display: block;
-  }
-`]
+    :host ::ng-deep .p-dialog .product-image {
+        width: 150px;
+        margin: 0 auto 2rem auto;
+        display: block;
+    }
+  `],
 })
 export class CatalogosGeneralesComponent implements OnInit {
   isDialog: boolean = false;
@@ -62,7 +62,7 @@ export class CatalogosGeneralesComponent implements OnInit {
     if (!this.isNuevo) {
       this.catalogosService.saveElement(this.catElement, this.nombreServicio).subscribe(data => {
         console.log(data);
-        if (data.success) {
+        if (data) {
 
           this.messageService.add({
             severity: "success",
@@ -78,7 +78,7 @@ export class CatalogosGeneralesComponent implements OnInit {
       this.getPosicion();
       this.catalogosService.updateElement(this.catElement, this.nombreServicio).subscribe(data => {
        // console.log(data);
-        if (data.success) {
+        if (data) {
           this.messageService.add({
             severity: "success",
             summary: "Editar",
@@ -103,7 +103,7 @@ export class CatalogosGeneralesComponent implements OnInit {
         this.catalogosService.deleteElement(registro, this.nombreServicio).subscribe(data => {
           //console.log(data);
           if (data.success) {
-            this.messageService.add({ severity: 'success', summary: 'Eliminación', detail: 'Registro eliminado correctamente', life: 3000 });
+            this.messageService.add({ severity: 'success', summary: 'Eliminación', detail: 'Registro eliminado correctamente.', life: 3000 });
             this.getDataCatalogo();
           }
         })
@@ -124,7 +124,7 @@ export class CatalogosGeneralesComponent implements OnInit {
       top: 0,
       left: 0,
       behavior: 'smooth'
-});
+    });
   }
 
 }
