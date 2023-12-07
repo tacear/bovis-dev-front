@@ -1,0 +1,220 @@
+<div class="content" style="margin: 2%">
+  <button type="button" class="btn btn-info" [disabled]="true">
+    Guardar</button>&nbsp;&nbsp;
+  <button type="button" class="btn btn-info" [disabled]="true">
+    Clear data</button>&nbsp;&nbsp;
+  <button type="button" class="btn btn-info" routerLink="/">
+    Regresar
+  </button>
+
+  <br />
+  <br />
+
+  <p-accordion [activeIndex]="0">
+    <p-accordionTab header="Informacion del Proyecto">
+
+      <div class="">
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Número de Proyecto:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Nombre del Proyecto:</label>
+            <input type="text" class="form-control" maxlength="100" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Sector:</label>
+            <p-dropdown optionLabel="name" [options]="catSectores" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Código Postal:</label>
+            <input type="number" class="form-control" maxlength="5" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Ciudad:</label>
+            <input type="text" class="form-control" maxlength="100" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Pais:</label>
+            <p-dropdown optionLabel="name" [options]="catPaises"  [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Nombre del Cliente:</label>
+            <p-dropdown optionLabel="name" [options]="catClientes" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+          <div class="col-sm">
+            <label for="email">Alcance Bovis:</label>
+            <input type="text" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Estado del Proyecto:</label>
+            <p-dropdown optionLabel="name" [options]="catEstatusProyecto" [showClear]="true" [style]="{ width: '100%' }"
+            [disabled]="isConsulta"></p-dropdown>
+          </div>
+        </div>
+
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+  <br>
+
+  <p-accordion [activeIndex]="0">
+    <p-accordionTab header="Personal Clave">
+
+      <div class="">
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Director Ejecutivo:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Responsable de proyecto para Preconstrucción:</label>
+            <p-dropdown optionLabel="name" [options]="catEmpleados" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+          <div class="col-sm">
+            <label for="email">Responsable de proyecto para Construcción:</label>
+            <p-dropdown optionLabel="name" [options]="catEmpleados" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Responsable de proyecto para EHS:</label>
+            <p-dropdown optionLabel="name" [options]="catEmpleados" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+          <div class="col-sm">
+            <label for="email">Responsable de proyecto para Supervision campo:</label>
+            <p-dropdown optionLabel="name" [options]="catEmpleados" [showClear]="true" [style]="{ width: '100%' }"
+              [disabled]="isConsulta"></p-dropdown>
+          </div>
+          <div class="col-sm">
+
+          </div>
+        </div>
+
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+  <br>
+
+  <p-accordion [activeIndex]="0">
+    <p-accordionTab header="Estimados de Construcción">
+
+      <div class="">
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Costo de construcción:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="true" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Area del proyecto:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="true" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Costo promedio por m2:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="isConsulta" />
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Inicio del proyecto:</label>
+            <p-calendar [showIcon]="true" [style]="{
+            width: '100%',
+            display: 'inline-flex',
+            height: '39px'
+          }" dateFormat="dd/mm/yy" [disabled]="isConsulta"></p-calendar>
+          </div>
+          <div class="col-sm">
+            <label for="email">Fin del proyecto:</label>
+            <p-calendar [showIcon]="true" [style]="{
+            width: '100%',
+            display: 'inline-flex',
+            height: '39px'
+          }" dateFormat="dd/mm/yy" [disabled]="isConsulta"></p-calendar>
+          </div>
+          <div class="col-sm">
+            <label for="email">Total en meses:</label>
+            <input type="number" id="typeNumber" class="form-control" [disabled]="true" />
+          </div>
+        </div>
+
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+  <br />
+
+  <p-accordion [activeIndex]="0">
+    <p-accordionTab header="Contacto">
+
+      <div class="">
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Nombre del Contacto:</label>
+            <input type="text" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Posicion del Contacto:</label>
+            <input type="text" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+            <label for="email">Telefono del Contacto:</label>
+            <input type="text" class="form-control" [disabled]="isConsulta" />
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Correo del Contacto:</label>
+            <input type="text" class="form-control" [disabled]="isConsulta" />
+          </div>
+          <div class="col-sm">
+
+          </div>
+          <div class="col-sm">
+
+          </div>
+        </div>
+
+      </div>
+
+    </p-accordionTab>
+  </p-accordion>
+
+
+  <p-toast></p-toast>
+
+</div>
