@@ -1,0 +1,13 @@
+<app-header [currentModule]="currentModule"></app-header>
+
+<div class="wrapper">
+
+  <app-menu-sidebar *ngIf="loginDisplay" [accesos]="roles" (nameModule)="onEmitter($event)"></app-menu-sidebar>
+
+  <div class="content">
+
+      <router-outlet></router-outlet>
+
+  </div>
+</div>
+
