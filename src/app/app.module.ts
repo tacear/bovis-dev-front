@@ -29,7 +29,7 @@ export function MSALInstanceFactory(): IPublicClientApplication {
   return new PublicClientApplication({
     auth: {
       clientId: clientID,
-      authority: urlAuthority,
+      // authority: urlAuthority,
       redirectUri: uriRedirect,
       postLogoutRedirectUri: uriRedirect,
 
