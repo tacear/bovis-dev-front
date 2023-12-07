@@ -1,0 +1,127 @@
+<div class="content" style="margin:2%">
+  <div>
+    <button type="button" class="btn btn-info" (click)="guardar()"
+      [disabled]="isConsultaButons">Guardar</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-info" (click)="clearData()" [disabled]="isConsultaButons">Clear
+      data</button>&nbsp;&nbsp;
+    <button type="button" class="btn btn-info" routerLink="/empleados/persona">
+      Regresar
+
+    </button>
+
+  </div>
+
+  <br>
+  <br>
+
+  <p-accordion [activeIndex]="0">
+    <p-accordionTab header="Datos Generales">
+      <div class="">
+        <br>
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Nombre:</label>
+            <input type="text" class="form-control" maxlength="50" [(ngModel)]="persona.nombre" [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+            <label for="email">Apellido Paterno:</label>
+            <input type="text" class="form-control" maxlength="50" [(ngModel)]="persona.apPaterno"
+              [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+            <label for="email">Apellido Materno:</label>
+            <input type="text" class="form-control" maxlength="50" [(ngModel)]="persona.apMaterno"
+              [disabled]="isConsulta">
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Estado Civil:</label>
+            <p-dropdown [options]="catEstadoCivil" [(ngModel)]="sEstadoCivil" (onChange)="onChangeComboEdoCivil($event)"
+              placeholder="Seleccionar un estado civil" optionLabel="name" [showClear]="true"
+              [style]="{ width: '100%' }"></p-dropdown>
+          </div>
+          <div class="col-sm">
+            <label for="email">Fecha de Nacimiento:</label>
+            <div class="col-12">
+              <p-calendar [(ngModel)]="fechaNacimiento" [showIcon]="true"
+                [style]="{'width':'100%', 'display': 'inline-flex','height':'39px'}" dateFormat="dd/mm/yy"
+                [disabled]="isConsulta"></p-calendar>
+            </div>
+          </div>
+          <div class="col-sm">
+            <label for="email">Tipo de Sangre:</label>
+            <div class="form-outline" style="width: 100%;">
+              <p-dropdown [options]="catTipoSangre" [(ngModel)]="sTipoSangre" (onChange)="onChangeComboTipoSangre($event)"
+                placeholder="Seleccione un tipo de sangre" optionLabel="name" [showClear]="true"
+                [style]="{ width: '100%' }"></p-dropdown>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Sexo:</label>
+            <p-dropdown [options]="catSexo" [(ngModel)]="sSexo" (onChange)="onChangeComboSexo($event)"
+              placeholder="Seleccionar una opción"  optionLabel="name" [showClear]="true"
+              [style]="{ width: '100%' }"></p-dropdown>
+          </div>
+          <div class="col-sm">
+            <label for="email">RFC:</label>
+            <input type="text" class="form-control" maxlength="15" [(ngModel)]="persona.rfc" [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+            <label for="email">Tipo de persona:</label>
+            <p-dropdown [options]="catTipoPersona" [(ngModel)]="sTipoPersona" (onChange)="onChangeComboTipoPersona($event)"
+              placeholder="Seleccione un tipo de persona" optionLabel="name" [showClear]="true"
+              [style]="{ width: '100%' }"></p-dropdown>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder=""
+              maxlength="60" [(ngModel)]="persona.email" [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+            <label for="email">Telefono:</label>
+            <input type="text" class="form-control" maxlength="20" [(ngModel)]="persona.telefono"
+              [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+            <label for="email">Celular:</label>
+            <input type="text" class="form-control" maxlength="20" [(ngModel)]="persona.celular"
+              [disabled]="isConsulta">
+          </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+          <div class="col-sm">
+            <label for="email">Curp:</label>
+            <input type="text" class="form-control" maxlength="18" [(ngModel)]="persona.curp" [disabled]="isConsulta">
+          </div>
+          <div class="col-sm">
+
+          </div>
+          <div class="col-sm">
+
+          </div>
+        </div>
+      </div>
+
+      <br>
+
+      <ng-container *ngIf="isCamposRequeridos">
+        <p-messages [(value)]="messages1" [enableService]="false" [closable]="false"></p-messages>
+      </ng-container>
+
+    </p-accordionTab>
+  </p-accordion>
+  <p-toast></p-toast>
+</div>
