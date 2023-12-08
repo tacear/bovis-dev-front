@@ -2,13 +2,14 @@ import { Component, OnInit, inject } from '@angular/core';
 import { LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
 import { CieService } from '../../services/cie.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { CALENDAR, TITLES, cieHeaders, cieHeadersFieldsLazy } from 'src/utils/constants';
+import { CALENDAR, EXCEL_EXTENSION, TITLES, cieHeaders, cieHeadersFieldsLazy } from 'src/utils/constants';
 import { CieRegistro } from '../../models/cie.models';
 import { finalize, forkJoin } from 'rxjs';
 import { Opcion } from 'src/models/general.model';
 import { format } from 'date-fns';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-resultado-busqueda',
@@ -163,6 +164,45 @@ export class ResultadoBusquedaComponent implements OnInit {
       },
       error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
     })
+  }
+
+  exportJsonToExcel(fileName: string = 'CIE'): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet( [] );
+
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 
+        'Detalle': worksheet 
+      },
+      SheetNames: ['Detalle'],
+    };
+    const jsonData = this.data.map(registro => ({
+      nombre_cuenta:      registro.nombreCuenta,
+      cuenta:             registro.cuenta,
+      tipo_poliza:        registro.tipoPoliza,
+      numero:             registro.numero,
+      fecha:              registro.fecha,
+      mes:                registro.mes,
+      concepto:           registro.concepto,
+      centro_costos:      registro.centroCostos,
+      proyectos:          registro.proyectos,
+      saldo_inicial:      registro.saldoInicial,
+      debe:               registro.debe,
+      haber:              registro.haber,
+      movimiento:         registro.movimiento,
+      empresa:            registro.empresa,
+      num_proyecto:       registro.numProyecto,
+      tipo_proyecto:      registro.tipoProyecto,
+      edo_resultados:     registro.edoResultados,
+      responsable:        registro.responsable,
+      tipo_cuenta:        registro.tipoCuenta,
+      tipo_py:            registro.tipoPy,
+      clasificacion_py:   registro.clasificacionPy
+    }))
+    XLSX.utils.sheet_add_json(worksheet, jsonData, { origin: 'A2', skipHeader: true })
+    XLSX.utils.sheet_add_aoa(worksheet, [this.cieHeadersLocal]);
+
+    // save to file
+    XLSX.writeFile(workbook, `${fileName + '_' + Date.now()}${EXCEL_EXTENSION}`);
   }
 
   filtrar() {
