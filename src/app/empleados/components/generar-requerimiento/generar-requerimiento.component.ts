@@ -52,7 +52,7 @@ export class GenerarRequerimientoComponent implements OnInit {
     disponibilidadViajar: ['NO', [Validators.required]],
     aniosExperiencia:     ['', [Validators.required]],
     nivelIngles:          [null],
-    comentarios:          ['', [Validators.required]],
+    comentarios:          [''],
   })
 
   
