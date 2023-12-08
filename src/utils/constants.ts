@@ -35,10 +35,10 @@ export const cieHeaders = [
     'MOVIMIENTO',
     'EMPRESA',
     'NUM PROYECTO',
-    'UNIDAD',
+    'TIPO',
     'EDO DE RESULTADOS',
     'RESPONSABLE',
-    'TIPO',
+    'UNIDAD',
     'TIPO PY',
     'CLASIFICACION PY'
 ]
