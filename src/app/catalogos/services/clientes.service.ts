@@ -26,6 +26,6 @@ export class ClientesService {
   }
 
   eliminarCliente(id: number) {
-    return this.http.delete<GenericResponse>(`${this.baseUrl}api/Catalogo/Cliente/${id}`)
+    return this.http.delete<GenericResponse>(`${this.baseUrl}api/Catalogo/Cliente/Borrar/${id}`)
   }
 }
