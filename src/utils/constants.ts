@@ -67,6 +67,30 @@ export const cieHeadersFields = {
   'CLASIFICACION PY': 'clasificacion_py'
 }
 
+export const cieHeadersFieldsLazy = {
+  'NOMBRE CUENTA': 'nombre_cuenta',
+  'CUENTA': 'cuenta',
+  'TIPO POLIZA': 'tipo_poliza',
+  'NUMERO': 'numero',
+  'FECHA': 'fecha',
+  'MES': 'mes',
+  'CONCEPTO': 'concepto',
+  'CENTRO DE COSTOS': 'centro_costos',
+  'PROYECTOS': 'proyectos',
+  'SALDO INICIAL': 'saldo_inicial',
+  'DEBE': 'debe',
+  'HABER': 'haber',
+  'MOVIMIENTO': 'movimiento',
+  'EMPRESA': 'empresa',
+  'NUM PROYECTO': 'num_proyecto',
+  'TIPO': 'tipo_proyecto',
+  'EDO DE RESULTADOS': 'edo_resultados',
+  'RESPONSABLE': 'responsable',
+  'UNIDAD': 'tipo_cuenta',
+  'TIPO PY': 'tipo_py',
+  'CLASIFICACION PY': 'clasificacion_py'
+}
+
 export const EXCEL_EXTENSION = '.xlsx';
 
 export const PERCENTAGE_FORMAT = '0.00%'

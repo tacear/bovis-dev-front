@@ -76,7 +76,7 @@
       <ng-template pTemplate="header">
           <tr>
               <th *ngFor="let header of cieHeadersLocal" [pSortableColumn]="cieHeadersFieldsLocal[header]">
-                <div class="d-flex align-items-center">{{cieHeadersFieldsLocal[header]}}<p-sortIcon [field]="cieHeadersFieldsLocal[header]"></p-sortIcon></div>
+                <div class="d-flex align-items-center">{{header}}<p-sortIcon [field]="cieHeadersFieldsLocal[header]"></p-sortIcon></div>
                 <!-- {{header}} -->
               </th>
           </tr>

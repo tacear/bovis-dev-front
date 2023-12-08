@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
 import { CieService } from '../../services/cie.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { CALENDAR, TITLES, cieHeaders, cieHeadersFields } from 'src/utils/constants';
+import { CALENDAR, TITLES, cieHeaders, cieHeadersFieldsLazy } from 'src/utils/constants';
 import { CieRegistro } from '../../models/cie.models';
 import { finalize, forkJoin } from 'rxjs';
 import { Opcion } from 'src/models/general.model';
@@ -28,7 +28,7 @@ export class ResultadoBusquedaComponent implements OnInit {
   data: CieRegistro[] = []
 
   cieHeadersLocal:        string[] = cieHeaders
-  cieHeadersFieldsLocal:  any = cieHeadersFields
+  cieHeadersFieldsLocal:  any = cieHeadersFieldsLazy
   conceptos:              Opcion[]
   cuentas:                Opcion[]
   empresas:               Opcion[]
@@ -88,10 +88,10 @@ export class ResultadoBusquedaComponent implements OnInit {
   
       this.loading = true
   
-      let mes     = 0
-      let anio    = 0
-      let mesFin  = 0
-      let anioFin = 0
+      let mes     = null
+      let anio    = null
+      let mesFin  = null
+      let anioFin = null
   
       if(this.fechas && this.fechas.length > 0) {
         if(this.fechas[0]) {
@@ -105,18 +105,20 @@ export class ResultadoBusquedaComponent implements OnInit {
       }
       
       this.cieService.getRegistros(
-          this.cuenta || '-', 
+          this.cuenta, 
           mes,
           anio,
           mesFin,
           anioFin,
-          this.concepto || '-',
-          this.empresa || '-',
-          this.numProyecto || 0,
-          this.responsable || '-',
-          this.clasificacionPY || '-',
+          this.concepto,
+          this.empresa,
+          this.numProyecto,
+          this.responsable,
+          this.clasificacionPY,
           page, 
-          this.noRegistros
+          this.noRegistros,
+          event.sortField || null,
+          event.sortOrder == 1 ? 'ASC' : 'DESC'
         )
         .pipe(finalize(() => this.loading = false))
         .subscribe({
