@@ -123,11 +123,13 @@
             [rows]="noRegistros"
             [loading]="loading"
             paginatorPosition="both"
+            (onLazyLoad)="loadData($event)"
         >
         <ng-template pTemplate="header">
             <tr>
-                <th *ngFor="let header of cieHeadersLocal">
-                    {{header}}
+                <th *ngFor="let header of cieHeadersLocal" [pSortableColumn]="cieHeadersFieldsLocal[header]">
+                  <div class="d-flex align-items-center">{{cieHeadersFieldsLocal[header]}}<p-sortIcon [field]="cieHeadersFieldsLocal[header]"></p-sortIcon></div>
+                  <!-- {{header}} -->
                 </th>
                 <th class="text-center">Opciones</th>
             </tr>

@@ -65,6 +65,7 @@ export class IpComponent implements OnInit {
   ngOnInit(): void {
     this.poblarCombos();
     this.getConfigCalendar();
+    this.pcsService.cambiarEstadoBotonNuevo(true)
     this.catalogosService.obtenerParametros()
       .subscribe(params => {
         console.log(params)

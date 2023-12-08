@@ -73,6 +73,8 @@ export class StaffingPlanComponent implements OnInit {
 
   ngOnInit(): void {
     
+    this.pcsService.cambiarEstadoBotonNuevo(false)
+
     this.pcsService.obtenerIdProyecto()
       .subscribe(numProyecto => {
         this.proyectoSeleccionado = true

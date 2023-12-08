@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { LazyLoadEvent, MessageService, PrimeNGConfig } from 'primeng/api';
 import { CieService } from '../../services/cie.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { CALENDAR, TITLES, cieHeaders } from 'src/utils/constants';
+import { CALENDAR, TITLES, cieHeaders, cieHeadersFields } from 'src/utils/constants';
 import { CieRegistro } from '../../models/cie.models';
 import { finalize, forkJoin } from 'rxjs';
 import { Opcion } from 'src/models/general.model';
@@ -27,13 +27,14 @@ export class ResultadoBusquedaComponent implements OnInit {
 
   data: CieRegistro[] = []
 
-  cieHeadersLocal:    string[] = cieHeaders
-  conceptos:          Opcion[]
-  cuentas:            Opcion[]
-  empresas:           Opcion[]
-  numsProyecto:       Opcion[]
-  responsables:       Opcion[]
-  clasificacionesPY:  Opcion[]
+  cieHeadersLocal:        string[] = cieHeaders
+  cieHeadersFieldsLocal:  any = cieHeadersFields
+  conceptos:              Opcion[]
+  cuentas:                Opcion[]
+  empresas:               Opcion[]
+  numsProyecto:           Opcion[]
+  responsables:           Opcion[]
+  clasificacionesPY:      Opcion[]
 
   concepto:         string
   cuenta:           string
@@ -42,6 +43,8 @@ export class ResultadoBusquedaComponent implements OnInit {
   responsable:      string
   clasificacionPY:  string
   fechas:           Date[]
+
+  firstLoading:     boolean = true
 
   noRegistros = 10
   totalRegistros = 0
@@ -76,54 +79,61 @@ export class ResultadoBusquedaComponent implements OnInit {
   }
 
   loadData(event: LazyLoadEvent) {
-    this.noRegistros = event.rows
-    const page = (event.first / this.noRegistros) + 1;
+    if(!this.firstLoading) {
 
-    this.loading = true
-
-    let mes     = 0
-    let anio    = 0
-    let mesFin  = 0
-    let anioFin = 0
-
-    if(this.fechas && this.fechas.length > 0) {
-      if(this.fechas[0]) {
-        mes   = +format(this.fechas[0], 'M')
-        anio  = +format(this.fechas[0], 'Y')
+      this.noRegistros = event.rows
+      const page = (event.first / this.noRegistros) + 1;
+      
+      console.log(event);
+  
+      this.loading = true
+  
+      let mes     = 0
+      let anio    = 0
+      let mesFin  = 0
+      let anioFin = 0
+  
+      if(this.fechas && this.fechas.length > 0) {
+        if(this.fechas[0]) {
+          mes   = +format(this.fechas[0], 'M')
+          anio  = +format(this.fechas[0], 'Y')
+        }
+        if(this.fechas[1]) {
+          mesFin   = +format(this.fechas[1], 'M')
+          anioFin  = +format(this.fechas[1], 'Y')
+        }
       }
-      if(this.fechas[1]) {
-        mesFin   = +format(this.fechas[1], 'M')
-        anioFin  = +format(this.fechas[1], 'Y')
-      }
+      
+      this.cieService.getRegistros(
+          this.cuenta || '-', 
+          mes,
+          anio,
+          mesFin,
+          anioFin,
+          this.concepto || '-',
+          this.empresa || '-',
+          this.numProyecto || 0,
+          this.responsable || '-',
+          this.clasificacionPY || '-',
+          page, 
+          this.noRegistros
+        )
+        .pipe(finalize(() => this.loading = false))
+        .subscribe({
+          next: ({data}) => {
+            this.totalRegistros = data.totalRegistros
+            this.data = data.registros
+          },
+          error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+        })
+  
+      // this.dataService.getData(page, this.pageSize).subscribe(response => {
+      //   this.data = response.data; // Assuming API response contains data field with items
+      //   this.totalRecords = response.totalRecords; // Assuming API response contains totalRecords field
+      // });
+    } else {
+      this.firstLoading = false
     }
-    
-    this.cieService.getRegistros(
-        this.cuenta || '-', 
-        mes,
-        anio,
-        mesFin,
-        anioFin,
-        this.concepto || '-',
-        this.empresa || '-',
-        this.numProyecto || 0,
-        this.responsable || '-',
-        this.clasificacionPY || '-',
-        page, 
-        this.noRegistros
-      )
-      .pipe(finalize(() => this.loading = false))
-      .subscribe({
-        next: ({data}) => {
-          this.totalRegistros = data.totalRegistros
-          this.data = data.registros
-        },
-        error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
-      })
-
-    // this.dataService.getData(page, this.pageSize).subscribe(response => {
-    //   this.data = response.data; // Assuming API response contains data field with items
-    //   this.totalRecords = response.totalRecords; // Assuming API response contains totalRecords field
-    // });
   }
 
   cargarCatalogos() {

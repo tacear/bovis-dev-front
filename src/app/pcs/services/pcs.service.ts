@@ -12,11 +12,21 @@ export class PcsService {
 
   baseUrl = environment.urlApiBovis;
 
+  _botonNuevo: boolean = false
+
   http = inject(HttpClient)
 
   private idProyectoObject = new Subject<number>()
 
   constructor() { }
+  
+  get botonNuevo() {
+    return this._botonNuevo
+  }
+  
+  cambiarEstadoBotonNuevo(estado: boolean) {
+    Promise.resolve().then(() => this._botonNuevo = estado)
+  }
 
   enviarIdProyecto(data: number) {
     this.idProyectoObject.next(data)
