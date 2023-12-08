@@ -68,27 +68,27 @@ export const cieHeadersFields = {
 }
 
 export const cieHeadersFieldsLazy = {
-  'NOMBRE CUENTA': 'nombre_cuenta',
-  'CUENTA': 'cuenta',
-  'TIPO POLIZA': 'tipo_poliza',
-  'NUMERO': 'numero',
-  'FECHA': 'fecha',
-  'MES': 'mes',
-  'CONCEPTO': 'concepto',
-  'CENTRO DE COSTOS': 'centro_costos',
-  'PROYECTOS': 'proyectos',
-  'SALDO INICIAL': 'saldo_inicial',
-  'DEBE': 'debe',
-  'HABER': 'haber',
-  'MOVIMIENTO': 'movimiento',
-  'EMPRESA': 'empresa',
-  'NUM PROYECTO': 'num_proyecto',
-  'TIPO': 'tipo_proyecto',
-  'EDO DE RESULTADOS': 'edo_resultados',
-  'RESPONSABLE': 'responsable',
-  'UNIDAD': 'tipo_cuenta',
-  'TIPO PY': 'tipo_py',
-  'CLASIFICACION PY': 'clasificacion_py'
+  'NOMBRE CUENTA':      'NombreCuenta',
+  'CUENTA':             'Cuenta',
+  'TIPO POLIZA':        'TipoPoliza',
+  'NUMERO':             'Numero',
+  'FECHA':              'Fecha',
+  'MES':                'Mes',
+  'CONCEPTO':           'Concepto',
+  'CENTRO DE COSTOS':   'CentroCostos',
+  'PROYECTOS':          'Proyectos',
+  'SALDO INICIAL':      'SaldoInicial',
+  'DEBE':               'Debe',
+  'HABER':              'Haber',
+  'MOVIMIENTO':         'Movimiento',
+  'EMPRESA':            'Empresa',
+  'NUM PROYECTO':       'NumProyecto',
+  'TIPO':               'TipoProyecto',
+  'EDO DE RESULTADOS':  'EdoResultados',
+  'RESPONSABLE':        'Responsable',
+  'UNIDAD':             'TipoCuenta',
+  'TIPO PY':            'TipoPy',
+  'CLASIFICACION PY':   'ClasificacionPy'
 }
 
 export const EXCEL_EXTENSION = '.xlsx';

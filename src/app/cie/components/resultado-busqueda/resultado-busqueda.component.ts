@@ -84,8 +84,6 @@ export class ResultadoBusquedaComponent implements OnInit {
 
       this.noRegistros = event.rows
       const page = (event.first / this.noRegistros) + 1;
-      
-      console.log(event);
   
       this.loading = true
   
