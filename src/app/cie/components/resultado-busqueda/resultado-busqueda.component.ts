@@ -156,6 +156,16 @@ export class ResultadoBusquedaComponent implements OnInit {
   filtrar() {
     this.loadData({ first: 0, rows: this.noRegistros })
   }
+
+  limpiar() {
+    this.cuenta = null
+    this.fechas = []
+    this.concepto = null
+    this.empresa = null
+    this.numProyecto = null
+    this.responsable = null
+    this.clasificacionPY = null
+  }
   
   getConfigCalendar() {
     this.config.setTranslation({

@@ -14,7 +14,6 @@
               dateFormat="m/yy" 
               [readonlyInput]="true"
               [(ngModel)]="fechas" 
-              (onClose)="filtrar()"
               [style]="{width: '100%'}"
               placeholder="Seleccionar un mes..."
               [showButtonBar]="true"
@@ -29,7 +28,6 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="cuenta"
                 [filter]="true" 
                 filterBy="name"
@@ -44,10 +42,10 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="concepto"
                 [filter]="true" 
                 filterBy="name"
+                appendTo="body"
             ></p-dropdown>
         </div>
         <div class="col-4">
@@ -59,7 +57,6 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="empresa"
                 [filter]="true" 
                 filterBy="name"
@@ -74,7 +71,6 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="numProyecto"
                 [filter]="true" 
                 filterBy="name"
@@ -89,7 +85,6 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="responsable"
                 [filter]="true" 
                 filterBy="name"
@@ -104,11 +99,14 @@
                 [showClear]="true"
                 [style]="{ width: '100%' }"
                 optionValue="code"
-                (onChange)="filtrar()"
                 [(ngModel)]="clasificacionPY"
                 [filter]="true" 
                 filterBy="name"
             ></p-dropdown>
+        </div>
+        <div class="col-12 d-flex justify-content-center align-items-center gap-2">
+            <button type="button" class="btn btn-info" (click)="filtrar()">Buscar</button>
+            <button type="button" class="btn btn-info" (click)="limpiar()">Limpiar filtros</button>
         </div>
     </div>
 
