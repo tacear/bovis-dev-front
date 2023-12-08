@@ -92,6 +92,14 @@ export class ConsultarComponent implements AfterViewInit {
     })
   }
 
+  limpiar() {
+    this.idEmpleado = null
+    this.idProyecto = null
+    this.idUnidad   = null
+    this.idEmpresa  = null
+    this.mes        = null
+  }
+
   cambiarParticipacion(timesheet: Timesheet, idTimesheetProyecto: number, event: any) {
 
     const tsIndex = this.timesheets.findIndex(ts => ts.id === timesheet.id)
