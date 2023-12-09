@@ -8,6 +8,9 @@ import { TITLES, errorsArray } from 'src/utils/constants';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { finalize } from 'rxjs';
 import { format } from 'date-fns';
+import { Proyecto } from '../../models/pcs.model';
+import { Opcion } from 'src/models/general.model';
+import { CieService } from 'src/app/cie/services/cie.service';
 
 @Component({
   selector: 'app-ip',
@@ -30,16 +33,20 @@ export class IpComponent implements OnInit {
   listCatClientes: Array<ICatalogoCliente> = [];
   listCatEstatusProyecto: Array<ICatalogo> = [];
   listEmpleados: Array<IEmpleadoNew> = [];
+  empresas: Opcion[] = []
+
+  proyecto: Proyecto  = null
+  cargando: boolean   = true
 
   form = this.fb.group({
-      num_proyecto:                   [null, [Validators.required]],
-      nombre_proyecto:                [null, [Validators.required]],
-      alcance:                        [null, [Validators.required]],
-      codigo_postal:                  [null, [Validators.required]],
-      ciudad:                         [null, [Validators.required]],
-      id_pais:                        [null, [Validators.required]],
-      id_estatus:                     [null, [Validators.required]],
-      id_sector:                      [null, [Validators.required]],
+      num_proyecto:                   ['', [Validators.required]],
+      nombre_proyecto:                ['', [Validators.required]],
+      alcance:                        ['', [Validators.required]],
+      codigo_postal:                  ['', [Validators.required]],
+      ciudad:                         ['', [Validators.required]],
+      id_pais:                        ['', [Validators.required]],
+      id_estatus:                     ['', [Validators.required]],
+      id_sector:                      ['', [Validators.required]],
       id_tipo_proyecto:               [null],
       id_responsable_preconstruccion: [null],
       id_responsable_construccion:    [null],
@@ -47,10 +54,10 @@ export class IpComponent implements OnInit {
       id_responsable_supervisor:      [null],
       id_cliente:                     [null],
       id_empresa:                     [null],
-      id_director_ejecutivo:          [null, [Validators.required]],
+      id_director_ejecutivo:          ['', [Validators.required]],
       costo_promedio_m2:              [null],
-      fecha_inicio:                   [null, [Validators.required]],
-      fecha_fin:                      [null, [Validators.required]],
+      fecha_inicio:                   ['', [Validators.required]],
+      fecha_fin:                      ['', [Validators.required]],
       // total_meses, Validators.required
       // contacto_nombre, Validators.required
       // contacto_posicion, Validators.required
@@ -58,7 +65,7 @@ export class IpComponent implements OnInit {
       // contacto_correo, Validators.required
   })
 
-  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService) { }
+  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService) { }
 
   catalogosService = inject(CatalogosService)
   
@@ -68,7 +75,58 @@ export class IpComponent implements OnInit {
     this.pcsService.cambiarEstadoBotonNuevo(true)
     this.catalogosService.obtenerParametros()
       .subscribe(params => {
-        console.log(params)
+        if(!params.proyecto) {
+          this.proyecto = null
+          this.cargando = false
+          this.form.reset()
+        }
+      })
+    
+    this.pcsService.obtenerIdProyecto()
+      .subscribe(numProyecto => {
+        // this.proyectoSeleccionado = true
+        // this.form.reset()
+        // this.etapas.clear()
+        if(numProyecto) {
+          // this.sharedService.cambiarEstado(true)
+          // this.cargando = true
+          this.pcsService.obtenerProyectoPorId(numProyecto)
+            .pipe(finalize(() => {
+              // this.sharedService.cambiarEstado(false)
+              this.cargando = false
+            }))
+            .subscribe({
+              next: ({data}) => {
+                if(data.length >= 0) {
+                  const [proyectoData] = data
+                  this.form.patchValue({
+                    num_proyecto:                   proyectoData.nunum_proyecto.toString(),
+                    nombre_proyecto:                proyectoData.chproyecto.toString(),
+                    alcance:                        proyectoData.chalcance.toString(),
+                    codigo_postal:                  proyectoData.chcp.toString(),
+                    ciudad:                         proyectoData.chciudad.toString(),
+                    id_pais:                        proyectoData.nukidpais.toString(),
+                    id_estatus:                     proyectoData.nukidestatus.toString(),
+                    id_sector:                      proyectoData.nukidsector.toString(),
+                    id_tipo_proyecto:               proyectoData.nukidtipo_proyecto,
+                    id_responsable_preconstruccion: proyectoData.nukidresponsable_preconstruccion,
+                    id_responsable_construccion:    proyectoData.nukidresponsable_construccion,
+                    id_responsable_ehs:             proyectoData.nukidresponsable_ehs,
+                    id_responsable_supervisor:      proyectoData.nukidresponsable_supervisor,
+                    id_cliente:                     proyectoData.nukidcliente,
+                    id_empresa:                     proyectoData.nukidempresa,
+                    id_director_ejecutivo:          proyectoData.nukiddirector_ejecutivo.toString(),
+                    costo_promedio_m2:              proyectoData.nucosto_promedio_m2,
+                    fecha_inicio:                   proyectoData.dtfecha_ini.toString(),
+                    fecha_fin:                      proyectoData.dtfecha_fin.toString(),
+                  })
+                }
+              },
+              error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+            })
+        } else {
+          console.log('No hay proyecto');
+        }
       })
   }
 
@@ -125,6 +183,19 @@ export class IpComponent implements OnInit {
     this.getClientes();
     this.getEstatusProyecto();
     this.getEmpleados();
+    this.getCatEmpresas();
+  }
+
+  getCatEmpresas() {
+    this.empresas = []
+    this.cieService.getCieEmpresas()
+      .subscribe({
+        next: ({data}) => {
+          console.log(data);
+          this.empresas = data.map(registro => ({name: registro.chempresa, code: registro.nukidempresa.toString()}))
+        },
+        error: (err) => this.empresas = []
+      })
   }
 
   getCatCategorias() {
@@ -222,7 +293,7 @@ export class IpComponent implements OnInit {
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
       .subscribe({
         next: (data) => {
-
+          this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'El proyecto ha sido guardado.'})
         },
         error: (err) => {
           this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})

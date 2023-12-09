@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { GenericResponse } from 'src/app/empleados/Models/empleados';
 import { environment } from 'src/environments/environment';
-import { EtapasPorProyectoResponse } from '../models/pcs.model';
+import { EtapasPorProyectoResponse, ProyectoPorIDResponse } from '../models/pcs.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +62,10 @@ export class PcsService {
 
   eliminarEmpleado(numEmpleado: number, idEtapa: number) {
     return this.http.delete<GenericResponse>(`${this.baseUrl}api/Pcs/Empleados/${numEmpleado}/Fase/${idEtapa}`)
+  }
+
+  obtenerProyectoPorId(id: number) {
+    return this.http.get<ProyectoPorIDResponse>(`${this.baseUrl}api/Pcs/Proyectos/Info/${id}`)
   }
   
 }
