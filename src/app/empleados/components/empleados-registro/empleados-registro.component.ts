@@ -121,6 +121,14 @@ export class EmpleadosRegistroComponent implements OnInit {
     persona_nombre:         [null]
   })
 
+  form1 = this.fb.group({
+    numEmpleadoRrHh:     ['', Validators.required],// 1,
+    //numEmpleadoNoi:       70,//    [null],
+    //fechaIngreso:            "2021-12-05T00:00:00",//['', Validators.required],// 1,
+    sueldoBruto:      ['', Validators.required],// 1,
+   
+   
+  })
   constructor(
     private config: PrimeNGConfig,
     private empleadosServ: EmpleadosService,
