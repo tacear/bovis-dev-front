@@ -82,3 +82,9 @@ export interface Proyecto {
     chalias_puesto:                   null;
     chgrupo_proyecto:                 null;
 }
+
+export interface GastoSeccion {
+    codigo:     string,
+    seccion:    string,
+    rubros:     string[]
+}

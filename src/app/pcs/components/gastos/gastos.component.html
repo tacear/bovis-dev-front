@@ -1,1 +1,65 @@
-<p>gastos works!</p>
+
+<p-toast></p-toast>
+
+<div class="text-center" *ngIf="!proyectoSeleccionado; else cargandoView">
+  <p>Seleccione un proyecto y presione el botón <strong>Editar</strong>.</p>
+</div>
+
+<ng-template #cargandoView>
+  <div class="text-center" *ngIf="cargando">
+    <p-progressSpinner styleClass="w-5rem h-5rem custom-spinner"></p-progressSpinner>
+    <p>Cargando gastos...</p>
+    <p><strong>Un momento.</strong></p>
+  </div>
+</ng-template>
+
+<ng-container [formGroup]="form">
+    <ng-container formArrayName="secciones">
+        <p-accordion [activeIndex]="i" [formGroupName]="i" *ngFor="let seccion of secciones.controls; let i = index">
+        <p-accordionTab>
+            <ng-template pTemplate="header">
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="title">
+                    <i class="pi pi-calendar mr-2 vertical-align-middle"></i>
+                    <span class="vertical-align-middle">{{seccion.value.codigo}} {{seccion.value.seccion}}</span>
+                </div>
+            </div>
+            </ng-template>
+            <ng-template pTemplate="content">
+            <p-table [value]="rubros(i).controls" [scrollable]="true" scrollHeight="400px">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th width="100px">Opciones</th>
+                        <th>Nombre</th>
+                        <th *ngFor="let mesRegistro of fechasPrueba">
+                        {{mesRegistro.desc | uppercase}}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rubro let-iRubro="rowIndex">
+                    <tr>
+                        <td>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <button 
+                                    title="Modificar rubro" 
+                                    type="button"
+                                    class="btn btn-primary"
+                                    (click)="modificarRubro(rubro.value, i, iRubro)"
+                                    [disabled]="!rubro.value.id"
+                                >
+                                    <i class="pi pi-pencil vertical-align-middle"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td>{{rubro.value.rubro}}</td>
+                        <td *ngFor="let mesRegistro of fechasPrueba">
+                            {{rubro.value.fechas | porcentajeMes:mesRegistro}}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            </ng-template>
+        </p-accordionTab>
+        </p-accordion>
+    </ng-container>
+</ng-container>

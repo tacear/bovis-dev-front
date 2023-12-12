@@ -1,3 +1,4 @@
+import { GastoSeccion } from "src/app/pcs/models/pcs.model";
 import { Item } from "src/models/general.model";
 
 export const errorsArray = Object.freeze([
@@ -495,3 +496,21 @@ export const MENU = [
     ],
   },
 ];
+
+export const gastosSecciones: GastoSeccion[] = [
+  {
+    codigo:   '01.0000',
+    seccion:  'COSTOS INDIRECTOS DE SALARIOS',
+    rubros:   [
+      'Bono de proyecto',
+      'Efecto de inflación anual'
+    ]
+  },
+  {
+    codigo:   '02.0000',
+    seccion:  'COSTOS INDIRECTOS DE SALARIOS',
+    rubros:   [
+      'Provisión salarios'
+    ]
+  },
+]
