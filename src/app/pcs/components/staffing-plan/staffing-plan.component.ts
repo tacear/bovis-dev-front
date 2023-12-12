@@ -262,6 +262,10 @@ export class StaffingPlanComponent implements OnInit {
     return [format(new Date(etapa.fechaIni), 'Y-m-d'), format(new Date(etapa.fechaFin), 'Y-m-d')]
   }
 
+  abre() {
+    console.log('hola');
+  }
+
 
 
 

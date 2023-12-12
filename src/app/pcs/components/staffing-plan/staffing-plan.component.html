@@ -47,7 +47,7 @@
 
 <ng-template #tablaEtapas [formGroup]="form">
     <ng-container formArrayName="etapas">
-      <p-accordion [activeIndex]="i" [formGroupName]="i" *ngFor="let etapa of etapas.controls; let i = index">
+      <p-accordion [activeIndex]="i" [formGroupName]="i" *ngFor="let etapa of etapas.controls; let i = index" (onOpen)="abre()">
         <p-accordionTab>
           <ng-template pTemplate="header">
             <div class="d-flex justify-content-between align-items-center w-100">
