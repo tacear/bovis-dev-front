@@ -191,12 +191,27 @@ export class EmpleadosService {
     return this.http.get<ContratosResponse>(`${this.baseUrl}api/Contrato/ContratosEmpleado/${id}`)
   }
 
+  getCostoID(id: string) {
+    return this.http.get<ContratosResponse>(`${this.baseUrl}api/Costo/Empleado/${id}`)
+  }
+
+  
+
   getContratoPorEmpleado(id: number) {
     return this.http.get<ContratoResponse>(`${this.baseUrl}api/Contrato/ContratoEmpleado/Registro/${id}`)
   }
 
-   guardarCostoEmpleado(body: any) {
-    return this.http.post<GenericResponse>(`${this.baseUrl}api/Costo`, body)
+  guardarCostoEmpleado(body: any , esActualizacion: boolean) {
+    return !esActualizacion 
+    ? this.http.post<GenericResponse>(`${this.baseUrl}api/Costo`, body)
+    : this.http.put<GenericResponse>(`${this.baseUrl}api/Empleado/Registro/Actualizar`, body)
+    
+  }
+
+  guardarCostoEmpleadoActualiza(body: any , esActualizacion: boolean,id: string) {
+    return !esActualizacion 
+    ? this.http.post<GenericResponse>(`${this.baseUrl}api/Costo`, body)
+    : this.http.put<GenericResponse>(`${this.baseUrl}${id}`, body)
   }
 
   guardarContrato(body: any, esActualizacion: boolean) {

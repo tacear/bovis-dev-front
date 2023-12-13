@@ -121,14 +121,6 @@ export class EmpleadosRegistroComponent implements OnInit {
     persona_nombre:         [null]
   })
 
-  form1 = this.fb.group({
-    numEmpleadoRrHh:     ['', Validators.required],// 1,
-    //numEmpleadoNoi:       70,//    [null],
-    //fechaIngreso:            "2021-12-05T00:00:00",//['', Validators.required],// 1,
-    sueldoBruto:      ['', Validators.required],// 1,
-   
-   
-  })
   constructor(
     private config: PrimeNGConfig,
     private empleadosServ: EmpleadosService,
@@ -214,77 +206,6 @@ export class EmpleadosRegistroComponent implements OnInit {
           error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
         })
       })
-this.activatedRoute.params
-      .subscribe(({id}) => {
-        forkJoin([
-          id ? this.empleadosServ.getPersonas() : this.empleadosServ.getPersonasDisponibles(),
-          this.empleadosServ.getCatEmpleados(),
-          this.empleadosServ.getCatCategorias(),
-          this.empleadosServ.getCatTiposContratos(),
-          this.cieService.getEmpresas(),
-          this.empleadosServ.getCatNivelEstudios(),
-          this.empleadosServ.getCatFormasPago(),
-          this.empleadosServ.getCatJornadas(),
-          this.empleadosServ.getCatDepartamentos(),
-          this.empleadosServ.getCatClasificacion(),
-          this.empleadosServ.getCatUnidadNegocio(),
-          this.empleadosServ.getCatTurno(),
-          this.empleadosServ.getHabilidades(),
-          this.empleadosServ.getExperiencias(),
-          this.empleadosServ.getProfesiones(),
-          this.empleadosServ.getPuestos(),
-          this.empleadosServ.getEmpleados(),
-          this.empleadosServ.getCatEstados(),
-          this.empleadosServ.getCatPaises()
-        ])
-        .pipe(finalize(() => this.verificarActualizacionCosto()))
-        .subscribe({
-          next: ([
-            personaR,
-            tipoEmpleadoR,
-            categoriaR,
-            tipoContratoR,
-            empresaR,
-            nivelEstudiosR,
-            formaPagoR,
-            jornadaR,
-            departamentoR,
-            clasificacionR,
-            unidadNegocioR,
-            turnoR,
-            habilidadesR,
-            experienciasR,
-            profesionesR,
-            puestoR,
-            empleadosR,
-            estadosR,
-            paisesR
-          ]) => {
-            this.setCatPersonas(personaR.data)
-            this.setCatTipoEmpleado(tipoEmpleadoR.data)
-            this.setCatCategorias(categoriaR.data)
-            this.setCatTipoContratos(tipoContratoR.data)
-            this.setCatEmpresas(empresaR.data)
-            this.setCatNivelEstudios(nivelEstudiosR.data)
-            this.setCatFormasPago(formaPagoR.data)
-            this.setCatJornadas(jornadaR.data)
-            this.setCatDepartamentos(departamentoR.data)
-            this.setCatClasificacion(clasificacionR.data)
-            this.setCatUnidadNegocio(unidadNegocioR.data)
-            this.setCatTurno(turnoR.data)
-            this.habilidades = habilidadesR.data.map(habilidad => ({name: habilidad.descripcion, code: habilidad.id.toString()}))
-            this.experiencias = experienciasR.data.map(experiencia => ({name: experiencia.descripcion, code: experiencia.id.toString()}))
-            this.profesiones = profesionesR.data.map(profesion => ({name: profesion.descripcion, code: profesion.id.toString()})),
-            this.puestos = puestoR.data.map(puesto => ({name: puesto.chpuesto, code: puesto.nukid_puesto.toString()}))
-            this.puestosInfo = puestoR.data
-            this.catJefes = empleadosR.data.map(empleado => ({name: empleado.nombre_persona, value: empleado.nunum_empleado_rr_hh.toString()}))
-            this.estados = estadosR.data.map(estado => ({name: estado.estado, code: estado.idEstado.toString()}))
-            this.paises = paisesR.data.map(pais => ({name: pais.descripcion, code: pais.id.toString()}))
-          },
-          error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
-        })
-      })
-    
   }
 
   verificarActualizacion() {
@@ -375,47 +296,7 @@ this.activatedRoute.params
         }
     })
   }
-verificarActualizacionCosto() {
-    this.activatedRoute.params
-      .subscribe(({id}) => {
-        if(id) {
-          this.esActualizacion = true
-          this.empleadosServ.getEmpleado(id)
-            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
-            .subscribe({
-              next: ({data}) => {
-                // console.log(data)
-              const habilidades = data.habilidades.map(habilidad => habilidad.idHabilidad.toString())
-              const experiencias = data.experiencias.map(experiencia => experiencia.idExperiencia.toString())
-                this.form1.patchValue({
-                  numEmpleadoRrHh:     data.nunum_empleado_rr_hh?.toString(),
-                  //sueldoBruto:                data.nusalario?.toString(),
-                  sueldoBruto:                data.nusalario?.toString(),
-                 
-                })
- 
-                //this.buscarCiudades({value: this.form1.value.id_estado})
-              },
-              error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
-            })
-        } else {
-         // this.form1.patchValue({habilidades: [], experiencias: []})
-          this.activatedRoute.queryParams
-            .subscribe({
-              next: ({id_persona, id_requerimiento}) => {
-                if(id_persona && id_requerimiento) {
-                  this.getInfoDeAsignacion(id_persona, id_requerimiento)
-                } else {
-                  this.sharedService.cambiarEstado(false)
-                }
-              },
-              error: (err) => {
-                this.sharedService.cambiarEstado(false)
-              }
-            })
-        }
-    })
-  }
+
   
   getInfoDeAsignacion(id_persona: number, id_requerimiento: number) {
     forkJoin([
@@ -491,18 +372,80 @@ verificarActualizacionCosto() {
           this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
         }
       })
-    this.empleadosServ.guardarCostoEmpleado(this.form1.value)
+
+      console.log(" --------->>>>>>> "+ this.form.value.salario )
+      
+       const bodyCostoEmpleado = {      
+        
+        numEmpleadoRrHh:      this.form.value.num_empleado_rr_hh,
+        sueldoBruto:       this.form.value.salario// 1,
+      }
+      
+      if(!this.esActualizacion){
+
+        this.empleadosServ.guardarCostoEmpleado(bodyCostoEmpleado, this.esActualizacion)
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
+        next: (data) => {
+          // console.log(data)
+          //this.form1.reset()
+          this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
+        },
+        error: (err) => {
+          this.messageService.add({ severity: 'error', summary: TITLES.error, detail:  err.error  })
+        }
+      })
+
+      }else{
+
+        //const idCons = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh)
+
+       // let idCons:string = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh);
+
+       const bodyCostoEmpleadoactualiza = {      
+        idCosto: this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh),
+        numEmpleadoRrHh:      this.form.value.num_empleado_rr_hh,
+        nuAnno: 2023,
+        nuMes: 12,
+        fechaIngreso:  this.form.value.fecha_ingreso,
+        sueldoBruto:       this.form.value.salario
+
+        
+        
+      }
+
+        this.empleadosServ.guardarCostoEmpleadoActualiza(bodyCostoEmpleadoactualiza, this.esActualizacion,"api/Costo/"+this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh))
         .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
         .subscribe({
           next: (data) => {
             // console.log(data)
-            this.form1.reset()
+            //this.form1.reset()
             this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
           },
           error: (err) => {
             this.messageService.add({ severity: 'error', summary: TITLES.error, detail:  err.error  })
           }
         })
+
+      }
+
+      
+
+     
+    
+     // this.empleadosServ.guardarCostoEmpleado(bodyCostoEmpleado, this.esActualizacion)
+     // .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+     // .subscribe({
+     //   next: (data) => {
+          // console.log(data)
+          //this.form1.reset()
+      //    this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
+      //  },
+      //  error: (err) => {
+      //    this.messageService.add({ severity: 'error', summary: TITLES.error, detail:  err.error  })
+      //  }
+      //})
+
   }
 
   limpiar() {
