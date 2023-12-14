@@ -196,7 +196,6 @@ export class EmpleadosService {
   }
 
   
-
   getContratoPorEmpleado(id: number) {
     return this.http.get<ContratoResponse>(`${this.baseUrl}api/Contrato/ContratoEmpleado/Registro/${id}`)
   }

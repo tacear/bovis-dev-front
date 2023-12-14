@@ -397,7 +397,6 @@ export class EmpleadosRegistroComponent implements OnInit {
       })
 
       }else{
-
         //const idCons = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh)
 
        // let idCons:string = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh);
