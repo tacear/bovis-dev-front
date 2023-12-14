@@ -1,5 +1,4 @@
 // import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct";
-
 export class Empleado {
 
   id: number;
