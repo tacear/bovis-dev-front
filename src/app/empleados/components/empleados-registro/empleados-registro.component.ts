@@ -413,7 +413,7 @@ export class EmpleadosRegistroComponent implements OnInit {
           
           
         }
-       
+        
 
        this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh)
        .subscribe({

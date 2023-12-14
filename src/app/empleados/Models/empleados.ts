@@ -460,7 +460,7 @@ export interface ContratoResponse {
   message:       null;
   transactionId: null;
 }
-
+ 
 export interface ContratoPlantilla {
   idContratoEmpleado: number;
   titulo:             string;

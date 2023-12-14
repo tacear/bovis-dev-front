@@ -186,7 +186,7 @@ export class EmpleadosService {
       boactivo: activo
     })
   }
-  
+   
 
   getContratosPorEmpleado(id: number) {
     return this.http.get<ContratosResponse>(`${this.baseUrl}api/Contrato/ContratosEmpleado/${id}`)
