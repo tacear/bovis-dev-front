@@ -478,7 +478,6 @@ export interface CostoEmpleadoResponse {
   transactionId: null;
 }
 
-
 export interface CostoEmpleado {
   idCosto:                        number;
   numEmpleadoRrHh:                number;

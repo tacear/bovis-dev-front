@@ -409,9 +409,7 @@ export class EmpleadosRegistroComponent implements OnInit {
           nuMes: 12,
           fechaIngreso:  this.form.value.fecha_ingreso,
           sueldoBruto:       this.form.value.salario
-  
-          
-          
+                  
         }
         
 
