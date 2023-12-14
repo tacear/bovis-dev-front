@@ -399,32 +399,46 @@ export class EmpleadosRegistroComponent implements OnInit {
       }else{
         //const idCons = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh)
 
-       // let idCons:string = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh);
-
-       const bodyCostoEmpleadoactualiza = {      
-        idCosto: this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh),
-        numEmpleadoRrHh:      this.form.value.num_empleado_rr_hh,
-        nuAnno: 2023,
-        nuMes: 12,
-        fechaIngreso:  this.form.value.fecha_ingreso,
-        sueldoBruto:       this.form.value.salario
-
+        //let idCons:string = this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh);
         
-        
-      }
 
-        this.empleadosServ.guardarCostoEmpleadoActualiza(bodyCostoEmpleadoactualiza, this.esActualizacion,"api/Costo/"+this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh))
-        .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
-        .subscribe({
-          next: (data) => {
-            // console.log(data)
-            //this.form1.reset()
-            this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
-          },
-          error: (err) => {
-            this.messageService.add({ severity: 'error', summary: TITLES.error, detail:  err.error  })
+        let bodyCostoEmpleadoactualiza = {      
+          idCosto: null,
+          numEmpleadoRrHh:      this.form.value.num_empleado_rr_hh,
+          nuAnno: 2023,
+          nuMes: 12,
+          fechaIngreso:  this.form.value.fecha_ingreso,
+          sueldoBruto:       this.form.value.salario
+                  
+        }
+        
+
+       this.empleadosServ.getCostoID(this.form.value.num_empleado_rr_hh)
+       .subscribe({
+        next:(data) =>{
+          if(data.data.length > 0){
+            bodyCostoEmpleadoactualiza = {
+              ...bodyCostoEmpleadoactualiza,
+               idCosto: data.data[0].idCosto               
+            }
+
+            this.empleadosServ.guardarCostoEmpleadoActualiza(bodyCostoEmpleadoactualiza, this.esActualizacion,"api/Costo/"+data.data[0].idCosto)
+            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+            .subscribe({
+              next: (data) => {
+                // console.log(data)
+                //this.form1.reset()
+                this.router.navigate(['/empleados/empleado-pri'], {queryParams: {success: true}});
+              },
+              error: (err) => {
+                this.messageService.add({ severity: 'error', summary: TITLES.error, detail:  err.error  })
+              }
+            })
+
           }
-        })
+          
+        }
+       })
 
       }
 
