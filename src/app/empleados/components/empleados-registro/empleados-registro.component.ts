@@ -442,10 +442,6 @@ export class EmpleadosRegistroComponent implements OnInit {
         }
        })
 
-       
-
-       
-
       }
 
       
