@@ -9,6 +9,8 @@ export class PorcentajeMesPipe implements PipeTransform {
 
   transform(value: Fecha[], ...args: unknown[]): unknown {
     const [mesRegistro] = args as Array<Mes>
+
+    console.log([mesRegistro, value]);
     
     const mes = value.find(info => info.mes == mesRegistro.mes)
 

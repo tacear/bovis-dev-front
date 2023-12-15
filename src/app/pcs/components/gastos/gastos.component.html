@@ -31,7 +31,7 @@
                     <tr>
                         <th width="100px">Opciones</th>
                         <th>Nombre</th>
-                        <th *ngFor="let mesRegistro of fechasPrueba">
+                        <th *ngFor="let mesRegistro of mesesProyecto">
                         {{mesRegistro.desc | uppercase}}
                         </th>
                     </tr>
@@ -52,7 +52,7 @@
                             </div>
                         </td>
                         <td>{{rubro.value.rubro}}</td>
-                        <td *ngFor="let mesRegistro of fechasPrueba">
+                        <td *ngFor="let mesRegistro of mesesProyecto">
                             {{rubro.value.fechas | porcentajeMes:mesRegistro}}
                         </td>
                     </tr>

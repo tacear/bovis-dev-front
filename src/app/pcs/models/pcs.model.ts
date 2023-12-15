@@ -83,8 +83,33 @@ export interface Proyecto {
     chgrupo_proyecto:                 null;
 }
 
-export interface GastoSeccion {
-    codigo:     string,
-    seccion:    string,
-    rubros:     string[]
+export interface GastosIngresosSeccionesResponse {
+    data:          GastosIngresosSeccionesData;
+    success:       boolean;
+    message:       null;
+    transactionId: null;
+}
+
+export interface GastosIngresosSeccionesData {
+    numProyecto: number;
+    fechaIni:    string;
+    fechaFin:    string;
+    secciones:   GastosIngresosSecciones[];
+}
+
+export interface GastosIngresosSecciones {
+    idSeccion: number;
+    codigo:    string;
+    seccion:   string;
+    rubros:    Rubro[];
+}
+
+export interface Rubro {
+    idRubro:          number;
+    rubro:            string;
+    unidad:           string;
+    cantidad:         number;
+    reembolsable:     boolean;
+    aplicaTodosMeses: boolean;
+    fechas:           Fecha[];
 }
