@@ -33,6 +33,7 @@ import { PorcentajeMesPipe } from './pipes/porcentaje-mes.pipe';
 import { ValorMesPipe } from './pipes/valor-mes.pipe';
 import { ModificarRubroComponent } from './components/modificar-rubro/modificar-rubro.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { CalcularSubtotalPipe } from './pipes/calcular-subtotal.pipe';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     ModificarEmpleadoComponent,
     PorcentajeMesPipe,
     ValorMesPipe,
-    ModificarRubroComponent
+    ModificarRubroComponent,
+    CalcularSubtotalPipe
   ],
   imports: [
     CommonModule,

@@ -71,5 +71,9 @@ export class PcsService {
   obtenerGastosIngresosSecciones(numProyecto: number, tipo: string = 'gasto') {
     return this.http.get<GastosIngresosSeccionesResponse>(`${this.baseUrl}api/Pcs/GastosIngresos/${numProyecto}/${tipo}`)
   }
+
+  actualizarRubro(body: any) {
+    return this.http.put<GenericResponse>(`${this.baseUrl}api/Pcs/GastosIngresos`, body)
+  }
   
 }

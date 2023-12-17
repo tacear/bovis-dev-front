@@ -1,11 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { PcsService } from '../../services/pcs.service';
 import { errorsArray } from 'src/utils/constants';
 import { obtenerMeses } from 'src/helpers/helpers';
+import { Fecha, Rubro } from '../../models/pcs.model';
+import { Mes } from 'src/models/general.model';
 
 @Component({
   selector: 'app-modificar-rubro',
@@ -25,11 +27,12 @@ export class ModificarRubroComponent implements OnInit {
 
 
   form = this.fb.group({
-    unidad:       [null],
-    cantidad:     [null],
-    reembolsable: [false],
-    aplica:       [false],
-    fechas:       this.fb.array([])
+    idRubro:          [null],   
+    unidad:           ['', Validators.required],
+    cantidad:         ['', Validators.required],
+    reembolsable:     [false],
+    aplicaTodosMeses: [false],
+    fechas:           this.fb.array([])
   })
 
   constructor() { }
@@ -40,8 +43,20 @@ export class ModificarRubroComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const fechaInicio     = new Date('2023-12-01')
-    const fechaFin        = new Date('2024-06-01')
+    const rubro = this.config.data.rubro as Rubro
+
+    if(this.config.data) {
+      this.form.patchValue({
+        idRubro:          rubro.idRubro,
+        unidad:           rubro.unidad.toString(),
+        cantidad:         rubro.cantidad.toString(),
+        reembolsable:     rubro.reembolsable,
+        aplicaTodosMeses: rubro.aplicaTodosMeses
+      })
+    }
+
+    const fechaInicio     = new Date(this.config.data.fechaInicio)
+    const fechaFin        = new Date(this.config.data.fechaFin)
 
     obtenerMeses(fechaInicio, fechaFin).forEach(mesRegistro => {
 
@@ -49,21 +64,35 @@ export class ModificarRubroComponent implements OnInit {
         mes:        [mesRegistro.mes],
         anio:       [mesRegistro.anio],
         desc:       [mesRegistro.desc],
-        porcentaje: [0]
+        porcentaje: [this.form.value.idRubro ? this.obtenerPorcentaje(rubro.fechas, mesRegistro) : 0]
       }))
     })
+    
+    if(rubro.aplicaTodosMeses) {
+      this.cambiarValoresFechas()
+    }
   }
 
   guardar() {
-
+    this.ref.close({rubro: this.form.value})
   }
 
   cambiarValoresFechas() {
     this.fechas.controls.forEach((fecha, index) => {
       this.fechas.at(index).patchValue({
-        porcentaje: this.form.value.aplica ? this.form.value.cantidad : 0
+        porcentaje: this.form.value.aplicaTodosMeses ? this.form.value.cantidad : 0
       })
     })
+  }
+
+  obtenerPorcentaje(fechas: Fecha[], mesRegistro: Mes) {
+    const mes = fechas.find(info => info.mes == mesRegistro.mes)
+
+    if(mes && mes.porcentaje > 0) {
+      return +mes.porcentaje
+    }
+
+    return 0
   }
 
   esInvalido(campo: string): boolean {

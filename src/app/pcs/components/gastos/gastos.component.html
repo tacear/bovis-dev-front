@@ -31,6 +31,10 @@
                     <tr>
                         <th width="100px">Opciones</th>
                         <th>Nombre</th>
+                        <th>Unidad</th>
+                        <th>Cantidad</th>
+                        <th>Reembolsable</th>
+                        <th>Subtotal</th>
                         <th *ngFor="let mesRegistro of mesesProyecto">
                         {{mesRegistro.desc | uppercase}}
                         </th>
@@ -45,13 +49,17 @@
                                     type="button"
                                     class="btn btn-primary"
                                     (click)="modificarRubro(rubro.value, i, iRubro)"
-                                    [disabled]="!rubro.value.id"
+                                    [disabled]="!rubro.value.idRubro"
                                 >
                                     <i class="pi pi-pencil vertical-align-middle"></i>
                                 </button>
                             </div>
                         </td>
                         <td>{{rubro.value.rubro}}</td>
+                        <td>{{rubro.value.unidad}}</td>
+                        <td>{{rubro.value.cantidad}}</td>
+                        <td>{{rubro.value.reembolsable ? 'Sí' : 'No'}}</td>
+                        <td>{{rubro.value.fechas | calcularSubtotal}}</td>
                         <td *ngFor="let mesRegistro of mesesProyecto">
                             {{rubro.value.fechas | porcentajeMes:mesRegistro}}
                         </td>

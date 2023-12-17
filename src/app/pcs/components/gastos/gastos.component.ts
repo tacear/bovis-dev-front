@@ -9,6 +9,7 @@ import { ModificarRubroComponent } from '../modificar-rubro/modificar-rubro.comp
 import { TITLES } from 'src/utils/constants';
 import { Mes } from 'src/models/general.model';
 import { finalize } from 'rxjs';
+import { Rubro } from '../../models/pcs.model';
 
 @Component({
   selector: 'app-gastos',
@@ -90,8 +91,7 @@ export class GastosComponent implements OnInit {
 
               // Agregamos los rubros por seccion
               this.rubros(seccionIndex).push(this.fb.group({
-                id:       [rubro.idRubro],
-                rubro:    [rubro.rubro],
+                ...rubro,
                 fechas:   this.fb.array([])
               }))
               
@@ -112,7 +112,7 @@ export class GastosComponent implements OnInit {
       })
   }
 
-  modificarRubro(rubro: {id: number, rubro: string, fechas: []}, seccionIndex: number, rubroIndex: number) {
+  modificarRubro(rubro: Rubro, seccionIndex: number, rubroIndex: number) {
 
     this.dialogService.open(ModificarRubroComponent, {
       header: rubro.rubro,
@@ -125,36 +125,28 @@ export class GastosComponent implements OnInit {
       }
     })
     .onClose.subscribe((result) => {
+
       if(result && result.rubro) {
-        console.log(result)
-        // const empleadoRespuesta = result.empleado as Empleado
-        // const fechasRespuesta = empleadoRespuesta.fechas.map(fechaRegistro => this.fb.group({
-        //   id:         fechaRegistro.id,
-        //   mes:        fechaRegistro.mes,
-        //   anio:       fechaRegistro.anio,
-        //   porcentaje: fechaRegistro.porcentaje
-        // }))
-        // if(empleado) {
 
-        //   this.fechas(etapaIndex, empleadoIndex).clear()
+        const rubroRespuesta = result.rubro as Rubro
 
-        //   empleadoRespuesta.fechas.forEach(fechaRegistro => {
-        //     this.fechas(etapaIndex, empleadoIndex).push(this.fb.group({
-        //       id:         fechaRegistro.id,
-        //       mes:        fechaRegistro.mes,
-        //       anio:       fechaRegistro.anio,
-        //       porcentaje: fechaRegistro.porcentaje
-        //     }))
-        //   })
-        // } else {
-        //   this.empleados(etapaIndex).push(this.fb.group({
-        //     id:               empleadoRespuesta.id,
-        //     idFase:           empleadoRespuesta.idFase,
-        //     numempleadoRrHh:  empleadoRespuesta.numempleadoRrHh,
-        //     empleado:         empleadoRespuesta.empleado,
-        //     fechas:           this.fb.array(fechasRespuesta)
-        //   }))
-        // }
+        this.rubros(seccionIndex).at(rubroIndex).patchValue({
+          unidad:           rubroRespuesta.unidad,
+          cantidad:         rubroRespuesta.cantidad,
+          reembolsable:     rubroRespuesta.reembolsable,
+          aplicaTodosMeses: rubroRespuesta.aplicaTodosMeses
+        })
+
+        this.fechas(seccionIndex, rubroIndex).clear()
+
+        rubroRespuesta.fechas.forEach(fechaRegistro => {
+          this.fechas(seccionIndex, rubroIndex).push(this.fb.group({
+            id:         fechaRegistro.id,
+            mes:        fechaRegistro.mes,
+            anio:       fechaRegistro.anio,
+            porcentaje: fechaRegistro.porcentaje
+          }))
+        })
       }
     })
   }

@@ -6,7 +6,7 @@
     <div class="row">
         
       <div class="col-4">
-        <label for="unidad">Unidad:</label>
+        <label for="unidad">Unidad: <span class="required"></span></label>
         <input 
           id="unidad"
           pInputText
@@ -25,15 +25,12 @@
       </div>
 
       <div class="col-4">
-        <label for="cantidad">Cantidad:</label>
-        <input 
-          id="cantidad"
-          pInputText
-          class="form-control" 
-          maxlength="50" 
-          formControlName="cantidad"
-          [ngClass]="{'ng-invalid ng-dirty': esInvalido('cantidad')}"
-        >
+        <label for="cantidad">Cantidad: <span class="required"></span></label>
+        <p-inputNumber 
+            formControlName="cantidad"
+            class="full-width" 
+            (onBlur)="cambiarValoresFechas()"
+        ></p-inputNumber>
         <div *ngIf="esInvalido('cantidad')">
           <small
             class="error-msg"
@@ -56,10 +53,10 @@
       
       <div class="col-4">
         <div class="form-group">
-            <label for="aplica">Aplica a todos los meses:</label>
+            <label for="aplicaTodosMeses">Aplica a todos los meses:</label>
             <div>
                 <p-inputSwitch 
-                    formControlName="aplica"
+                    formControlName="aplicaTodosMeses"
                     (onChange)="cambiarValoresFechas()"
                 ></p-inputSwitch>
             </div>
@@ -84,8 +81,7 @@
                         [id]="'campo-fecha-'+i"
                         mode="decimal" 
                         [min]="0" 
-                        [max]="100"
-                        [readonly]="form.value.aplica"
+                        [readonly]="form.value.aplicaTodosMeses"
                     ></p-inputNumber>
                 </div>
             </div>
