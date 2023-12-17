@@ -11,6 +11,7 @@ import { format } from 'date-fns';
 import { Proyecto } from '../../models/pcs.model';
 import { Opcion } from 'src/models/general.model';
 import { CieService } from 'src/app/cie/services/cie.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-ip',
@@ -35,8 +36,9 @@ export class IpComponent implements OnInit {
   listEmpleados: Array<IEmpleadoNew> = [];
   empresas: Opcion[] = []
 
-  proyecto: Proyecto  = null
-  cargando: boolean   = true
+  proyecto:           Proyecto  = null
+  cargando:           boolean   = true
+  mostrarFormulario:  boolean   = false
 
   form = this.fb.group({
       num_proyecto:                   ['', [Validators.required]],
@@ -65,7 +67,7 @@ export class IpComponent implements OnInit {
       // contacto_correo, Validators.required
   })
 
-  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService) { }
+  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService, private activatedRoute: ActivatedRoute) { }
 
   catalogosService = inject(CatalogosService)
   
@@ -88,6 +90,7 @@ export class IpComponent implements OnInit {
         // this.form.reset()
         // this.etapas.clear()
         if(numProyecto) {
+          this.mostrarFormulario = true
           // this.sharedService.cambiarEstado(true)
           // this.cargando = true
           this.pcsService.obtenerProyectoPorId(numProyecto)
@@ -128,6 +131,13 @@ export class IpComponent implements OnInit {
           console.log('No hay proyecto');
         }
       })
+    
+    this.activatedRoute.queryParams.subscribe(params => {
+      const nuevo = params['nuevo']
+      if(nuevo) {
+        this.mostrarFormulario = true
+      }
+    });
   }
 
   getConfigCalendar() {
