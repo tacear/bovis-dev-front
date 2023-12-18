@@ -4,10 +4,11 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { PcsService } from '../../services/pcs.service';
-import { errorsArray } from 'src/utils/constants';
+import { TITLES, errorsArray } from 'src/utils/constants';
 import { obtenerMeses } from 'src/helpers/helpers';
 import { Fecha, Rubro } from '../../models/pcs.model';
 import { Mes } from 'src/models/general.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-modificar-rubro',
@@ -74,7 +75,17 @@ export class ModificarRubroComponent implements OnInit {
   }
 
   guardar() {
-    this.ref.close({rubro: this.form.value})
+    
+    this.sharedService.cambiarEstado(true)
+
+    this.pcsService.actualizarRubro(this.form.value)
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
+        next: (data) => {
+          this.ref.close({rubro: this.form.value})
+        },
+        error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+      })
   }
 
   cambiarValoresFechas() {
