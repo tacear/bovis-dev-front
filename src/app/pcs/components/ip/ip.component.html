@@ -53,9 +53,18 @@
             <div class="row">
               <div class="col-4">
                 <label for="email">Director Ejecutivo: <span class="required"></span></label>
-                <p-dropdown optionLabel="name" [options]="catEmpleados" [showClear]="true" [style]="{ width: '100%' }"
-                  [disabled]="isConsulta" [filter]="true" filterBy="name" formControlName="id_director_ejecutivo" optionValue="value"></p-dropdown>
+                <p-dropdown optionLabel="name" 
+                [options]="catEmpleados" 
+                [showClear]="true" 
+                [style]="{ width: '100%' }" 
+                placeholder="Seleccionar un director" 
+                [disabled]="isConsulta" 
+                [filter]="true" 
+                filterBy="name" 
+                formControlName="id_director_ejecutivo" 
+                optionValue="code"></p-dropdown>
               </div>
+              
               <div class="col-4">
                   <label>Empresa:</label>
                   <p-dropdown  

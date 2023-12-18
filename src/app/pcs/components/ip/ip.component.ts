@@ -26,7 +26,7 @@ export class IpComponent implements OnInit {
   catPaises: ICatalogoCombos[] = [];
   catClientes: ICatalogoCombos[] = [];
   catEstatusProyecto: ICatalogoCombos[] = [];
-  catEmpleados: ICatalogoCombos[] = [];
+  catEmpleados: Opcion[] = []
 
   listCatSectores: Array<ICatalogo> = [];
   listCatPaises: Array<ICatalogo> = [];
@@ -41,12 +41,12 @@ export class IpComponent implements OnInit {
   form = this.fb.group({
       num_proyecto:                   ['', [Validators.required]],
       nombre_proyecto:                ['', [Validators.required]],
-      alcance:                        ['', [Validators.required]],
-      codigo_postal:                  ['', [Validators.required]],
-      ciudad:                         ['', [Validators.required]],
-      id_pais:                        ['', [Validators.required]],
-      id_estatus:                     ['', [Validators.required]],
-      id_sector:                      ['', [Validators.required]],
+      alcance:                        [null],
+      codigo_postal:                  [null],
+      ciudad:                         [null],
+      id_pais:                        [null],
+      id_estatus:                     [null],
+      id_sector:                      [null],
       id_tipo_proyecto:               [null],
       id_responsable_preconstruccion: [null],
       id_responsable_construccion:    [null],
@@ -56,8 +56,8 @@ export class IpComponent implements OnInit {
       id_empresa:                     [null],
       id_director_ejecutivo:          ['', [Validators.required]],
       costo_promedio_m2:              [null],
-      fecha_inicio:                   ['', [Validators.required]],
-      fecha_fin:                      ['', [Validators.required]],
+      fecha_inicio:                   [null],
+      fecha_fin:                      [null],
       // total_meses, Validators.required
       // contacto_nombre, Validators.required
       // contacto_posicion, Validators.required
@@ -258,19 +258,26 @@ export class IpComponent implements OnInit {
     });
   }
 
-  getEmpleados() {
+  /*getEmpleados() {
     this.listEmpleados = [];
-    this.catServ.getEmpleados().subscribe((data) => {
+    this.catServ.getDirectores().subscribe((data) => {
       if (data.success) {
         this.listEmpleados = <IEmpleadoNew[]>data['data'];
         this.listEmpleados.forEach((element) => {
           this.catEmpleados.push({
             name: String(`${element.chnombre} ${element.chap_paterno} ${element.chap_materno} / ${element.chpuesto}`),
-            value: String(element.nukid_empleado),
           });
         });
       }
     });
+  }*/
+
+  getEmpleados() {
+    this.catServ.getDirectores().subscribe((directoresR) => {
+
+      this.catEmpleados = directoresR.data.map(catEmpleados => ({name: catEmpleados.nombre_persona, code: catEmpleados.nunum_empleado_rr_hh.toString()}))
+    });
+
   }
 
   guardar() {
