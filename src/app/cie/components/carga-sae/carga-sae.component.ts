@@ -112,7 +112,7 @@ export class CargaSaeComponent implements OnInit {
               fecha:              record.Fecha,
               mes:                record.Fecha.split('/')[1],
               concepto:           record.Concepto,
-              centro_costos:      record['Centro de costos']?.trim(),
+              centro_costos:      record['Centro de costos']?.trim() ?? record['centros de costos']?.trim(),
               proyectos:          record.Proyectos,
               saldo_inicial:      record['Saldo inicial'],
               debe:               record.Debe,
