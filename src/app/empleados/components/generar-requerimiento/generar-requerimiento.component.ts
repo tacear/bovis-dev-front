@@ -139,10 +139,10 @@ export class GenerarRequerimientoComponent implements OnInit {
         next: (data) => {
           const emailNuevoRequerimiento = {
             ...emailsDatos.emailNuevoRequerimiento,
-            body: emailsDatos.emailNuevoRequerimiento.body.replace('nombre_usuario', 'test')
+            body: emailsDatos.emailNuevoRequerimiento.body.replace('nombre_usuario', localStorage.getItem('userName') || '')
           }
           // console.log(emailNuevoRequerimiento);
-          this.emailsService.sendEmail(emailsDatos.emailNuevoRequerimiento)
+          this.emailsService.sendEmail(emailNuevoRequerimiento)
             .pipe(finalize(() => {
               this.form.reset()
               this.sharedService.cambiarEstado(false)
