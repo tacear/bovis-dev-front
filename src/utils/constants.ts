@@ -495,3 +495,16 @@ export const MENU = [
     ],
   },
 ];
+
+export const emailsDatos = Object.freeze({
+  emailNuevoRequerimiento: {
+    subject:  'Requerimiento de personal',
+    body:     `Buen día, nombre_usuario.
+              El área de Recursos Humanos ha recibido su requerimiento de persoal y comenzará el proceso de búsqueda.
+              Lo mantendremos al tanto de los avances.
+              Saludos.`,
+    emailsTo: [
+      'jmmorales@hunkabann.com.mx'
+    ]
+  }
+})
