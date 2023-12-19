@@ -132,11 +132,16 @@
                   <div class="d-flex align-items-center">{{header}}<p-sortIcon [field]="cieHeadersFieldsLocal[header]"></p-sortIcon></div>
                   <!-- {{header}} -->
                 </th>
+                <th pSortableColumn="inconsistente">
+                    <div class="d-flex align-items-center">Inconsistente<p-sortIcon field="inconsistente"></p-sortIcon></div>
+                </th>
                 <th class="text-center">Opciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-record>
-            <tr>
+            <tr 
+                [ngStyle]="{'background-color': record.inconsistente ? '#ffa4a4' : ''}"
+            >
                 <td>{{record.nombreCuenta}}</td>
                 <td>{{record.cuenta}}</td>
                 <td>{{record.tipoPoliza}}</td>
@@ -158,6 +163,7 @@
                 <td>{{record.tipoCuenta}}</td>
                 <td>{{record.tipoPy}}</td>
                 <td>{{record.clasificacionPy}}</td>
+                <td>{{record.inconsistente ? 'Sí' : 'No'}}</td>
                 <td class="text-align">
                   <div class="d-flex justify-content-center gap-3">
                     <button 
