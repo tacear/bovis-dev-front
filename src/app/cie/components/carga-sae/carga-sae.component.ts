@@ -31,6 +31,8 @@ export class CargaSaeComponent implements OnInit {
 
   excelData:              any
   jsonData:               CieElementPost[] = []
+  jsonDataPaquetes:       any[] = []
+  paqueteActual:          number = 0
   cieHeadersLocal:        string[] = cieHeaders
   cieHeadersFieldsLocal:  any = cieHeadersFields
 
@@ -143,6 +145,7 @@ export class CargaSaeComponent implements OnInit {
 
         let cuentasArreglo = []
         this.cuentasFaltantes = []
+        this.proyectosFaltantes = []
 
         infoCuentasR.data.forEach(cuenta => this.cuentasEncontradas[cuenta.cuenta] = {...cuenta})
 
@@ -251,31 +254,58 @@ export class CargaSaeComponent implements OnInit {
     
     this.sharedService.cambiarEstado(true)
 
-    // console.log(this.jsonData)
-    // console.log(this.jsonData)
-    this.cieService.cargarSae(this.jsonData, this.currentFileName)
-      .pipe(
-        finalize(() => {
-          this.sharedService.cambiarEstado(false)
-        })
-      )
+    const tamanio = 100
+    this.jsonDataPaquetes = this.partirArreglo(this.jsonData, tamanio)
+    this.paqueteActual = 1
+
+    this.cargarPaquetes()
+  }
+
+  cargarPaquetes() {
+
+    this.cieService.cargarSae(this.jsonDataPaquetes[this.paqueteActual - 1], this.currentFileName)
+      // .pipe(
+      //   finalize(() => {
+      //     this.sharedService.cambiarEstado(false)
+      //   })
+      // )
       .subscribe({
         next: (response) => {
-          this.messageService.add({severity: 'success', summary: 'SAE cargado', detail: 'El SAE ha sido cargado.'})
-          this.dialogService.open(RegistrosCargadosComponent, {
-            header: "Registros cargados",
-            width: '50%',
-            contentStyle: {overflow: 'auto'},
-            dismissableMask: true,
-            data: {
-              cantidad: this.jsonData.length
-            }
-          })
+          
+          this.messageService.add({severity: 'success', summary: 'SAE cargado', detail: `${this.paqueteActual}/${this.jsonDataPaquetes.length}`})
+
+          if(this.paqueteActual >= this.jsonDataPaquetes.length) {
+            this.dialogService.open(RegistrosCargadosComponent, {
+              header: "Registros cargados",
+              width: '50%',
+              contentStyle: {overflow: 'auto'},
+              dismissableMask: true,
+              data: {
+                cantidad: this.jsonData.length
+              }
+            })
+            this.paqueteActual = 0
+            this.sharedService.cambiarEstado(false)
+            return
+          }
+
+          this.paqueteActual = this.paqueteActual + 1
+          this.cargarPaquetes()
         },
         error: (err) => {
           this.messageService.add({severity: 'error', summary: 'Oh no...', detail: err.error})
+          this.sharedService.cambiarEstado(false)
         }
       })
+
+  }
+  
+  partirArreglo(arreglo: CieElementPost[], tamanio: number): any[] {
+    const arreglosPartidos = [];
+    for (let i = 0; i < arreglo.length; i += tamanio) {
+      arreglosPartidos.push(arreglo.slice(i, i + tamanio));
+    }
+    return arreglosPartidos;
   }
 
   cargarCuentasFaltantes() {
