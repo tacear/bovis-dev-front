@@ -104,7 +104,7 @@ export class ModificarEmpleadoComponent implements OnInit {
             this.empleado = {
               id:               null,
               empleado:         empleadoEncontrado.nombre_persona,
-              numempleadoRrHh:  empleadoEncontrado.nunum_empleado_rr_hh,
+              numempleadoRrHh:  empleadoEncontrado.nunum_empleado_rr_hh.toString(),
               idFase:           this.form.value.id_fase,
               fechas:           []
             }

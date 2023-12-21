@@ -9,7 +9,7 @@ export interface CostosEmpleadoResponse {
 
 export interface CostoEmpleado {
   idCosto:                        number;
-  numEmpleadoRrHh:                number;
+  numEmpleadoRrHh:                string;
   nuAnno:                         number;
   nuMes:                          number;
   numEmpleadoNoi:                 number;
