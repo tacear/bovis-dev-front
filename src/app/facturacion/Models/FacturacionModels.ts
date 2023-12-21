@@ -196,11 +196,11 @@ export const encabezados = Object.freeze([
   {id: 'concepto', label: 'CONCEPTO'},
   // {id: 'anio', label: 'Año'},
   // {id: 'fechaPago', label: 'Fecha Pago'},
-  // {id: 'fechaCancelacion', label: 'Fecha Cancelación'},
   
   {id: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
-
+  
   {id: 'motivoCancelacion', label: 'Motivo Cancelación'},
+  {id: 'fechaCancelacion', label: 'Fecha Cancelación'},
   // {id: 'notas', label: 'Notas'},
   // {id: 'cobranzas', label: 'Cobranzas'},
   {id: 'totalNotasCredito', label: 'Total Notas Crédito'},

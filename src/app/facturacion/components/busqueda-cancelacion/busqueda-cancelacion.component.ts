@@ -633,6 +633,7 @@ export class BusquedaCancelacionComponent implements OnInit {
         cell.value = factura[encabezado.id]
         if(encabezado.id == 'total') {
           importePendiente = +cell.value
+          cell.value = this.formatCurrency(+cell.value)
         }
       })
       inicio++
@@ -646,6 +647,7 @@ export class BusquedaCancelacionComponent implements OnInit {
             cell.fill = fillNota
             if(encabezado.id == 'total') {
               importePendiente -= +cell.value
+              cell.value = this.formatCurrency(+cell.value)
             }
           })
           inicio++
@@ -661,6 +663,7 @@ export class BusquedaCancelacionComponent implements OnInit {
             cell.fill = fillCobranza
             if(encabezado.id == 'total') {
               importePendiente -= +cell.value
+              cell.value = this.formatCurrency(+cell.value)
             }
           })
           inicio++
@@ -696,6 +699,13 @@ export class BusquedaCancelacionComponent implements OnInit {
     //   worksheet.getCell(row, 9).numFmt = '0.00%';
     //   row++
     // })
+  }
+
+  formatCurrency (valor: number) {
+    return valor.toLocaleString('es-MX', {
+      style: 'currency',
+      currency: 'MXN',
+    })
   }
 
   ejecutarCancelacion() {
