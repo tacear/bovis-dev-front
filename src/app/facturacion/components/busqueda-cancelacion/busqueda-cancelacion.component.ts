@@ -115,6 +115,7 @@ export class BusquedaCancelacionComponent implements OnInit {
   cobranzaHeader = [
     'C Uuid Cobranza',
     'C Id MonedaP',
+    'No. CRP',
     'C Importe Pagado',
     'C Imp Saldo Ant',
     'C Importe Saldo Insoluto',
