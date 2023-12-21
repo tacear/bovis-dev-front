@@ -298,7 +298,29 @@ export class BusquedaCancelacionComponent implements OnInit {
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
       .subscribe((bus) => {
         //console.log(bus);
-        this.listBusquedaCompleto = bus.data;
+        this.listBusquedaCompleto = bus.data.map(factura => {
+          
+          let importePendiente = 0
+          
+          importePendiente = factura.total
+
+          if(factura.notas.length > 0) {
+            factura.notas.forEach(nota => {
+              importePendiente -= nota.nC_Total
+            })
+          }
+
+          if(factura.cobranzas.length > 0) {
+            factura.cobranzas.forEach(cobranza => {
+              importePendiente -= +cobranza.c_ImportePagado
+            })
+          }
+
+          return ({
+            ...factura,
+            importePendiente
+          })
+        });
         //console.log(this.listBusquedaCompleto);
         // this.listBusquedaUnique = [
         //   ...new Map(
@@ -364,6 +386,7 @@ export class BusquedaCancelacionComponent implements OnInit {
       {key: 'ivaRet', label: 'IVA RET'},
       {key: 'total', label: 'TOTAL'},
       {key: 'concepto', label: 'CONCEPTO'},
+      {key: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
       // {key: 'anio', label: 'Año'},
       // {key: 'fechaPago', label: 'Fecha Pago'},
       // {key: 'fechaCancelacion', label: 'Fecha Cancelacion'},
@@ -625,7 +648,6 @@ export class BusquedaCancelacionComponent implements OnInit {
     this.listBusquedaCompleto.forEach(factura => {
       const inicioFactura = inicio
       let columnaImportePendiente = 0
-      let importePendiente = 0
       encabezados.forEach((encabezado, indexE) => {
         if(encabezado.id == 'importePendientePorPagar') {
           columnaImportePendiente = indexE + 1
@@ -633,7 +655,6 @@ export class BusquedaCancelacionComponent implements OnInit {
         let cell = worksheet.getCell(inicio, indexE + 1)
         cell.value = factura[encabezado.id]
         if(encabezado.id == 'total') {
-          importePendiente = +cell.value
           cell.value = this.formatCurrency(+cell.value)
         }
       })
@@ -647,7 +668,6 @@ export class BusquedaCancelacionComponent implements OnInit {
             cell.value = nota[campo]
             cell.fill = fillNota
             if(encabezado.id == 'total') {
-              importePendiente -= +cell.value
               cell.value = this.formatCurrency(+cell.value)
             }
           })
@@ -663,7 +683,6 @@ export class BusquedaCancelacionComponent implements OnInit {
             cell.value = cobranza[campo]
             cell.fill = fillCobranza
             if(encabezado.id == 'total') {
-              importePendiente -= +cell.value
               cell.value = this.formatCurrency(+cell.value)
             }
           })
@@ -673,7 +692,7 @@ export class BusquedaCancelacionComponent implements OnInit {
 
       // Cálculos
       let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
-      cell.value = importePendiente
+      cell.value = this.formatCurrency(factura['importePendiente'])
 
     })
 
