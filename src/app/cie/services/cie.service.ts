@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from 'src/environments/environment';
-import { CieClasificacionesPYResponse, CieConceptosResponse, CieCuentasListaResponse, CieCuentasResponse, CieElementPost, CieEmpresasResponse, CieNumsProyectoResponse, CieProyectosResponse, CieRegistroUResponse, CieRegistrosPaginadosResponse, CieResponsablesResponse } from '../models/cie.models';
+import { CargaCuentasResponse, CieClasificacionesPYResponse, CieConceptosResponse, CieCuentasListaResponse, CieCuentasResponse, CieElementPost, CieEmpresasResponse, CieNumsProyectoResponse, CieProyectosResponse, CieRegistroUResponse, CieRegistrosPaginadosResponse, CieResponsablesResponse } from '../models/cie.models';
 import { GenericResponse } from 'src/app/empleados/Models/empleados';
 
 interface StringRequest {
@@ -87,6 +87,6 @@ export class CieService {
   }
 
   cargarCuentasNuevas(body: any) {
-    return this.http.post<GenericResponse>(`${this.baseUrl}api/Cie/Cuentas/Agregar`, body)
+    return this.http.post<CargaCuentasResponse>(`${this.baseUrl}api/Cie/Cuentas/Agregar`, body)
   }
 }

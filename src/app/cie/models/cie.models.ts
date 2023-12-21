@@ -197,3 +197,27 @@ export interface CieRegistroU {
   idArchivo:       null;
   nombreArchivo:   null;
 }
+
+export interface CargaCuentasResponse {
+  data:          CargaCuenta[];
+  success:       boolean;
+  message:       null;
+  transactionId: null;
+}
+
+export interface CargaCuenta {
+  ctaContable:                 string;
+  nombreCtaContable:           string;
+  concepto:                    string;
+  tipoCtaContableMayor:        string;
+  tipoCtaContablePrimerNivel:  string;
+  tipoCtaContableSegundoNivel: string;
+  idTipoCuenta:                number;
+  tipoCuenta:                  string;
+  idTipoResultado:             number;
+  tipoResultado:               string;
+  idPcs:                       null;
+  pcs:                         string;
+  idPcs2:                      null;
+  pcs2:                        string;
+}

@@ -42,8 +42,9 @@ export class CargaSaeComponent implements OnInit {
   cuentas: string[] = []
   proyectos: string[] = []
   cuentasFaltantes: {
-    cuenta:   string,
-    concepto: string
+    cuenta:         string,
+    nombre_cuenta:  string,
+    concepto:       string
   }[] = []
 
   proyectosEncontrados: any = {}
@@ -158,7 +159,7 @@ export class CargaSaeComponent implements OnInit {
               if(conceptoSplit.length >= 2) {
                 conceptoCuenta = conceptoSplit[1].trim()
               }
-              this.cuentasFaltantes.push({cuenta: keyCuenta, concepto: conceptoCuenta})
+              this.cuentasFaltantes.push({cuenta: keyCuenta, nombre_cuenta: conceptoCuenta, concepto: normalRecord.concepto})
               cuentasArreglo.push(keyCuenta)
             }
           }
@@ -268,7 +269,7 @@ export class CargaSaeComponent implements OnInit {
             contentStyle: {overflow: 'auto'},
             dismissableMask: true,
             data: {
-              cuentas: this.cuentasFaltantes
+              cuentas: data.data
             }
           })
           this.cuentasFaltantes = []
