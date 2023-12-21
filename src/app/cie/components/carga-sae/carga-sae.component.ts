@@ -9,6 +9,7 @@ import { finalize, forkJoin } from 'rxjs';
 import { DialogService } from 'primeng/dynamicdialog';
 import { RegistrosCargadosComponent } from '../registros-cargados/registros-cargados.component';
 import { CuentasCargadasComponent } from '../cuentas-cargadas/cuentas-cargadas.component';
+import { ProyectosFaltantesComponent } from '../proyectos-faltantes/proyectos-faltantes.component';
 
 interface Option {
   name:   string,
@@ -46,6 +47,7 @@ export class CargaSaeComponent implements OnInit {
     nombre_cuenta:  string,
     concepto:       string
   }[] = []
+  proyectosFaltantes: string[] = []
 
   proyectosEncontrados: any = {}
   cuentasEncontradas: any = {}
@@ -163,6 +165,11 @@ export class CargaSaeComponent implements OnInit {
               cuentasArreglo.push(keyCuenta)
             }
           }
+
+          if(!noProyecto) {
+            this.proyectosFaltantes.push(keyProyecto)
+          }
+
           return {
             ...normalRecord,
             centro_costos:      normalRecord.centro_costos, //?.split('.')[0]
@@ -226,8 +233,25 @@ export class CargaSaeComponent implements OnInit {
   }
 
   cargar() {
+
+    if(this.proyectosFaltantes.length > 0) {
+      
+      this.dialogService.open(ProyectosFaltantesComponent, {
+        header: "Atención",
+        width: '50%',
+        contentStyle: {overflow: 'auto'},
+        dismissableMask: true,
+        data: {
+          proyectos: this.proyectosFaltantes
+        }
+      })
+
+      return;
+    }
+    
     this.sharedService.cambiarEstado(true)
-    console.log(this.jsonData)
+
+    // console.log(this.jsonData)
     // console.log(this.jsonData)
     this.cieService.cargarSae(this.jsonData, this.currentFileName)
       .pipe(
