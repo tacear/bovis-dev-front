@@ -657,6 +657,13 @@ export class BusquedaCancelacionComponent implements OnInit {
         if(encabezado.id == 'total') {
           cell.value = this.formatCurrency(+cell.value)
         }
+        if(encabezado.id == 'importe') {
+          cell.value = this.formatCurrency(+cell.value)
+        }
+        if(encabezado.id == 'iva') {
+          cell.value = this.formatCurrency(+cell.value)
+        }
+
       })
       inicio++
 
@@ -670,6 +677,13 @@ export class BusquedaCancelacionComponent implements OnInit {
             if(encabezado.id == 'total') {
               cell.value = this.formatCurrency(+cell.value)
             }
+            if(encabezado.id == 'importe') {
+              cell.value = this.formatCurrency(+cell.value)
+            }
+            if(encabezado.id == 'iva') {
+              cell.value = this.formatCurrency(+cell.value)
+            }
+
           })
           inicio++
         })
@@ -685,6 +699,13 @@ export class BusquedaCancelacionComponent implements OnInit {
             if(encabezado.id == 'total') {
               cell.value = this.formatCurrency(+cell.value)
             }
+            if(encabezado.id == 'importe') {
+              cell.value = this.formatCurrency(+cell.value)
+            }
+            if(encabezado.id == 'iva') {
+              cell.value = this.formatCurrency(+cell.value)
+            }
+            
           })
           inicio++
         })

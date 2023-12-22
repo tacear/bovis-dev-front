@@ -92,7 +92,7 @@ export interface CieRegistro {
   mes:             number;
   concepto:        string;
   centroCostos:    string;
-  proyectos:       string;
+  proyecto:       string;
   saldoInicial:    number;
   debe:            number;
   haber:           number;
