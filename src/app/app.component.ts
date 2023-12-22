@@ -160,7 +160,7 @@ export class AppComponent implements OnInit, OnDestroy {
   //   } else {
   //     this.authService.loginPopup()
   //       .subscribe((response: AuthenticationResult) => {
-  //         this.authService.instance.setActiveAccount(response.account);
+  //         this.authService.instance.setActiveAccount(response.account); 
   //       });
   //   }
   // }
