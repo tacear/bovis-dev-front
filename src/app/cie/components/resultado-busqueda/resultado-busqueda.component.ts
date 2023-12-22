@@ -182,7 +182,7 @@ export class ResultadoBusquedaComponent implements OnInit {
       mes:                registro.mes,
       concepto:           registro.concepto,
       centro_costos:      registro.centroCostos,
-      proyectos:          registro.proyectos,
+      proyectos:          registro.proyecto,
       saldo_inicial:      registro.saldoInicial,
       debe:               registro.debe,
       haber:              registro.haber,
