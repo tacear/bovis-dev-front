@@ -144,6 +144,7 @@ export class CargaSaeComponent implements OnInit {
       .subscribe(([infoCuentasR, infoProyectosR]) => {
 
         let cuentasArreglo = []
+        let proyectosArreglo = []
         this.cuentasFaltantes = []
         this.proyectosFaltantes = []
 
@@ -170,7 +171,10 @@ export class CargaSaeComponent implements OnInit {
           }
 
           if(!noProyecto) {
-            this.proyectosFaltantes.push(keyProyecto)
+            if(!proyectosArreglo.includes(keyProyecto)) {
+              this.proyectosFaltantes.push(keyProyecto)
+              proyectosArreglo.push(keyProyecto)
+            }
           }
 
           return {
