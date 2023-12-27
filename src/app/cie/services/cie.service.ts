@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { CargaCuentasResponse, CieClasificacionesPYResponse, CieConceptosResponse, CieCuentasListaResponse, CieCuentasResponse, CieElementPost, CieEmpresasResponse, CieNumsProyectoResponse, CieProyectosResponse, CieRegistroUResponse, CieRegistrosPaginadosResponse, CieResponsablesResponse } from '../models/cie.models';
 import { GenericResponse } from 'src/app/empleados/Models/empleados';
+import { ListaStringResponse } from 'src/models/general.model';
 
 interface StringRequest {
   data: string[]
@@ -80,6 +81,14 @@ export class CieService {
   
   getRegistro(id: number) {
     return this.http.get<CieRegistroUResponse>(`${this.baseUrl}api/Cie/Registro/${id}`)
+  }
+
+  getTiposPY() {
+    return this.http.get<ListaStringResponse>(`${this.baseUrl}api/Cie/TiposPY`)
+  }
+
+  getClasificacionesPY() {
+    return this.http.get<ListaStringResponse>(`${this.baseUrl}api/Cie/ClasificacionesPY`)
   }
 
   actualizarCieRegistro(body: any) {

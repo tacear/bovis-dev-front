@@ -5,8 +5,8 @@ import { MessageService, PrimeNGConfig } from 'primeng/api';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CieService } from '../../services/cie.service';
 import { CALENDAR, TITLES, errorsArray, mesesString } from 'src/utils/constants';
-import { finalize } from 'rxjs';
-import { Item } from 'src/models/general.model';
+import { finalize, forkJoin } from 'rxjs';
+import { Item, Opcion } from 'src/models/general.model';
 import { format } from 'date-fns';
 import { Location } from '@angular/common';
 
@@ -25,6 +25,9 @@ export class ModificarRegistroComponent implements OnInit {
   sharedService   = inject(SharedService)
   cieService      = inject(CieService)
   activatedRoute  = inject(ActivatedRoute)
+
+  tiposPY: Opcion[] = []
+  clasificacionesPY: Opcion[] = []
 
   constructor() { }
 
@@ -63,37 +66,46 @@ export class ModificarRegistroComponent implements OnInit {
     this.activatedRoute.params
       .subscribe(({id}) => {
         if(id) {
-          this.cieService.getRegistro(id)
-            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
-            .subscribe({
-              next: ({data}) => {
-                this.form.patchValue({
-                  id_cie: id,
-                  nombre_cuenta:      data.nombreCuenta,
-                  cuenta:             data.cuenta,
-                  tipo_poliza:        data.tipoPoliza,
-                  numero:             +data.numero,
-                  fecha:              new Date(data.fecha) as any,
-                  mes:                data.mes.toString(),
-                  concepto:           data.concepto,
-                  centro_costos:      data.centroCostos,
-                  proyectos:          data.proyectos,
-                  saldo_inicial:      data.saldoInicial,
-                  debe:               data.debe,
-                  haber:              data.haber,
-                  movimiento:         data.movimiento,
-                  empresa:            data.empresa,
-                  num_proyecto:       data.numProyecto,
-                  tipo_cuenta:        data.tipoCuenta || '',
-                  edo_resultados:     data.edoResultados || '',
-                  responsable:        data.responsable || '',
-                  tipo_proyecto:      data.tipoProyecto || '',
-                  tipo_py:            data.tipoPy || '',
-                  clasificacion_py:   data.clasificacionPy || ''
-                })
-              },
-              error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
-            })
+          
+          forkJoin([
+            this.cieService.getTiposPY(),
+            this.cieService.getCieClasificacionesPY(),
+            this.cieService.getRegistro(id)
+          ])
+          .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+          .subscribe({
+            next: (data) => {
+              const [tiposPYRes, clasificacionesPYRes, registroRes] = data
+              this.tiposPY = tiposPYRes.data.map(registro => ({code: registro.trim(), name: registro}))
+              this.clasificacionesPY = clasificacionesPYRes.data.map(registro => ({code: registro.trim(), name: registro}))
+              
+              this.form.patchValue({
+                id_cie: id,
+                nombre_cuenta:      registroRes.data.nombreCuenta,
+                cuenta:             registroRes.data.cuenta,
+                tipo_poliza:        registroRes.data.tipoPoliza,
+                numero:             +registroRes.data.numero,
+                fecha:              new Date(registroRes.data.fecha) as any,
+                mes:                registroRes.data.mes.toString(),
+                concepto:           registroRes.data.concepto,
+                centro_costos:      registroRes.data.centroCostos,
+                proyectos:          registroRes.data.proyectos,
+                saldo_inicial:      registroRes.data.saldoInicial,
+                debe:               registroRes.data.debe,
+                haber:              registroRes.data.haber,
+                movimiento:         registroRes.data.movimiento,
+                empresa:            registroRes.data.empresa,
+                num_proyecto:       registroRes.data.numProyecto,
+                tipo_cuenta:        registroRes.data.tipoCuenta || '',
+                edo_resultados:     registroRes.data.edoResultados || '',
+                responsable:        registroRes.data.responsable || '',
+                tipo_proyecto:      registroRes.data.tipoProyecto || '',
+                tipo_py:            registroRes.data.tipoPy || '',
+                clasificacion_py:   registroRes.data.clasificacionPy.trim() || ''
+              })
+            },
+            error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
+          })
         }
       })
   }

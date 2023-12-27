@@ -350,14 +350,19 @@
         </div>
         <div class="col-4">
             <label for="tipo_py">Tipo PY:</label>
-            <input 
-                id="tipo_py"
-                pInputText
-                class="form-control" 
-                maxlength="50" 
-                formControlName="tipo_py"
-                [ngClass]="{'ng-invalid ng-dirty': esInvalido('tipo_py')}"
-            >
+            <p-dropdown 
+              id="tipo_py"
+              [options]="tiposPY"
+              placeholder="Seleccionar una tipo" 
+              optionLabel="name" 
+              [showClear]="true"
+              [style]="{ width: '100%' }"
+              formControlName="tipo_py"
+              [ngClass]="{'ng-invalid ng-dirty': esInvalido('tipo_py')}"
+              optionValue="code"
+              [filter]="true" 
+              filterBy="name"
+            ></p-dropdown>
             <div *ngIf="esInvalido('tipo_py')">
             <small
                 class="error-msg"
@@ -368,14 +373,19 @@
         </div>
         <div class="col-4">
             <label for="clasificacion_py">Clasificación PY:</label>
-            <input 
-                id="clasificacion_py"
-                pInputText
-                class="form-control" 
-                maxlength="50" 
-                formControlName="clasificacion_py"
-                [ngClass]="{'ng-invalid ng-dirty': esInvalido('clasificacion_py')}"
-            >
+            <p-dropdown 
+              id="clasificacion_py"
+              [options]="clasificacionesPY"
+              placeholder="Seleccionar una clasificación" 
+              optionLabel="name" 
+              [showClear]="true"
+              [style]="{ width: '100%' }"
+              formControlName="clasificacion_py"
+              [ngClass]="{'ng-invalid ng-dirty': esInvalido('clasificacion_py')}"
+              optionValue="code"
+              [filter]="true" 
+              filterBy="name"
+            ></p-dropdown>
             <div *ngIf="esInvalido('clasificacion_py')">
             <small
                 class="error-msg"
