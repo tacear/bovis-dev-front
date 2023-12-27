@@ -107,32 +107,34 @@ export class CargaSaeComponent implements OnInit {
         } else {
           if(record.Concepto) {
             const cuenta = cuentaActual.split(' ')[2]
-            this.cuentas.push(cuenta)
-            this.proyectos.push(record.Proyectos)
-            tempNormalRecords.push({
-              // ...record, 
-              nombre_cuenta:      cuentaActual,
-              cuenta:             cuenta,
-              tipo_poliza:        record.__EMPTY,
-              numero:             +record.Numero,
-              fecha:              record.Fecha,
-              mes:                record.Fecha.split('/')[1],
-              concepto:           record.Concepto,
-              centro_costos:      record['Centro de costos']?.trim() ?? record['centros de costos']?.trim(),
-              proyectos:          record.Proyectos,
-              saldo_inicial:      record['Saldo inicial'],
-              debe:               record.Debe,
-              haber:              record.Haber,
-              movimiento:         record.Debe - record.Haber,
-              empresa:            this.selectedOption.name.trim(),
-              num_proyecto:       null, //record['Centro de costos'] ? +record['Centro de costos'].split('.')[0] : 0,
-              tipo_proyecto:      null,
-              edo_resultados:     null,
-              responsable:        null,
-              tipo_cuenta:        null,
-              tipo_py:            null,
-              clasificacion_py:   null
-            })
+            if(!['703002003'].includes(cuenta)) {
+              this.cuentas.push(cuenta)
+              this.proyectos.push(record.Proyectos)
+              tempNormalRecords.push({
+                // ...record, 
+                nombre_cuenta:      cuentaActual,
+                cuenta:             cuenta,
+                tipo_poliza:        record.__EMPTY,
+                numero:             +record.Numero,
+                fecha:              record.Fecha,
+                mes:                record.Fecha.split('/')[1],
+                concepto:           record.Concepto,
+                centro_costos:      record['Centro de costos']?.trim() ?? record['centros de costos']?.trim(),
+                proyectos:          record.Proyectos,
+                saldo_inicial:      record['Saldo inicial'],
+                debe:               record.Debe,
+                haber:              record.Haber,
+                movimiento:         record.Debe - record.Haber,
+                empresa:            this.selectedOption.name.trim(),
+                num_proyecto:       null, //record['Centro de costos'] ? +record['Centro de costos'].split('.')[0] : 0,
+                tipo_proyecto:      null,
+                edo_resultados:     null,
+                responsable:        null,
+                tipo_cuenta:        null,
+                tipo_py:            null,
+                clasificacion_py:   null
+              })
+            }
           }
         }
       })
