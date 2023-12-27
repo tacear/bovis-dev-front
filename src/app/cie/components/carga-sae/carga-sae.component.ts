@@ -10,6 +10,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { RegistrosCargadosComponent } from '../registros-cargados/registros-cargados.component';
 import { CuentasCargadasComponent } from '../cuentas-cargadas/cuentas-cargadas.component';
 import { ProyectosFaltantesComponent } from '../proyectos-faltantes/proyectos-faltantes.component';
+import { formatCurrency } from 'src/helpers/helpers';
 
 interface Option {
   name:   string,
@@ -232,7 +233,16 @@ export class CargaSaeComponent implements OnInit {
       },
       SheetNames: ['Detalle'],
     };
-    XLSX.utils.sheet_add_json(worksheet, this.jsonData, { origin: 'A2', skipHeader: true })
+    const jsonConFormato = this.jsonData.map(registro => {
+      return {
+        ...registro,
+        saldo_inicial: formatCurrency(registro.saldo_inicial),
+        debe: formatCurrency(registro.debe),
+        haber: formatCurrency(registro.haber),
+        movimiento: formatCurrency(registro.movimiento)
+      }
+    })
+    XLSX.utils.sheet_add_json(worksheet, jsonConFormato, { origin: 'A2', skipHeader: true })
     XLSX.utils.sheet_add_aoa(worksheet, [this.cieHeadersLocal]);
 
     // save to file

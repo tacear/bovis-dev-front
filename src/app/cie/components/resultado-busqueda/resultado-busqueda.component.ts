@@ -10,6 +10,7 @@ import { format } from 'date-fns';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import * as XLSX from 'xlsx';
+import { formatCurrency } from 'src/helpers/helpers';
 
 @Component({
   selector: 'app-resultado-busqueda',
@@ -183,10 +184,10 @@ export class ResultadoBusquedaComponent implements OnInit {
       concepto:           registro.concepto,
       centro_costos:      registro.centroCostos,
       proyectos:          registro.proyecto,
-      saldo_inicial:      registro.saldoInicial,
-      debe:               registro.debe,
-      haber:              registro.haber,
-      movimiento:         registro.movimiento,
+      saldo_inicial:      formatCurrency(registro.saldoInicial),
+      debe:               formatCurrency(registro.debe),
+      haber:              formatCurrency(registro.haber),
+      movimiento:         formatCurrency(registro.movimiento),
       empresa:            registro.empresa,
       num_proyecto:       registro.numProyecto,
       tipo_proyecto:      registro.tipoProyecto,
