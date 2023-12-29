@@ -44,7 +44,7 @@ export class ResultadoBusquedaComponent implements OnInit {
   numProyecto:      number
   responsable:      string
   clasificacionPY:  string
-  fechas:           Date[]
+  fechas:           Date[] = [new Date(), null]
 
   firstLoading:     boolean = true
 
