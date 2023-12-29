@@ -156,21 +156,26 @@
             </div>
         </div>
         <div class="col-4">
-            <label for="proyectos">Proyecto: <span class="required"></span></label>
-            <input 
-                id="proyectos"
-                pInputText
-                class="form-control" 
-                maxlength="50" 
-                formControlName="proyectos"
-                [ngClass]="{'ng-invalid ng-dirty': esInvalido('proyectos')}"
-            >
-            <div *ngIf="esInvalido('proyectos')">
-            <small
-                class="error-msg"
-            >
-                {{ obtenerMensajeError('proyectos') }}
-            </small>
+            <label for="num_proyecto">Proyecto: <span class="required"></span></label>
+            <p-dropdown 
+                id="num_proyecto" 
+                [options]="proyectosLista"
+                placeholder="Seleccionar una proyecto" 
+                optionLabel="name"
+                [showClear]="true"
+                [style]="{ width: '100%' }"
+                optionValue="code"
+                [filter]="true" 
+                filterBy="name"
+                formControlName="num_proyecto"
+                appendTo="body"
+            ></p-dropdown>
+            <div *ngIf="esInvalido('num_proyecto')">
+                <small
+                    class="error-msg"
+                >
+                    {{ obtenerMensajeError('num_proyecto') }}
+                </small>
             </div>
         </div>
         <div class="col-4">
@@ -259,7 +264,7 @@
             </small>
             </div>
         </div>
-        <div class="col-4">
+        <!-- <div class="col-4">
             <label for="num_proyecto">No. Proyecto: <span class="required"></span></label>
             <p-inputNumber 
                 id="num_proyecto"
@@ -275,7 +280,7 @@
                 {{ obtenerMensajeError('num_proyecto') }}
             </small>
             </div>
-        </div>
+        </div> -->
         <div class="col-4">
             <label for="tipo_cuenta">Tipo Cuenta:</label>
             <input 

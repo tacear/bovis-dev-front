@@ -181,6 +181,7 @@ export interface CieRegistroU {
   concepto:        string;
   centroCostos:    string;
   proyectos:       string;
+  proyecto?:       string;
   saldoInicial:    number;
   debe:            number;
   haber:           number;

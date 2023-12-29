@@ -9,6 +9,7 @@ import { finalize, forkJoin } from 'rxjs';
 import { Item, Opcion } from 'src/models/general.model';
 import { format } from 'date-fns';
 import { Location } from '@angular/common';
+import { TimesheetService } from 'src/app/timesheet/services/timesheet.service';
 
 @Component({
   selector: 'app-modificar-registro',
@@ -18,16 +19,18 @@ import { Location } from '@angular/common';
 })
 export class ModificarRegistroComponent implements OnInit {
 
-  config          = inject(PrimeNGConfig)
-  messageService  = inject(MessageService)
-  router          = inject(Router)
-  fb              = inject(FormBuilder)
-  sharedService   = inject(SharedService)
-  cieService      = inject(CieService)
-  activatedRoute  = inject(ActivatedRoute)
+  config            = inject(PrimeNGConfig)
+  messageService    = inject(MessageService)
+  router            = inject(Router)
+  fb                = inject(FormBuilder)
+  sharedService     = inject(SharedService)
+  cieService        = inject(CieService)
+  activatedRoute    = inject(ActivatedRoute)
+  timesheetService  = inject(TimesheetService)
 
   tiposPY: Opcion[] = []
   clasificacionesPY: Opcion[] = []
+  proyectosLista: Opcion[] = []
 
   constructor() { }
 
@@ -35,21 +38,21 @@ export class ModificarRegistroComponent implements OnInit {
 
   form = this.fb.group({
     id_cie:             [null, Validators.required],
-    nombre_cuenta:      ['Cta 0001', Validators.required],
-    cuenta:             ['AB12345', Validators.required],
-    tipo_poliza:        ['GR', Validators.required],
-    numero:             [100, Validators.required],
-    fecha:              ['15/07/2022', Validators.required],
-    mes:                ['06', Validators.required],
-    concepto:           ['Movimiento mes de Junio', Validators.required],
-    centro_costos:      ['ABCDEFG', Validators.required],
-    proyectos:          ['Construcción de edificios', Validators.required],
-    saldo_inicial:      [100000.8799, Validators.required],
-    debe:               [10000.0000, Validators.required],
-    haber:              [99000.8799, Validators.required],
-    movimiento:         [10000.0000, Validators.required],
-    empresa:            ['BOVIS', Validators.required],
-    num_proyecto:       [435, Validators.required],
+    nombre_cuenta:      ['', Validators.required],
+    cuenta:             ['', Validators.required],
+    tipo_poliza:        ['', Validators.required],
+    numero:             [0, Validators.required],
+    fecha:              ['', Validators.required],
+    mes:                ['', Validators.required],
+    concepto:           ['', Validators.required],
+    centro_costos:      ['', Validators.required],
+    proyectos:          [''],
+    saldo_inicial:      [0.0, Validators.required],
+    debe:               [0.0, Validators.required],
+    haber:              [0.0, Validators.required],
+    movimiento:         [0.0, Validators.required],
+    empresa:            ['', Validators.required],
+    num_proyecto:       ['0', Validators.required],
     tipo_cuenta:        [''],
     edo_resultados:     [''],
     responsable:        [''],
@@ -70,14 +73,16 @@ export class ModificarRegistroComponent implements OnInit {
           forkJoin([
             this.cieService.getTiposPY(),
             this.cieService.getCieClasificacionesPY(),
+            this.timesheetService.getCatProyectos(),
             this.cieService.getRegistro(id)
           ])
           .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
           .subscribe({
             next: (data) => {
-              const [tiposPYRes, clasificacionesPYRes, registroRes] = data
+              const [tiposPYRes, clasificacionesPYRes, proyectosRes, registroRes] = data
               this.tiposPY = tiposPYRes.data.map(registro => ({code: registro.trim(), name: registro}))
               this.clasificacionesPY = clasificacionesPYRes.data.map(registro => ({code: registro.trim(), name: registro}))
+              this.proyectosLista = proyectosRes.data.map(proyecto => ({code: proyecto.numProyecto.toString(), name: `${proyecto.numProyecto.toString()} - ${proyecto.nombre}`}))
               
               this.form.patchValue({
                 id_cie: id,
@@ -89,13 +94,13 @@ export class ModificarRegistroComponent implements OnInit {
                 mes:                registroRes.data.mes.toString(),
                 concepto:           registroRes.data.concepto,
                 centro_costos:      registroRes.data.centroCostos,
-                proyectos:          registroRes.data.proyectos,
+                proyectos:          registroRes.data.proyecto,
                 saldo_inicial:      registroRes.data.saldoInicial,
                 debe:               registroRes.data.debe,
                 haber:              registroRes.data.haber,
                 movimiento:         registroRes.data.movimiento,
                 empresa:            registroRes.data.empresa,
-                num_proyecto:       registroRes.data.numProyecto,
+                num_proyecto:       registroRes.data.numProyecto.toString(),
                 tipo_cuenta:        registroRes.data.tipoCuenta || '',
                 edo_resultados:     registroRes.data.edoResultados || '',
                 responsable:        registroRes.data.responsable || '',
@@ -150,6 +155,15 @@ export class ModificarRegistroComponent implements OnInit {
     const body = {
       ...this.form.value,
       fecha: format(new Date(this.form.value.fecha || null), 'dd/MM/Y'),
+    }
+
+    let nuevoProyecto = ''
+    const proyectoIndex = this.proyectosLista.findIndex(proyecto => proyecto.code === this.form.value.num_proyecto)
+    if(proyectoIndex >= 0) {
+      nuevoProyecto = this.proyectosLista.at(proyectoIndex).name
+      this.form.patchValue({
+        proyectos: nuevoProyecto
+      })
     }
 
     this.cieService.actualizarCieRegistro(body)
