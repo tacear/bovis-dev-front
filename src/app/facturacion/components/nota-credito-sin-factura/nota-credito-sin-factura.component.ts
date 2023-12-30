@@ -12,6 +12,7 @@ import * as ExcelJS from 'exceljs';
 import { saveAs } from 'file-saver';
 import { FormBuilder, Validators } from '@angular/forms';
 import { format } from 'date-fns';
+import { formatCurrency } from 'src/helpers/helpers';
 
 @Component({
   selector: 'app-nota-credito-sin-factura',
@@ -272,9 +273,9 @@ export class NotaCreditoSinFacturaComponent implements OnInit {
       worksheet.getCell(row + index, 1).value = nota.chuuid_nota_credito
       worksheet.getCell(row + index, 2).value = nota.nunum_proyecto 
       worksheet.getCell(row + index, 3).value = nota.nukidmoneda
-      worksheet.getCell(row + index, 4).value = nota.nuimporte
-      worksheet.getCell(row + index, 5).value = nota.nuiva
-      worksheet.getCell(row + index, 6).value = nota.nutotal
+      worksheet.getCell(row + index, 4).value = formatCurrency(nota.nuimporte)
+      worksheet.getCell(row + index, 5).value = formatCurrency(nota.nuiva)
+      worksheet.getCell(row + index, 6).value = formatCurrency(nota.nutotal)
       worksheet.getCell(row + index, 7).value = nota.chconcepto
       worksheet.getCell(row + index, 8).value = nota.numes 
       worksheet.getCell(row + index, 9).value = nota.nuanio

@@ -654,13 +654,8 @@ export class BusquedaCancelacionComponent implements OnInit {
         }
         let cell = worksheet.getCell(inicio, indexE + 1)
         cell.value = factura[encabezado.id]
-        if(encabezado.id == 'total') {
-          cell.value = this.formatCurrency(+cell.value)
-        }
-        if(encabezado.id == 'importe') {
-          cell.value = this.formatCurrency(+cell.value)
-        }
-        if(encabezado.id == 'iva') {
+        const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet'] 
+        if(encabezadosRedondeados.includes(encabezado.id)) {
           cell.value = this.formatCurrency(+cell.value)
         }
 
