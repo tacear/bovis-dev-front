@@ -301,8 +301,10 @@ export class BusquedaCancelacionComponent implements OnInit {
         this.listBusquedaCompleto = bus.data.map(factura => {
           
           let importePendiente = 0
+          let importeEnPesos = 0
           
           importePendiente = factura.total
+          importeEnPesos = factura.idMoneda === 'MXN' ? factura.importe : factura.importe * factura.tipoCambio
 
           if(factura.notas.length > 0) {
             factura.notas.forEach(nota => {
@@ -318,6 +320,7 @@ export class BusquedaCancelacionComponent implements OnInit {
 
           return ({
             ...factura,
+            importeEnPesos,
             importePendiente
           })
         });
@@ -382,6 +385,7 @@ export class BusquedaCancelacionComponent implements OnInit {
       {key: 'idMoneda', label: 'MONEDA'},
       {key: 'tipoCambio', label: 'TIPO DE CAMBIO'},
       {key: 'importe', label: 'IMPORTE'},
+      {key: 'importeEnPesos', label: 'IMPORTE EN PESOS'},
       {key: 'iva', label: 'I.V.A.'},
       {key: 'ivaRet', label: 'IVA RET'},
       {key: 'total', label: 'TOTAL'},
