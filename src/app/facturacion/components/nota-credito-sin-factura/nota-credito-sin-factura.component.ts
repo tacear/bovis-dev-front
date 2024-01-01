@@ -13,11 +13,14 @@ import { saveAs } from 'file-saver';
 import { FormBuilder, Validators } from '@angular/forms';
 import { format } from 'date-fns';
 import { formatCurrency } from 'src/helpers/helpers';
+import { DialogService } from 'primeng/dynamicdialog';
+import { VincularNotaCreditoComponent } from '../vincular-nota-credito/vincular-nota-credito.component';
 
 @Component({
   selector: 'app-nota-credito-sin-factura',
   templateUrl: './nota-credito-sin-factura.component.html',
-  styleUrls: ['./nota-credito-sin-factura.component.css']
+  styleUrls: ['./nota-credito-sin-factura.component.css'],
+  providers: [MessageService, DialogService]
 })
 export class NotaCreditoSinFacturaComponent implements OnInit {
 
@@ -26,6 +29,7 @@ export class NotaCreditoSinFacturaComponent implements OnInit {
   timesheetService  = inject(TimesheetService)
   sharedService     = inject(SharedService)
   fb                = inject(FormBuilder)
+  dialogService     = inject(DialogService)
 
   isLoadingFacturas: boolean = false;
   fileSizeMax = 1000000;
@@ -334,6 +338,24 @@ export class NotaCreditoSinFacturaComponent implements OnInit {
     })
 
     return mensaje
+  }
+
+  vicularNotaCredito(nota: NotaCreditoSF, i: number) {
+
+    this.dialogService.open(VincularNotaCreditoComponent, {
+      header: 'Vincular Nota de crédito',
+      width: '50%',
+      contentStyle: {overflow: 'auto'},
+      data: {
+        nota,
+      }
+    })
+    .onClose.subscribe((result) => {
+      if(result && result.ok) {
+        this.listBusquedaCompleto.splice(i, 1)
+        this.messageService.add({severity: "success", summary: TITLES.success, detail: "Nota vinculada."});
+      }
+    })
   }
 
 }
