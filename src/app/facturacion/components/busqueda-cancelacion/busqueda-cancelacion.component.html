@@ -159,14 +159,14 @@
               pTooltip="Ver notas de crédito" 
               styleClass="p-button-rounded p-button-secondary p-button-text"
               tooltipPosition="left"
-              (click)="bus.totalNotasCredito > 0 && show(true, bus.uuid)"
-              [disabled]="bus.totalNotasCredito <= 0" 
+              (click)="calcularNotasCreditoCobranzas(bus) > 0 && show(true, bus.uuid)"
+              [disabled]="calcularNotasCreditoCobranzas(bus) <= 0" 
             >
               <i 
                 class="pi pi-file text-2xl" 
                 pBadge
-                [badgeDisabled]="bus.totalNotasCredito <= 0" 
-                [value]="bus.totalNotasCredito" 
+                [badgeDisabled]="calcularNotasCreditoCobranzas(bus) <= 0" 
+                [value]="calcularNotasCreditoCobranzas(bus).toString()" 
                 severity="danger"
               ></i>
             </p-button>
@@ -178,14 +178,14 @@
               pTooltip="Ver pago" 
               styleClass="p-button-rounded p-button-secondary p-button-text"
               tooltipPosition="left"
-              (click)="bus.totalCobranzas > 0 && show(false, bus.uuid)"
-              [disabled]="bus.totalCobranzas <= 0" 
+              (click)="calcularNotasCreditoCobranzas(bus, false) > 0 && show(false, bus.uuid)"
+              [disabled]="calcularNotasCreditoCobranzas(bus, false) <= 0" 
             >
               <i 
                 class="pi pi-dollar text-2xl" 
                 pBadge 
-                [badgeDisabled]="bus.totalCobranzas <= 0" 
-                [value]="bus.totalCobranzas" 
+                [badgeDisabled]="calcularNotasCreditoCobranzas(bus, false) <= 0" 
+                [value]="calcularNotasCreditoCobranzas(bus, false).toString()" 
                 severity="danger"
               ></i>
             </p-button>

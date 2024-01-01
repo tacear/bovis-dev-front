@@ -562,6 +562,18 @@ export class BusquedaCancelacionComponent implements OnInit {
     this.displayModal = false;
   }
 
+  calcularNotasCreditoCobranzas(bus: BusquedaCancelacion, esNotaCredito = true) {
+    let total = 0
+    
+    const registos = esNotaCredito 
+    ? bus.notas.filter(nota => nota.nC_FechaCancelacion == null)
+    : bus.cobranzas.filter(cobro => cobro.c_FechaCancelacion == null)
+
+    total = registos.length
+
+    return total;
+  }
+
   show(tipoModal: boolean, uuid: string) {
 
     const facturaIndex = this.listBusquedaCompleto.findIndex(factura => factura.uuid === uuid)
@@ -614,15 +626,19 @@ export class BusquedaCancelacionComponent implements OnInit {
   _setXLSXTitles(worksheet: ExcelJS.Worksheet) {
 
     const fillNota: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ff91d2ff' } }
+    const fillNotaCancelada: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ffff5733' } }
     const fillCobranza: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ffa4ffa4' } }
     const alignment: Partial<ExcelJS.Alignment> = { vertical: 'middle', horizontal: 'center', wrapText: true }
 
-    worksheet.getCell('S2').value = 'Nota de crédito'
-    worksheet.getCell('S2').fill = fillNota
+    worksheet.getCell('Q2').value = 'Nota de crédito'
+    worksheet.getCell('Q2').fill = fillNota
+    worksheet.getCell('Q2').alignment = alignment
+    worksheet.getCell('R2').value = 'Complemento de pago'
+    worksheet.getCell('R2').fill = fillCobranza
+    worksheet.getCell('R2').alignment = alignment
+    worksheet.getCell('S2').value = 'Nota de crédito cancelada'
+    worksheet.getCell('S2').fill = fillNotaCancelada
     worksheet.getCell('S2').alignment = alignment
-    worksheet.getCell('T2').value = 'Complemento de pago'
-    worksheet.getCell('T2').fill = fillCobranza
-    worksheet.getCell('T2').alignment = alignment
   }
 
   _setXLSXHeader(worksheet: ExcelJS.Worksheet) {
@@ -641,6 +657,7 @@ export class BusquedaCancelacionComponent implements OnInit {
   _setXLSXContent(worksheet: ExcelJS.Worksheet) {
 
     const fillNota: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ff91d2ff' } }
+    const fillNotaCancelada: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ffff5733' } }
     const fillCobranza: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ffa4ffa4' } }
 
     let inicio = 5
@@ -668,15 +685,15 @@ export class BusquedaCancelacionComponent implements OnInit {
             let cell = worksheet.getCell(inicio, indexE + 1)
             const campo = this.equivalentesNotas[encabezado.id]
             cell.value = nota[campo]
-            cell.fill = fillNota
+            cell.fill = nota['nC_FechaCancelacion'] ? fillNotaCancelada : fillNota
             if(encabezado.id == 'total') {
-              cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
             if(encabezado.id == 'importe') {
-              cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
             if(encabezado.id == 'iva') {
-              cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
 
           })

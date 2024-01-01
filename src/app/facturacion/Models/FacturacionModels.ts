@@ -109,6 +109,8 @@ export interface NotaCredito {
   nC_Anio:             number;
   nC_TipoCambio:       string | null;
   nC_FechaNotaCredito: string;
+  nC_FechaCancelacion: string;
+  cliente:             string;
 }
 
 export interface Cobranza {
@@ -121,6 +123,10 @@ export interface Cobranza {
   c_IvaP:                 number;
   c_TipoCambioP:          number;
   c_FechaPago:            string;
+  c_FechaCancelacion:     string;
+  crp:                    string;
+  base:                   number;
+  cliente:                string;
 }
 
 
@@ -219,6 +225,7 @@ export const equivalenteFacturaNota = Object.freeze([
   {padre: 'concepto', hijo: 'nC_Concepto'},
   {padre: 'mes', hijo: 'nC_Mes'},
   {padre: 'anio', hijo: 'nC_Anio'},
+  {padre: 'fechaCancelacion', hijo: 'nC_FechaCancelacion'},
   {padre: 'tipoCambio', hijo: 'nC_TipoCambio'},
   {padre: 'fechaEmision', hijo: 'nC_FechaNotaCredito'}
 ])
