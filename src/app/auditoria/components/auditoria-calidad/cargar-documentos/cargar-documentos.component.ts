@@ -137,6 +137,7 @@ export class CargarDocumentosComponent implements OnInit {
             .subscribe({
               next: (data) => {
                 auditoria.tieneDocumento = true
+                auditoria.ultimoDocumentoValido = true
                 this.messageService.add({severity: 'success', summary: 'Documento cargado', detail: 'El documento ha sido cargado correctamente'})
               },
               error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
