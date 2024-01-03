@@ -59,7 +59,7 @@ export class SeguimientoComponent implements OnInit {
     .subscribe({
       next: (value) => {
         const [proyectosR] = value
-        this.proyectos = proyectosR.data.map(proyecto => ({code: proyecto.numProyecto.toString(), name: proyecto.nombre}))
+        this.proyectos = proyectosR.data.map(proyecto => ({code: proyecto.numProyecto.toString(), name: `${proyecto.numProyecto} - ${proyecto.nombre}`}))
       },
       error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
     })
