@@ -90,6 +90,8 @@ export class SeguimientoComponent implements OnInit {
 
     this.totalDocumentos = 0
     this.totalDocumentosValidados = 0
+    
+    this.auditorias.clear()
 
     this.auditoriaService.getProyectoCumplimiento(id)
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
@@ -112,7 +114,7 @@ export class SeguimientoComponent implements OnInit {
                 seccion:                [seccion.chSeccion],
               }))
               this.totalDocumentos += +auditoria.aplica
-              this.totalDocumentosValidados += auditoria.tieneDocumento ? +auditoria.ultimoDocumentoValido : 0
+              this.totalDocumentosValidados += (auditoria.aplica && auditoria.tieneDocumento) ? +auditoria.ultimoDocumentoValido : 0
             })
           })
         },
