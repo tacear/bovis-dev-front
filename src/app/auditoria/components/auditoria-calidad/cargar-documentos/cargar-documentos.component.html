@@ -84,7 +84,7 @@
           ></p-fileUpload>
         </div>
         <div class="col-2 text-center">
-          <label><strong>{{ auditoria.ultimoDocumentoValido ? 'Sí' : 'No' }}</strong></label>
+          <label><strong>{{ (auditoria.tieneDocumento && auditoria.ultimoDocumentoValido) ? 'Sí' : 'No' }}</strong></label>
         </div>
         <div class="col-12">
           <p-divider></p-divider>

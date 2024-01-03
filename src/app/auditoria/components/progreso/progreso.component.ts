@@ -18,7 +18,7 @@ export class ProgresoComponent implements OnInit {
       return 0
     }
     
-    return (this.totalDocumentos / this.totalDocumentosValidados) * 100
+    return Math.round((this.totalDocumentosValidados / this.totalDocumentos) * 100)
   }
 
   ngOnInit(): void {}

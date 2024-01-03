@@ -111,12 +111,10 @@ export class SeguimientoComponent implements OnInit {
                 id_documento:           [auditoria.idDocumento],
                 seccion:                [seccion.chSeccion],
               }))
-              this.totalDocumentos += auditoria.cantidadDocumentos
-              this.totalDocumentosValidados += auditoria.cantidadDocumentosValidados
+              this.totalDocumentos += +auditoria.aplica
+              this.totalDocumentosValidados += auditoria.tieneDocumento ? +auditoria.ultimoDocumentoValido : 0
             })
           })
-
-          console.log(this.auditorias.value)
         },
         error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
       })

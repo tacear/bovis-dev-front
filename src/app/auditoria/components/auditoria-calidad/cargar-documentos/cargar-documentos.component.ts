@@ -96,8 +96,8 @@ export class CargarDocumentosComponent implements OnInit {
           this.secciones = data
           this.secciones.forEach(seccion => {
             seccion.auditorias.forEach(auditoria => {
-              this.totalDocumentos += auditoria.cantidadDocumentos
-              this.totalDocumentosValidados += auditoria.cantidadDocumentosValidados
+              this.totalDocumentos += +auditoria.aplica
+              this.totalDocumentosValidados += auditoria.tieneDocumento ? +auditoria.ultimoDocumentoValido : 0
             })
           })
         },
