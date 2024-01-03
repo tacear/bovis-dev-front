@@ -675,7 +675,7 @@ export class BusquedaCancelacionComponent implements OnInit {
         }
         let cell = worksheet.getCell(inicio, indexE + 1)
         cell.value = factura[encabezado.id]
-        const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet'] 
+        const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet', 'importeEnPesos'] 
         if(encabezadosRedondeados.includes(encabezado.id)) {
           cell.value = this.formatCurrency(+cell.value)
         }
@@ -698,6 +698,12 @@ export class BusquedaCancelacionComponent implements OnInit {
             }
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
+            }
+            if(encabezado.id == 'importeEnPesos') {
+              let importeEnPesos = 0
+              
+              importeEnPesos = nota['nC_IdMoneda'] === 'MXN' ? nota['nC_Importe'] : nota['nC_Importe'] * +nota['nC_TipoCambio']
+              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : importeEnPesos)
             }
 
           })
