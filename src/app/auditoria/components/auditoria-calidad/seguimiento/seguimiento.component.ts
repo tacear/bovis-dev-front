@@ -38,6 +38,9 @@ export class SeguimientoComponent implements OnInit {
 
   proyectos:  Opcion[] = []
   secciones:  Seccion[] = []
+  
+  totalDocumentos: number = 0
+  totalDocumentosValidados: number = 0
 
   constructor() { }
 
@@ -85,6 +88,9 @@ export class SeguimientoComponent implements OnInit {
   getSeccionesPorId(id: number) {
     this.sharedService.cambiarEstado(true)
 
+    this.totalDocumentos = 0
+    this.totalDocumentosValidados = 0
+
     this.auditoriaService.getProyectoCumplimiento(id)
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
       .subscribe({
@@ -105,6 +111,8 @@ export class SeguimientoComponent implements OnInit {
                 id_documento:           [auditoria.idDocumento],
                 seccion:                [seccion.chSeccion],
               }))
+              this.totalDocumentos += auditoria.cantidadDocumentos
+              this.totalDocumentosValidados += auditoria.cantidadDocumentosValidados
             })
           })
 

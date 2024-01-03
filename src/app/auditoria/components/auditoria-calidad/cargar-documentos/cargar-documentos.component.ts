@@ -43,6 +43,9 @@ export class CargarDocumentosComponent implements OnInit {
 
   proyectos:  Opcion[] = []
   secciones:  Seccion[] = []
+
+  totalDocumentos: number = 0
+  totalDocumentosValidados: number = 0
   
   constructor() { }
 
@@ -84,11 +87,19 @@ export class CargarDocumentosComponent implements OnInit {
     this.sharedService.cambiarEstado(true)
     const {value: id} = event
 
+    this.totalDocumentos = 0
+    this.totalDocumentosValidados = 0
     this.auditoriaService.getProyectoCumplimiento(id)
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
       .subscribe({
         next: ({data}) => {
           this.secciones = data
+          this.secciones.forEach(seccion => {
+            seccion.auditorias.forEach(auditoria => {
+              this.totalDocumentos += auditoria.cantidadDocumentos
+              this.totalDocumentosValidados += auditoria.cantidadDocumentosValidados
+            })
+          })
         },
         error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
       })
