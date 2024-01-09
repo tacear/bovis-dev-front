@@ -126,6 +126,7 @@ export class CargarDocumentosComponent implements OnInit {
       const body = {
         id_auditoria_proyecto:  auditoria.idAuditoria,
         motivo:                 'Documento',
+        nombre_documento:       archivo.name,
         documento_base64
       }
 

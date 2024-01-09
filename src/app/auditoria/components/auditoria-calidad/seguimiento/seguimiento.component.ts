@@ -174,7 +174,7 @@ export class SeguimientoComponent implements OnInit {
 
     this.dialogService.open(VerDocumentosComponent, {
       header: 'Documentos cargados',
-      width: '50%',
+      width: '90%',
       height: '450px',
       contentStyle: {overflow: 'auto'},
       data: {idAuditoria}

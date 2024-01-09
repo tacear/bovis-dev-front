@@ -60,10 +60,11 @@ export interface DocumentosResponse {
 }
 
 export interface Documento {
-  idDocumento:                     number;
-  idAuditoriaCumplimientoProyecto: number;
-  motivo:                          string;
-  fecha:                           string;
-  documentoBase64:                 string;
-  valido:                          boolean;
+  idDocumento:                      number;
+  idAuditoriaCumplimientoProyecto:  number;
+  motivo:                           string;
+  fecha:                            string;
+  documentoBase64:                  string;
+  nombreDocumento:                  string;
+  valido:                           boolean;
 }
