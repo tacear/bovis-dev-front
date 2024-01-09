@@ -54,17 +54,17 @@ export class IpComponent implements OnInit {
       id_responsable_construccion:    [null],
       id_responsable_ehs:             [null],
       id_responsable_supervisor:      [null],
-      id_cliente:                     [null],
-      id_empresa:                     [null],
+      id_cliente:                     ['', [Validators.required]],
+      id_empresa:                     ['', [Validators.required]],
       id_director_ejecutivo:          ['', [Validators.required]],
       costo_promedio_m2:              [null],
       fecha_inicio:                   [null],
       fecha_fin:                      [null],
       // total_meses, Validators.required
-      nombre_contacto:                [null, Validators.required],
-      posicion_contacto:              [null, Validators.required],
-      telefono_contacto:              [null, Validators.required],
-      correo_contacto:                [null, Validators.required]
+      nombre_contacto:                [null],
+      posicion_contacto:              [null],
+      telefono_contacto:              [null],
+      correo_contacto:                [null]
   })
 
   constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService, private activatedRoute: ActivatedRoute) { }
@@ -116,8 +116,8 @@ export class IpComponent implements OnInit {
                     id_responsable_construccion:    proyectoData.nukidresponsable_construccion,
                     id_responsable_ehs:             proyectoData.nukidresponsable_ehs,
                     id_responsable_supervisor:      proyectoData.nukidresponsable_supervisor,
-                    id_cliente:                     proyectoData.nukidcliente,
-                    id_empresa:                     proyectoData.nukidempresa,
+                    id_cliente:                     proyectoData.nukidcliente.toString(),
+                    id_empresa:                     proyectoData.nukidempresa.toString(),
                     id_director_ejecutivo:          proyectoData.nukiddirector_ejecutivo.toString(),
                     costo_promedio_m2:              proyectoData.nucosto_promedio_m2,
                     fecha_inicio:                   proyectoData.dtfecha_ini != '' ? new Date(proyectoData.dtfecha_ini) as any : null,
