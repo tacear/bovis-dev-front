@@ -34,7 +34,9 @@ export class SeleccionarDocumentosComponent implements OnInit {
 
   proyectos:  Opcion[] = []
   secciones:  Seccion[] = []
-
+  
+  Label_cumplimiento: string;
+  
   constructor() { }
 
   get auditorias() {
@@ -43,6 +45,12 @@ export class SeleccionarDocumentosComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.cambiarEstado(true)
+
+    if(this.auditoriaService.esLegal){
+      this.Label_cumplimiento = "Descripción del entregable"
+    }else{
+      this.Label_cumplimiento = "Cumplimiento"
+    }
 
     forkJoin([
       this.auditoriaService.getCumplimiento(),
