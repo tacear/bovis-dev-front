@@ -208,7 +208,7 @@
                 width: '100%',
                 display: 'inline-flex',
                 height: '39px'
-              }" dateFormat="dd/mm/yy" [disabled]="isConsulta" formControlName="fecha_inicio"></p-calendar>
+              }" dateFormat="dd/mm/yy" [disabled]="isConsulta" formControlName="fecha_inicio" (onSelect)="actualizarTotalMeses()"></p-calendar>
               </div>
               <div class="col-4">
                 <label for="email">Fin del proyecto: </label>
@@ -216,11 +216,11 @@
                 width: '100%',
                 display: 'inline-flex',
                 height: '39px'
-              }" dateFormat="dd/mm/yy" [disabled]="isConsulta" formControlName="fecha_fin"></p-calendar>
+              }" dateFormat="dd/mm/yy" [disabled]="isConsulta" formControlName="fecha_fin" (onSelect)="actualizarTotalMeses()"></p-calendar>
               </div>
               <div class="col-4">
                 <label for="email">Total en meses:</label>
-                <input type="number" id="typeNumber" class="form-control" [disabled]="true" />
+                <input type="number" id="typeNumber" class="form-control" formControlName="total_meses" [disabled]="true" />
               </div>
             </div>
   

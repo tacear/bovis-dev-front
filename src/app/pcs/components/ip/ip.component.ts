@@ -7,7 +7,7 @@ import { PcsService } from '../../services/pcs.service';
 import { TITLES, errorsArray } from 'src/utils/constants';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { finalize } from 'rxjs';
-import { format } from 'date-fns';
+import { differenceInMonths, format } from 'date-fns';
 import { Proyecto } from '../../models/pcs.model';
 import { Opcion } from 'src/models/general.model';
 import { CieService } from 'src/app/cie/services/cie.service';
@@ -60,7 +60,7 @@ export class IpComponent implements OnInit {
       costo_promedio_m2:              [null],
       fecha_inicio:                   [null],
       fecha_fin:                      [null],
-      // total_meses, Validators.required
+      total_meses:                    [0],
       nombre_contacto:                [null],
       posicion_contacto:              [null],
       telefono_contacto:              [null],
@@ -123,6 +123,7 @@ export class IpComponent implements OnInit {
                     fecha_inicio:                   proyectoData.dtfecha_ini != '' ? new Date(proyectoData.dtfecha_ini) as any : null,
                     fecha_fin:                      proyectoData.dtfecha_fin != '' ? new Date(proyectoData.dtfecha_fin) as any : null
                   })
+                  this.actualizarTotalMeses()
                 }
               },
               error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
@@ -185,6 +186,17 @@ export class IpComponent implements OnInit {
       today: 'Hoy',
       clear: 'Limpiar',
     });
+  }
+
+  actualizarTotalMeses() {
+    console.log('first')
+    let total_meses = 0
+    
+    if(this.form.value.fecha_inicio && this.form.value.fecha_fin) {
+      total_meses = differenceInMonths(this.form.value.fecha_fin, this.form.value.fecha_inicio)
+    }
+
+    this.form.patchValue({ total_meses })
   }
 
   poblarCombos() {
