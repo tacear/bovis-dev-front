@@ -121,7 +121,11 @@ export class IpComponent implements OnInit {
                     id_director_ejecutivo:          proyectoData.nukiddirector_ejecutivo.toString(),
                     costo_promedio_m2:              proyectoData.nucosto_promedio_m2,
                     fecha_inicio:                   proyectoData.dtfecha_ini != '' ? new Date(proyectoData.dtfecha_ini) as any : null,
-                    fecha_fin:                      proyectoData.dtfecha_fin != '' ? new Date(proyectoData.dtfecha_fin) as any : null
+                    fecha_fin:                      proyectoData.dtfecha_fin != '' ? new Date(proyectoData.dtfecha_fin) as any : null,
+                    nombre_contacto:                proyectoData.chcontacto_nombre,
+                    posicion_contacto:              proyectoData.chcontacto_posicion,
+                    telefono_contacto:              proyectoData.chcontacto_telefono,
+                    correo_contacto:                proyectoData.chcontacto_correo
                   })
                   this.actualizarTotalMeses()
                 }

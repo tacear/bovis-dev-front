@@ -81,6 +81,10 @@ export interface Proyecto {
     nuporcantaje_participacion:       null;
     chalias_puesto:                   null;
     chgrupo_proyecto:                 null;
+    chcontacto_nombre?:               string;
+    chcontacto_posicion?:             string;
+    chcontacto_telefono?:             string;
+    chcontacto_correo?:               string;
 }
 
 export interface GastosIngresosSeccionesResponse {
