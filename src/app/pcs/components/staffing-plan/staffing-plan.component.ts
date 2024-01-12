@@ -245,7 +245,7 @@ export class StaffingPlanComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.empleados(etapaIndex).removeAt(empleadoIndex)
-          this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'La etapa ha sido eliminada.'})
+          this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'El empleado ha sido eliminada.'})
         }, 
         error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
       })
