@@ -11,7 +11,7 @@ import { differenceInMonths, format } from 'date-fns';
 import { Proyecto } from '../../models/pcs.model';
 import { Opcion } from 'src/models/general.model';
 import { CieService } from 'src/app/cie/services/cie.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-ip',
@@ -67,7 +67,7 @@ export class IpComponent implements OnInit {
       correo_contacto:                [null]
   })
 
-  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService, private activatedRoute: ActivatedRoute) { }
+  constructor(private config: PrimeNGConfig, private catServ: CatalogosService, private fb: FormBuilder, private pcsService: PcsService, private messageService: MessageService, private sharedService: SharedService, private cieService: CieService, private activatedRoute: ActivatedRoute, private router: Router) { }
 
   catalogosService = inject(CatalogosService)
   
@@ -213,7 +213,6 @@ export class IpComponent implements OnInit {
     this.cieService.getCieEmpresas()
       .subscribe({
         next: ({data}) => {
-          console.log(data);
           this.empresas = data.map(registro => ({name: registro.chempresa, code: registro.nukidempresa.toString()}))
         },
         error: (err) => this.empresas = []
@@ -323,6 +322,23 @@ export class IpComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'El proyecto ha sido guardado.'})
+          if(!this.catalogosService.esEdicion) {
+            
+            this.pcsService.enviarNuevoProyecto({
+              id:     +this.form.value.num_proyecto,
+              nombre: this.form.value.nombre_proyecto
+            })
+            
+            this.router.navigate([], {
+              relativeTo: this.activatedRoute,
+              queryParams: {
+                proyecto:   this.form.value.num_proyecto,
+                esEdicion:  1,
+                nuevo:      false
+              },
+              queryParamsHandling: 'merge'
+            })
+          }
         },
         error: (err) => {
           this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
