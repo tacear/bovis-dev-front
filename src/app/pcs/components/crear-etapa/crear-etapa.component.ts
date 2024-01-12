@@ -49,8 +49,8 @@ export class CrearEtapaComponent implements OnInit {
         })
       }
       if(data.fechaInicio && data.fechaFin) {
-        // this.fechaMinima = data.fechaInicio
-        // this.fechaMaxima = data.fechaFin
+        this.fechaMinima = data.fechaInicio
+        this.fechaMaxima = data.fechaFin
       }
     }
   }
