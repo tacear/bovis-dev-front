@@ -44,10 +44,12 @@ export class ModificarEmpleadoComponent implements OnInit {
   empleado:           Empleado = null
 
   form = this.fb.group({
-    id_fase:      [null],
-    num_empleado: [null],
-    num_proyecto: [null],
-    fechas:       this.fb.array([])
+    id_fase:          [null],
+    num_empleado:     [null],
+    num_proyecto:     [null],
+    aplicaTodosMeses: [false],
+    cantidad:         [0],
+    fechas:           this.fb.array([])
   })
 
   constructor() { }
@@ -132,6 +134,14 @@ export class ModificarEmpleadoComponent implements OnInit {
         this.empleados = this.empleadosOriginal.map(empleado => ({code: empleado.nunum_empleado_rr_hh.toString(), name: empleado.nombre_persona}))
       },
       error: (err) => this.closeDialog()
+    })
+  }
+
+  cambiarValores() {
+    this.fechas.controls.forEach((fecha, index) => {
+      this.fechas.at(index).patchValue({
+        porcentaje: this.form.value.aplicaTodosMeses ? this.form.value.cantidad : 0
+      })
     })
   }
 
