@@ -15,9 +15,11 @@ import { TITLES, errorsArray } from 'src/utils/constants';
 import { obtenerMeses } from 'src/helpers/helpers';
 
 interface EtapaEmpleado {
-  etapa:        Etapa,
-  empleado:     Empleado,
-  num_proyecto: number
+  etapa:              Etapa,
+  empleado:           Empleado,
+  num_proyecto:       number,
+  aplicaTodosMeses:   boolean,
+  cantidad:           number
 }
 
 @Component({
@@ -63,9 +65,11 @@ export class ModificarEmpleadoComponent implements OnInit {
     const data = this.config.data as EtapaEmpleado
     if(data) {
       this.form.patchValue({
-        id_fase:      data.etapa.idFase,
-        num_empleado: data.empleado?.numempleadoRrHh || null,
-        num_proyecto: data.num_proyecto || null
+        id_fase:          data.etapa.idFase,
+        num_empleado:     data.empleado?.numempleadoRrHh || null,
+        num_proyecto:     data.num_proyecto || null,
+        aplicaTodosMeses: data.empleado?.aplicaTodosMeses,
+        cantidad:         data.empleado?.cantidad
       })
 
       if(!data.empleado) {
@@ -104,16 +108,20 @@ export class ModificarEmpleadoComponent implements OnInit {
           if(!this.empleado) {
             const empleadoEncontrado = this.empleadosOriginal.find(empleadoRegistro => empleadoRegistro.nunum_empleado_rr_hh == this.form.value.num_empleado)
             this.empleado = {
-              id:               null,
-              empleado:         empleadoEncontrado.nombre_persona,
-              numempleadoRrHh:  empleadoEncontrado.nunum_empleado_rr_hh.toString(),
-              idFase:           this.form.value.id_fase,
-              fechas:           []
+              id:                 null,
+              empleado:           empleadoEncontrado.nombre_persona,
+              numempleadoRrHh:    empleadoEncontrado.nunum_empleado_rr_hh.toString(),
+              idFase:             this.form.value.id_fase,
+              fechas:             [],
+              aplicaTodosMeses:   this.form.value.aplicaTodosMeses,
+              cantidad:           this.form.value.cantidad
             }
           }
           const empleadoRespuesta: Empleado = {
             ...this.empleado,
-            fechas: this.form.value.fechas as Fecha[]
+            aplicaTodosMeses:   this.form.value.aplicaTodosMeses,
+            cantidad:           this.form.value.cantidad,
+            fechas:             this.form.value.fechas as Fecha[]
           } 
           this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'La etapa ha sido agregada.'})
           this.ref.close({empleado: empleadoRespuesta})

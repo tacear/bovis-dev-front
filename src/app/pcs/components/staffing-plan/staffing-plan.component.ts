@@ -125,7 +125,9 @@ export class StaffingPlanComponent implements OnInit {
           idFase:           empleado.idFase,
           numempleadoRrHh:  empleado.numempleadoRrHh,
           empleado:         empleado.empleado,
-          fechas:           this.fb.array([])
+          fechas:           this.fb.array([]),
+          aplicaTodosMeses: empleado.aplicaTodosMeses,
+          cantidad:         empleado.cantidad
         }))
 
         // Agreamos las fechas por empleado
@@ -211,6 +213,11 @@ export class StaffingPlanComponent implements OnInit {
         }))
         if(empleado) {
 
+          this.empleados(etapaIndex).at(empleadoIndex).patchValue({
+            aplicaTodosMeses: empleadoRespuesta.aplicaTodosMeses,
+            cantidad:         empleadoRespuesta.cantidad
+          })
+
           this.fechas(etapaIndex, empleadoIndex).clear()
 
           empleadoRespuesta.fechas.forEach(fechaRegistro => {
@@ -227,7 +234,9 @@ export class StaffingPlanComponent implements OnInit {
             idFase:           empleadoRespuesta.idFase,
             numempleadoRrHh:  empleadoRespuesta.numempleadoRrHh,
             empleado:         empleadoRespuesta.empleado,
-            fechas:           this.fb.array(fechasRespuesta)
+            fechas:           this.fb.array(fechasRespuesta),
+            aplicaTodosMeses: empleadoRespuesta.aplicaTodosMeses,
+            cantidad:         empleadoRespuesta.cantidad
           }))
         }
       }

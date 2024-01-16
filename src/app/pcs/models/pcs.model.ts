@@ -24,11 +24,13 @@ export interface Etapa {
 }
 
 export interface Empleado {
-    id:              number;
-    idFase:          number;
-    numempleadoRrHh: string;
-    empleado:        string;
-    fechas:          Fecha[];
+    id:                 number;
+    idFase:             number;
+    numempleadoRrHh:    string;
+    empleado:           string;
+    fechas:             Fecha[];
+    aplicaTodosMeses:   boolean;
+    cantidad:           number;
 }
 
 export interface Fecha {
