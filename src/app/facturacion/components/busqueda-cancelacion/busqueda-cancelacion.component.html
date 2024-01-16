@@ -310,7 +310,10 @@
           </ng-template>
           <ng-template pTemplate="body" let-bus>
             <ng-container *ngIf="isTypeHeader">
-              <tr *ngIf="bus.nC_Anio != '0'">
+              <tr 
+                *ngIf="bus.nC_Anio != '0'"
+                [ngStyle]="{'background-color': bus.nC_FechaCancelacion ? '#ffa4a4' : ''}"
+              >
               <td><div class="cls-id">{{bus.nC_UuidNotaCredito}}</div></td>
               <td>{{bus.nC_IdMoneda}}</td>
               <td>{{bus.nC_IdTipoRelacion}}</td>
@@ -324,7 +327,7 @@
               <td>{{bus.nC_TipoCambio}}</td>
               <td>{{bus.nC_FechaNotaCredito|date:'d/MM/yyyy'}}</td>
               <td>
-                <div *ngIf="bus.fechaCancelacion == null || bus.fechaCancelacion == '' ">
+                <div *ngIf="bus.nC_FechaCancelacion == null || bus.nC_FechaCancelacion == '' ">
                   <!-- <i class="pi pi-trash c-del" title="Cancelar factura"
                   tooltipPosition="left" (click)="showModalDialog(bus.id)"></i> -->
                   <p-button 
