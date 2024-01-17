@@ -107,7 +107,8 @@ export class CargaSaeComponent implements OnInit {
         } else {
           if(record.Concepto) {
             const cuenta = cuentaActual.split(' ')[2]
-            if(!['703002003'].includes(cuenta)) {
+            //if(!['703002003'].includes(cuenta))
+            {
               this.cuentas.push(cuenta)
               this.proyectos.push(record.Proyectos)
               tempNormalRecords.push({
