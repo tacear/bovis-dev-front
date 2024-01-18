@@ -727,7 +727,13 @@ export class BusquedaCancelacionComponent implements OnInit {
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(+cell.value)
             }
-            
+            if(encabezado.id == 'importeEnPesos') {
+              let importeEnPesos = 0
+              
+              importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['c_ImportePagado'] * +cobranza['c_TipoCambioP']
+              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos)
+            }
+
           })
           inicio++
         })
