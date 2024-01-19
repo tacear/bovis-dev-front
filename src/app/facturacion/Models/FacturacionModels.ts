@@ -21,13 +21,13 @@ export class InfoProyecto{
   nombre: string;
   numProyecto: number;
   rfcBaseEmisor: string;
-  rfcBaseReceptor: string;
+  rfcBaseReceptor: string[];
 }
 
 export class InfoProyectoFacturas{
   NumProyecto: number;
   rfcEmisor: string;
-  rfcReceptor: string;
+  rfcReceptor: string[];
   LstFacturas: Array<any> = new Array<any>();
 }
 
