@@ -237,7 +237,7 @@ export const equivalenteFacturaCobranza = Object.freeze([
   {padre: 'cliente', hijo: 'cliente'},
   {padre: 'idMoneda', hijo: 'c_IdMonedaP'},
   {padre: 'noFactura', hijo: 'crp'},
-  // {padre: 'importe', hijo: 'c_ImportePagado'},
+  {padre: 'importe', hijo: 'c_ImportePagado'},
   {padre: '', hijo: 'c_ImpSaldoAnt'},
   {padre: '', hijo: 'c_ImporteSaldoInsoluto'},
   {padre: 'iva', hijo: 'c_IvaP'},
