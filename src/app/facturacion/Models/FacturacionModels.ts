@@ -243,5 +243,6 @@ export const equivalenteFacturaCobranza = Object.freeze([
   {padre: 'iva', hijo: 'c_IvaP'},
   {padre: 'total', hijo: 'c_ImportePagado'},
   {padre: 'tipoCambio', hijo: 'c_TipoCambioP'},
-  {padre: 'fechaPago', hijo: 'c_FechaPago'}
+  {padre: 'fechaEmision', hijo: 'c_FechaPago'},
+  {padre: 'fechaCancelacion', hijo: 'c_FechaCancelacion'}
 ])
