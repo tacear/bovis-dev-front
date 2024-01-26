@@ -28,7 +28,7 @@ export class CieService {
     return this.http.post<any>(`${this.baseUrl}api/Cie/Registros/Agregar`, {data, nombre_archivo: filename, paquete_inicial: paqueteInicial})
   }
 
-  EliminaSae(body: CieCuentaDelete ) {
+ EliminaSae(body: CieCuentaDelete ) {
     return this.http.delete<CieCuentasDeleteResponse>(`${this.baseUrl}api/Cie/Archivo`, {body})
   }
 
