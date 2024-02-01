@@ -21,6 +21,7 @@ import { TableModule } from 'primeng/table';
 import { SharedModule } from '../shared/shared.module';
 import { ProgresoComponent } from './components/progreso/progreso.component';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     FileUploadModule,
     TableModule,
     SharedModule,
-    ProgressBarModule
+    ProgressBarModule,
+    ToolbarModule
   ]
 })
 export class AuditoriaModule { }
