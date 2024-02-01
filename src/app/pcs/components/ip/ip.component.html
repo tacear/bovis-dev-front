@@ -42,6 +42,39 @@
                 <input type="text" class="form-control" maxlength="100" [disabled]="isConsulta" formControlName="nombre_proyecto"/>
               </div>
               <div class="col-4">
+                <label for="email">Director Ejecutivo: <span class="required"></span></label>
+                <p-dropdown optionLabel="name" 
+                [options]="catEmpleados" 
+                [showClear]="true" 
+                [style]="{ width: '100%' }" 
+                placeholder="Seleccionar un director" 
+                [disabled]="isConsulta" 
+                [filter]="true" 
+                filterBy="name" 
+                formControlName="id_director_ejecutivo" 
+                optionValue="code"></p-dropdown>
+              </div>
+            </div>
+  
+            <br />
+  
+            <div class="row">
+              <div class="col-4">
+                  <label>Empresa:</label>
+                  <p-dropdown  
+                      [options]="empresas"
+                      placeholder="Seleccionar una empresa" 
+                      optionLabel="name" 
+                      [showClear]="true"
+                      [style]="{ width: '100%' }"
+                      optionValue="code"
+                      formControlName="id_empresa"
+                      [filter]="true" 
+                      filterBy="name"
+                  ></p-dropdown>
+              </div>
+              <!-- <div class="col-4"></div> -->
+              <div class="col-8">
                 <label for="email">Nombre del Cliente:</label>
                 <div class="flex-auto">
                   <p-multiSelect 
@@ -58,40 +91,6 @@
                   ></p-multiSelect>
                 </div>
               </div>
-            </div>
-  
-            <br />
-  
-            <div class="row">
-              <div class="col-4">
-                <label for="email">Director Ejecutivo: <span class="required"></span></label>
-                <p-dropdown optionLabel="name" 
-                [options]="catEmpleados" 
-                [showClear]="true" 
-                [style]="{ width: '100%' }" 
-                placeholder="Seleccionar un director" 
-                [disabled]="isConsulta" 
-                [filter]="true" 
-                filterBy="name" 
-                formControlName="id_director_ejecutivo" 
-                optionValue="code"></p-dropdown>
-              </div>
-              
-              <div class="col-4">
-                  <label>Empresa:</label>
-                  <p-dropdown  
-                      [options]="empresas"
-                      placeholder="Seleccionar una empresa" 
-                      optionLabel="name" 
-                      [showClear]="true"
-                      [style]="{ width: '100%' }"
-                      optionValue="code"
-                      formControlName="id_empresa"
-                      [filter]="true" 
-                      filterBy="name"
-                  ></p-dropdown>
-              </div>
-              <div class="col-4"></div>
             </div>
   
           </div>
