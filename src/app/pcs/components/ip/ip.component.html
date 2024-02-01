@@ -43,8 +43,20 @@
               </div>
               <div class="col-4">
                 <label for="email">Nombre del Cliente:</label>
-                <p-dropdown optionLabel="name" [options]="catClientes" placeholder="Seleccionar una opción" [showClear]="true" [style]="{ width: '100%' }"
-                  [disabled]="isConsulta" [filter]="true" filterBy="name" formControlName="id_cliente" optionValue="value" appendTo="body"></p-dropdown>
+                <div class="flex-auto">
+                  <p-multiSelect 
+                    [options]="catClientes" 
+                    defaultLabel="Seleccionar al menos un cliente" 
+                    optionLabel="name" 
+                    display="chip"
+                    scrollHeight="250px"
+                    [style]="{ width: '100%' }"
+                    [ngClass]="{'ng-invalid ng-dirty': esInvalido('ids_clientes')}"
+                    formControlName="ids_clientes"
+                    optionValue="value"
+                    appendTo="body"
+                  ></p-multiSelect>
+                </div>
               </div>
             </div>
   

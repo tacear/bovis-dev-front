@@ -54,7 +54,7 @@ export class IpComponent implements OnInit {
       id_responsable_construccion:    [null],
       id_responsable_ehs:             [null],
       id_responsable_supervisor:      [null],
-      id_cliente:                     ['', [Validators.required]],
+      ids_clientes:                   [[''], [Validators.required]],
       id_empresa:                     ['', [Validators.required]],
       id_director_ejecutivo:          ['', [Validators.required]],
       costo_promedio_m2:              [null],
@@ -100,8 +100,10 @@ export class IpComponent implements OnInit {
             }))
             .subscribe({
               next: ({data}) => {
+                console.log(data)
                 if(data.length >= 0) {
                   const [proyectoData] = data
+                  const ids_clientes = proyectoData.clientes.map(cliente => cliente.idCliente.toString())
                   this.form.patchValue({
                     num_proyecto:                   proyectoData.nunum_proyecto.toString(),
                     nombre_proyecto:                proyectoData.chproyecto.toString(),
@@ -116,7 +118,7 @@ export class IpComponent implements OnInit {
                     id_responsable_construccion:    proyectoData.nukidresponsable_construccion,
                     id_responsable_ehs:             proyectoData.nukidresponsable_ehs,
                     id_responsable_supervisor:      proyectoData.nukidresponsable_supervisor,
-                    id_cliente:                     proyectoData.nukidcliente.toString(),
+                    ids_clientes,
                     id_empresa:                     proyectoData.nukidempresa.toString(),
                     id_director_ejecutivo:          proyectoData.nukiddirector_ejecutivo.toString(),
                     costo_promedio_m2:              proyectoData.nucosto_promedio_m2,

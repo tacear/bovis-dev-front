@@ -87,6 +87,13 @@ export interface Proyecto {
     chcontacto_posicion?:             string;
     chcontacto_telefono?:             string;
     chcontacto_correo?:               string;
+    clientes:                         ClientePcs[];
+}
+
+export interface ClientePcs {
+    idCliente:  number,
+    cliente:    string,
+    rfc:        string
 }
 
 export interface GastosIngresosSeccionesResponse {
