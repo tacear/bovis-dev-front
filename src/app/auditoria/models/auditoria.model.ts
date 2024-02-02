@@ -68,3 +68,32 @@ export interface Documento {
   nombreDocumento:                  string;
   valido:                           boolean;
 }
+
+export interface TsProyectosResponse {
+  data:          TSProyecto[];
+  success:       boolean;
+  message:       null;
+  transactionId: null;
+}
+
+export interface TSProyecto {
+  numProyecto:                  number;
+  nombre:                       string;
+  alcance:                      string;
+  cp:                           string;
+  ciudad:                       string;
+  idEstatus:                    number;
+  idSector:                     number;
+  idTipoProyecto:               number;
+  idResponsablePreconstruccion: number;
+  idResponsableConstruccion:    number;
+  idResponsableEhs:             number;
+  idResponsableSupervisor:      number;
+  idCliente:                    number;
+  idEmpresa:                    number;
+  idPais:                       number;
+  idDirectorEjecutivo:          number;
+  costoPromedioM2:              number;
+  fechaIni:                     string;
+  fechaFin:                     string;
+}
