@@ -55,7 +55,7 @@ export class SeguimientoComponent implements OnInit {
     this.sharedService.cambiarEstado(true)
 
     forkJoin([
-      this.auditoriaService.getCatProyectos()
+      this.timesheetService.getCatProyectos()
     ])
     .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
     .subscribe({
