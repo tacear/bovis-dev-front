@@ -55,7 +55,7 @@ export class CargarDocumentosComponent implements OnInit {
     this.sharedService.cambiarEstado(true)
 
     forkJoin([
-      this.timesheetService.getCatProyectos()
+      this.auditoriaService.getCatProyectos()
     ])
     .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
     .subscribe({
