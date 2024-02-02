@@ -48,5 +48,15 @@ export class AuditoriaService {
   validarDocumentos(body: any) {
     return this.http.put<GenericResponse>(`${this.baseUrl}api/Auditoria/Documento/Validacion`, body)
   }
+  
+  getCatProyectos(ordenAlfabetico: boolean = true) {
+    if('legal' == `${this.tipo}`){
+      return this.http.get<TsProyectosResponse>(`${this.baseUrl}api/Auditoria/proyectos/calidad`)
+    }else{
+      return this.http.get<TsProyectosResponse>(`${this.baseUrl}api/pcs/proyectos/${ordenAlfabetico}`)
+    }
+
+    
+  }
 
 }
