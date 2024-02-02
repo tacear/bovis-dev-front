@@ -1,0 +1,30 @@
+
+<div>
+    <div *ngIf="!readOnly">
+        [FORM]
+
+        <hr>
+    </div>
+
+    <div>
+        [LIST]
+    </div>
+    
+    <div *ngIf="readOnly">
+        <hr>
+        
+        <div class="row">
+            <div class="col-12">
+                <p class="text-center">
+                    <strong>Resultado</strong>
+                </p>
+                <p class="text-center">
+                    El proyecto tuvo un resultado "[STATUS]", es decir, tiene aspectos positivos reseñables y cumple de manera íntegra con lo dispuesto en el Contrato (de acuerdo con la tabla de evaluación que se muestra debajo).
+                </p>
+                <p class="text-center">
+                    Se informa que la próxima auditoría se llevará a cabo en el mes de noviembre de 2021.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

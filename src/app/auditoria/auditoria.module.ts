@@ -22,6 +22,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProgresoComponent } from './components/progreso/progreso.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToolbarModule } from 'primeng/toolbar';
+import { ComentariosModalComponent } from './components/comentarios-modal/comentarios-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ToolbarModule } from 'primeng/toolbar';
     SeguimientoComponent,
     SubirArchivoComponent,
     VerDocumentosComponent,
-    ProgresoComponent
+    ProgresoComponent,
+    ComentariosModalComponent
   ],
   imports: [
     CommonModule,
