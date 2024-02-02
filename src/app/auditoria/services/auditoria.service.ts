@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { CumplimientoResponse, DocumentoResponse, DocumentosResponse, ProyectoCumplimientoResponse } from '../models/auditoria.model';
+import { CumplimientoResponse, DocumentoResponse, DocumentosResponse, ProyectoCumplimientoResponse,TsProyectosResponse } from '../models/auditoria.model';
 import { GenericResponse } from 'src/app/empleados/Models/empleados';
 
 @Injectable({
