@@ -97,3 +97,32 @@ export interface TSProyecto {
   fechaIni:                     string;
   fechaFin:                     string;
 }
+
+export interface ComentariosResponse {
+  data:          Comentario[];
+  success:       boolean;
+  message:       null;
+  transactionId: null;
+}
+
+export interface Comentario {
+  idComentario:     number;
+  numProyecto:      number;
+  comentario:       string;
+  fecha:            string;
+  idTipoComentario: number;
+  tipoComentario:   string;
+}
+
+export interface TiposComentarioResponse {
+  data:          TipoComentario[];
+  success:       boolean;
+  message:       null;
+  transactionId: null;
+}
+
+export interface TipoComentario {
+  idTipoComentario: number;
+  tipoComentario:   string;
+  activo:           boolean;
+}

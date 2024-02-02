@@ -3,7 +3,7 @@
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
   <div class="main-container">
-    <div class="row" *ngIf="auditoriaService.esLegal">
+    <div class="row" *ngIf="auditoriaService.esLegal && numProyecto">
       <div class="col-12">
         <p-toolbar>
           <div class="w-100 text-right">

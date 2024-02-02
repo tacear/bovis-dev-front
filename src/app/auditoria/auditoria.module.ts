@@ -23,6 +23,8 @@ import { ProgresoComponent } from './components/progreso/progreso.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ComentariosModalComponent } from './components/comentarios-modal/comentarios-modal.component';
+import { BadgeModule } from 'primeng/badge';
+import { AccordionModule } from 'primeng/accordion';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { ComentariosModalComponent } from './components/comentarios-modal/coment
     TableModule,
     SharedModule,
     ProgressBarModule,
-    ToolbarModule
+    ToolbarModule,
+    AccordionModule,
+    BadgeModule
   ]
 })
 export class AuditoriaModule { }

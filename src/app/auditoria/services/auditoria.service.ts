@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { CumplimientoResponse, DocumentoResponse, DocumentosResponse, ProyectoCumplimientoResponse,TsProyectosResponse } from '../models/auditoria.model';
+import { ComentariosResponse, CumplimientoResponse, DocumentoResponse, DocumentosResponse, ProyectoCumplimientoResponse,TiposComentarioResponse,TsProyectosResponse } from '../models/auditoria.model';
 import { GenericResponse } from 'src/app/empleados/Models/empleados';
 
 @Injectable({
@@ -57,6 +57,18 @@ export class AuditoriaService {
     }
 
     
+  }
+
+  getTiposComentario() {
+    return this.http.get<TiposComentarioResponse>(`${this.baseUrl}api/Auditoria/TipoComentarios`)
+  }
+
+  getComentarios(numProyecto: number) {
+    return this.http.get<ComentariosResponse>(`${this.baseUrl}api/Auditoria/Comentarios/${numProyecto}`)
+  }
+
+  agregarComentario(body: any) {
+    return this.http.post<GenericResponse>(`${this.baseUrl}api/Auditoria/Comentarios`, body)
   }
 
 }
