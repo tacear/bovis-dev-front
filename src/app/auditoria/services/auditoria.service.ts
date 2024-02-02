@@ -51,7 +51,7 @@ export class AuditoriaService {
   
   getCatProyectos(ordenAlfabetico: boolean = true) {
     if('legal' == `${this.tipo}`){
-      return this.http.get<TsProyectosResponse>(`${this.baseUrl}api/Auditoria/proyectos/calidad`)
+      return this.http.get<TsProyectosResponse>(`${this.baseUrl}api/Auditoria/proyectos/legal`)
     }else{
       return this.http.get<TsProyectosResponse>(`${this.baseUrl}api/pcs/proyectos/${ordenAlfabetico}`)
     }
