@@ -31,7 +31,7 @@ export class AuditoriaCalidadComponent implements OnInit {
     this.items = tabs
     this.userService.getRolesRealTime()
       .subscribe(data => {
-        // this.items = tabs.filter(tab => this.userService.verificarRol(tab.id))
+        this.items = tabs.filter(tab => this.userService.verificarRol(tab.id))
         this.userService.isLoading = false
       })
 
