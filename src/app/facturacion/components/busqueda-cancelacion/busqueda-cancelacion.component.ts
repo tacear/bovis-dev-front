@@ -28,6 +28,8 @@ import { saveAs } from 'file-saver';
 
 const EXCEL_EXTENSION = '.xlsx';
 
+import { DatePipe } from '@angular/common';
+
 interface FiltroCancelacion {
   name: string;
   value: string;
@@ -43,6 +45,11 @@ interface AssociativeArray {
   styleUrls: ['./busqueda-cancelacion.component.css'],
 })
 export class BusquedaCancelacionComponent implements OnInit {
+
+  today: Date = new Date();
+      pipe = new DatePipe('en-US');
+      todayWithPipe = null;
+  
   //objBusqueda: Busqueda = new Busqueda();
   listBusquedaCompleto: Array<BusquedaCancelacion> =
     new Array<BusquedaCancelacion>();
@@ -622,7 +629,10 @@ export class BusquedaCancelacionComponent implements OnInit {
     workbook.xlsx.writeBuffer().then((buffer) => {
       const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
 
-      saveAs(blob, `FacturacionCancelacion_${Date.now()}${EXCEL_EXTENSION}`)
+      //saveAs(blob, `FacturacionCancelacion_${Date.now()}${EXCEL_EXTENSION}`)
+      this.todayWithPipe = this.pipe.transform(Date.now(), 'dd_MM_yyyy');
+      
+      saveAs(blob, `FacturacionCancelacion_`+this.todayWithPipe+`${EXCEL_EXTENSION}`)
     });
 
   }
