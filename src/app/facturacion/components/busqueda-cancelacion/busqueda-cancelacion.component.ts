@@ -321,7 +321,8 @@ export class BusquedaCancelacionComponent implements OnInit {
 
           if(factura.cobranzas.length > 0) {
             factura.cobranzas.forEach(cobranza => {
-              importePendiente -= +cobranza.c_ImportePagado
+              //importePendiente -= +cobranza.c_ImportePagado
+              importePendiente -= +cobranza.base
             })
           }
 
@@ -711,6 +712,9 @@ export class BusquedaCancelacionComponent implements OnInit {
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
+            if(encabezado.id == 'numProyecto') {
+              cell.value = factura['numProyecto']
+            }
             if(encabezado.id == 'importeEnPesos') {
               let importeEnPesos = 0
               
@@ -740,10 +744,14 @@ export class BusquedaCancelacionComponent implements OnInit {
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(+cell.value)
             }
+            if(encabezado.id == 'numProyecto') {
+              cell.value = factura['numProyecto']
+            }
             if(encabezado.id == 'importeEnPesos') {
               let importeEnPesos = 0
               
-              importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['c_ImportePagado'] * +cobranza['c_TipoCambioP']
+              //importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['c_ImportePagado'] * +cobranza['c_TipoCambioP']
+              importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['base'] * +cobranza['c_TipoCambioP']
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos)
             }
 
