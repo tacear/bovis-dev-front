@@ -339,8 +339,10 @@ export const MENU = [
               routerLink: ['auditoria'],
               id: 'auditoria-legal',
               queryParams: {tipo: 'legal'},
-              command: () =>
-                localStorage.setItem('pageTitle', 'Auditoría Legal'.toUpperCase()),
+              command: () => {
+                localStorage.setItem('pageTitle', 'Auditoría Legal'.toUpperCase())
+                localStorage.removeItem('esLegal')
+              }
             },
             {
               label: 'Auditoría de Calidad',
