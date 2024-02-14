@@ -174,7 +174,7 @@ export class CargarDocumentosComponent implements OnInit {
       contentStyle: {overflow: 'auto'},
       data: {
         readOnly: true,
-        numProyecto: this.numProyecto
+        numProyecto: this.numProyecto,
         totalDocumentos: this.totalDocumentos,
         totalDocumentosValidados: this.totalDocumentosValidados
       }
