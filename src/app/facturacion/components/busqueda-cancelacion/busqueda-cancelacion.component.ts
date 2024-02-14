@@ -684,6 +684,7 @@ export class BusquedaCancelacionComponent implements OnInit {
       const inicioFactura = inicio
       let columnaImportePendiente = 0
       let columnaImportePendiente_dls = 0
+      let ImporteNotayPago = 0
       encabezados.forEach((encabezado, indexE) => {
         if(encabezado.id == 'importePendientePorPagar') {
           columnaImportePendiente = indexE + 1
@@ -717,6 +718,7 @@ export class BusquedaCancelacionComponent implements OnInit {
             }
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
+              ImporteNotayPago +=  nota['nC_Importe']
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
@@ -749,6 +751,7 @@ export class BusquedaCancelacionComponent implements OnInit {
             }
             if(encabezado.id == 'importe') {
               cell.value = this.formatCurrency(+cell.value)
+              ImporteNotayPago += cobranza['base']
             }
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(+cell.value)
@@ -783,9 +786,14 @@ export class BusquedaCancelacionComponent implements OnInit {
       }else{
         let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
       cell.value = this.formatCurrency(0.0)
+      let importePorPagar = 0
+     
+
+      //const myNumber = Number(factura['tipoCambio']);
+      importePorPagar = factura['importe']-ImporteNotayPago
 
       let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
-      cell_dls.value = this.formatCurrency(factura['importePendiente'])
+      cell_dls.value = this.formatCurrency(importePorPagar)
       }
 
     })
