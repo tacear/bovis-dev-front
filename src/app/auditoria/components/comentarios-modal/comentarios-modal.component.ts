@@ -8,7 +8,6 @@ import { finalize, forkJoin } from 'rxjs';
 import { Comentario, FechaAuditoria } from '../../models/auditoria.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { TITLES, errorsArray } from 'src/utils/constants';
-
 @Component({
   selector: 'app-comentarios-modal',
   templateUrl: './comentarios-modal.component.html',
@@ -23,18 +22,25 @@ export class ComentariosModalComponent implements OnInit {
   messageService    = inject(MessageService)
   ref               = inject(DynamicDialogRef)
   sharedService     = inject(SharedService)
+
+  maxDate: Date;
+  //fecha: Date;
+  FechaAuditoProx: string;
+  Estatus: string;
   
   readOnly: boolean   = true
   numProyecto: number = null
+  totalDocumentos: number = 0
+  totalDocumentosValidados: number = 0
 
   tiposComentario: Opcion[] = []
   comentarios: { [key: string]: Comentario[] } = {};
   FechaAuditoriaProx: { [key: string]: FechaAuditoria[] } = {};
-  
   form = this.fb.group({
     num_proyecto:       [null],
     comentario:         ['', Validators.required],
-    id_tipo_comentario: ['', Validators.required]
+    id_tipo_comentario: ['', Validators.required],
+    fecha: [null]
   })
 
   formFecha = this.fb.group({
@@ -48,10 +54,14 @@ export class ComentariosModalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getConfigCalendar();
     if(this.config.data) {
       
       this.readOnly = this.config.data.readOnly
       this.numProyecto = this.config.data.numProyecto
+      this.totalDocumentos = this.config.data.totalDocumentos
+      this.totalDocumentosValidados = this.config.data.totalDocumentosValidados
+
 
       this.cargarInformacion()
     }
@@ -59,11 +69,24 @@ export class ComentariosModalComponent implements OnInit {
 
   cargarInformacion() {
 
+    //console.log("this.totalDocumentos: " + this.totalDocumentos)
+    //console.log("this.totalDocumentosValidados: " + this.totalDocumentosValidados)
+    //console.log("Calculo pordentaje: " +(100 *this.totalDocumentosValidados) / this.totalDocumentos)
+
+    let Porcentaje = 0
+    Porcentaje = (100 *this.totalDocumentosValidados) / this.totalDocumentos
+
+    if(Porcentaje >= 80){
+      this.Estatus = "Satisfactorio"
+    }else{
+      this.Estatus = "Regular / Malo"
+    }
+
+    
     this.sharedService.cambiarEstado(true)
 
     this.form.patchValue({ num_proyecto: this.numProyecto })
     this.formFecha.patchValue({ numProyecto: this.numProyecto })
-
 
     forkJoin([
       this.auditoriaService.getTiposComentario(),
@@ -89,6 +112,9 @@ export class ComentariosModalComponent implements OnInit {
         
         comentariosR.data.forEach(comentario => {
           this.comentarios[comentario.idTipoComentario].push(comentario)
+         // console.log("Valor de comentario: " + comentario.fechaAuditoria)
+          this.FechaAuditoProx = comentario.fechaAuditoria
+          
         })
       },
       error: (err) => this.ref.close()
@@ -113,9 +139,10 @@ export class ComentariosModalComponent implements OnInit {
             idComentario:     null,
             numProyecto:      this.form.value.num_proyecto,
             comentario:       this.form.value.comentario,
-            fecha:            null,
+            fecha:            this.form.value.fecha,
             idTipoComentario: +this.form.value.id_tipo_comentario,
-            tipoComentario:   ''
+            tipoComentario:   '',
+            fechaAuditoria:''
           })
           this.form.reset()
         },
@@ -148,6 +175,7 @@ export class ComentariosModalComponent implements OnInit {
       })
 
   }
+  
 
   esInvalido(campo: string): boolean {
     return this.form.get(campo).invalid && 
