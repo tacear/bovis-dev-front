@@ -399,7 +399,7 @@ export class BusquedaCancelacionComponent implements OnInit {
       {key: 'ivaRet', label: 'IVA RET'},
       {key: 'total', label: 'TOTAL'},
       {key: 'concepto', label: 'CONCEPTO'},
-       {key: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
+      {key: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
       {key: 'importePendientePorPagar_dls', label: 'IMPORTE PENDIENTE POR PAGAR DLS (saldo)'},
       // {key: 'anio', label: 'Año'},
       // {key: 'fechaPago', label: 'Fecha Pago'},
@@ -679,6 +679,7 @@ export class BusquedaCancelacionComponent implements OnInit {
     const fillFactura: ExcelJS.Fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'ffffff' } }
 
     let inicio = 5
+   
 
     this.listBusquedaCompleto.forEach(factura => {
       const inicioFactura = inicio
@@ -697,7 +698,7 @@ export class BusquedaCancelacionComponent implements OnInit {
         cell.fill = factura['fechaCancelacion'] ? fillNotaCancelada : fillFactura
         const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet', 'importeEnPesos'] 
         if(encabezadosRedondeados.includes(encabezado.id)) {
-           //cell.value = this.formatCurrency(+cell.value)
+          //cell.value = this.formatCurrency(+cell.value)
           cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : +cell.value)
         }
 
@@ -716,13 +717,19 @@ export class BusquedaCancelacionComponent implements OnInit {
             }
             if(encabezado.id == 'importe') {
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
+              console.log(" +cell.value " + nota['nC_Importe'])
+              ImporteNotayPago +=  nota['nC_Importe']
+              console.log(" ImporteNotayPago " + ImporteNotayPago)
             }
             if(encabezado.id == 'iva') {
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
-              ImporteNotayPago +=  nota['nC_Importe']
+              //console.log(" +cell.value2 " + nota['nC_Iva'])
+              //ImporteNotayPago +=   nota['nC_Iva']
+              //console.log(" ImporteNotayPago2 " + ImporteNotayPago)
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
+              
             }
             if(encabezado.id == 'importeEnPesos') {
               let importeEnPesos = 0
@@ -730,9 +737,12 @@ export class BusquedaCancelacionComponent implements OnInit {
               importeEnPesos = nota['nC_IdMoneda'] === 'MXN' ? nota['nC_Importe'] : nota['nC_Importe'] * +nota['nC_TipoCambio']
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : importeEnPesos)
             }
-             if(encabezado.id == 'mes') {
+
+            if(encabezado.id == 'mes') {
               cell.value = nota['nC_Mes']
             }
+
+           
 
           })
           inicio++
@@ -751,15 +761,19 @@ export class BusquedaCancelacionComponent implements OnInit {
               //cell.value = this.formatCurrency(+cell.value)
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
             }
-            }
             if(encabezado.id == 'importe') {
-              //cell.value = this.formatCurrency(+cell.value)
+             //cell.value = this.formatCurrency(+cell.value)
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
+              //console.log(" +cell.value3 " + + cobranza['base'])
               ImporteNotayPago += cobranza['base']
+              //console.log(" ImporteNotayPago3 " + ImporteNotayPago)
             }
             if(encabezado.id == 'iva') {
               //cell.value = this.formatCurrency(+cell.value)
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
+              //console.log(" +cell.value4 " + + cobranza['c_IvaP'])
+              //ImporteNotayPago +=  cobranza['c_IvaP']
+              //console.log(" ImporteNotayPago4 " + ImporteNotayPago)
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
@@ -771,16 +785,19 @@ export class BusquedaCancelacionComponent implements OnInit {
               importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['base'] * +cobranza['c_TipoCambioP']
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos)
             }
+
             if(encabezado.id == 'mes') {
               cell.value = factura['mes']
             }
 
+            
           })
           inicio++
         })
       }
 
-     if(factura['idMoneda'] === 'MXN'){
+
+      if(factura['idMoneda'] === 'MXN'){
 
       let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
       cell.value = this.formatCurrency(factura['importePendiente'])
@@ -791,15 +808,20 @@ export class BusquedaCancelacionComponent implements OnInit {
       }else{
         let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
       cell.value = this.formatCurrency(0.0)
+
       let importePorPagar = 0
      
 
       //const myNumber = Number(factura['tipoCambio']);
       importePorPagar = factura['importe']-ImporteNotayPago
 
+      console.log(" importePorPagar " + importePorPagar)
+
       let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
       cell_dls.value = this.formatCurrency(importePorPagar)
       }
+      // Cálculos
+      
 
     })
 
