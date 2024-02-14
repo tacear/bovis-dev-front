@@ -112,6 +112,7 @@ export interface Comentario {
   fecha:            string;
   idTipoComentario: number;
   tipoComentario:   string;
+  fechaAuditoria:   string;
 }
 
 export interface TiposComentarioResponse {
