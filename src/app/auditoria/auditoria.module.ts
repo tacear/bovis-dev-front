@@ -25,6 +25,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ComentariosModalComponent } from './components/comentarios-modal/comentarios-modal.component';
 import { BadgeModule } from 'primeng/badge';
 import { AccordionModule } from 'primeng/accordion';
+import { PrimengModule } from '../shared/primeng.module';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AccordionModule } from 'primeng/accordion';
     ProgressBarModule,
     ToolbarModule,
     AccordionModule,
-    BadgeModule
+    BadgeModule,
+    PrimengModule
   ]
 })
 export class AuditoriaModule { }
