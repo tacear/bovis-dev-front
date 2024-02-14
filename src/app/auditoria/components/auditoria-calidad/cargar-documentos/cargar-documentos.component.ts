@@ -176,7 +176,7 @@ export class CargarDocumentosComponent implements OnInit {
         readOnly: true,
         numProyecto: this.numProyecto,
         totalDocumentos: this.totalDocumentos,
-        totalDocumentosValidados: this.totalDocumentosValidados
+        totalDocumentosValidados: this.totalDocumentosValidados 
       }
     })
     .onClose.subscribe(data => {
