@@ -386,6 +386,7 @@ export class BusquedaCancelacionComponent implements OnInit {
       {key: 'uuid', label: 'UUID'},
       {key: 'mes', label: 'MES'},
       {key: 'numProyecto', label: 'No. Proyecto'},
+      {key: 'empresa', label: 'EMPRESA'},
       {key: 'cliente', label: 'CLIENTE'},
       {key: 'fechaEmision', label: 'FECHA DE EMISIÓN'},
       {key: 'noFactura', label: 'NO. DE FACTURA'},
@@ -398,7 +399,8 @@ export class BusquedaCancelacionComponent implements OnInit {
       {key: 'ivaRet', label: 'IVA RET'},
       {key: 'total', label: 'TOTAL'},
       {key: 'concepto', label: 'CONCEPTO'},
-      {key: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
+       {key: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
+      {key: 'importePendientePorPagar_dls', label: 'IMPORTE PENDIENTE POR PAGAR DLS (saldo)'},
       // {key: 'anio', label: 'Año'},
       // {key: 'fechaPago', label: 'Fecha Pago'},
       // {key: 'fechaCancelacion', label: 'Fecha Cancelacion'},
@@ -681,9 +683,13 @@ export class BusquedaCancelacionComponent implements OnInit {
     this.listBusquedaCompleto.forEach(factura => {
       const inicioFactura = inicio
       let columnaImportePendiente = 0
+      let columnaImportePendiente_dls = 0
       encabezados.forEach((encabezado, indexE) => {
         if(encabezado.id == 'importePendientePorPagar') {
           columnaImportePendiente = indexE + 1
+        }
+        if(encabezado.id == 'importePendientePorPagar_dls') {
+          columnaImportePendiente_dls = indexE + 1
         }
         let cell = worksheet.getCell(inicio, indexE + 1)
         cell.value = factura[encabezado.id]
@@ -721,6 +727,9 @@ export class BusquedaCancelacionComponent implements OnInit {
               importeEnPesos = nota['nC_IdMoneda'] === 'MXN' ? nota['nC_Importe'] : nota['nC_Importe'] * +nota['nC_TipoCambio']
               cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : importeEnPesos)
             }
+             if(encabezado.id == 'mes') {
+              cell.value = nota['nC_Mes']
+            }
 
           })
           inicio++
@@ -754,15 +763,30 @@ export class BusquedaCancelacionComponent implements OnInit {
               importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['base'] * +cobranza['c_TipoCambioP']
               cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos)
             }
+            if(encabezado.id == 'mes') {
+              cell.value = factura['mes']
+            }
 
           })
           inicio++
         })
       }
 
-      // Cálculos
+     if(factura['idMoneda'] === 'MXN'){
+
       let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
       cell.value = this.formatCurrency(factura['importePendiente'])
+
+      let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
+      cell_dls.value =this.formatCurrency(0.0)
+
+      }else{
+        let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
+      cell.value = this.formatCurrency(0.0)
+
+      let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
+      cell_dls.value = this.formatCurrency(factura['importePendiente'])
+      }
 
     })
 
