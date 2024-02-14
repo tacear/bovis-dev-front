@@ -205,7 +205,8 @@ export const encabezados = Object.freeze([
   // {id: 'anio', label: 'Año'},
   // {id: 'fechaPago', label: 'Fecha Pago'},
   
-  {id: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR (saldo)'},
+ {id: 'importePendientePorPagar', label: 'IMPORTE PENDIENTE POR PAGAR MXN(saldo)'},
+  {id: 'importePendientePorPagar_dls', label: 'IMPORTE PENDIENTE POR PAGAR DLS (saldo)'},
   
   {id: 'motivoCancelacion', label: 'Motivo Cancelación'},
   {id: 'fechaCancelacion', label: 'Fecha Cancelación'},
