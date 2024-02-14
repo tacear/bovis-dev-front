@@ -697,7 +697,8 @@ export class BusquedaCancelacionComponent implements OnInit {
         cell.fill = factura['fechaCancelacion'] ? fillNotaCancelada : fillFactura
         const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet', 'importeEnPesos'] 
         if(encabezadosRedondeados.includes(encabezado.id)) {
-          cell.value = this.formatCurrency(+cell.value)
+           //cell.value = this.formatCurrency(+cell.value)
+          cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : +cell.value)
         }
 
       })
@@ -747,14 +748,18 @@ export class BusquedaCancelacionComponent implements OnInit {
             cell.fill = cobranza['c_FechaCancelacion'] ? fillNotaCancelada : fillCobranza
             //cell.fill = fillCobranza
             if(encabezado.id == 'total') {
-              cell.value = this.formatCurrency(+cell.value)
+              //cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
+            }
             }
             if(encabezado.id == 'importe') {
-              cell.value = this.formatCurrency(+cell.value)
+              //cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
               ImporteNotayPago += cobranza['base']
             }
             if(encabezado.id == 'iva') {
-              cell.value = this.formatCurrency(+cell.value)
+              //cell.value = this.formatCurrency(+cell.value)
+              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
