@@ -782,8 +782,8 @@ export class BusquedaCancelacionComponent implements OnInit {
               let importeEnPesos = 0
               
               //importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['c_ImportePagado'] * +cobranza['c_TipoCambioP']
-              importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['base'] * +cobranza['c_TipoCambioP']
-              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos)
+              importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['base'] : cobranza['base'] * +cobranza['c_TipoCambioP']
+              cell.value = cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos
             }
 
             if(encabezado.id == 'mes') {
@@ -800,7 +800,14 @@ export class BusquedaCancelacionComponent implements OnInit {
       if(factura['idMoneda'] === 'MXN'){
 
       let cell = worksheet.getCell(inicioFactura, columnaImportePendiente)
-      cell.value = this.formatCurrency(factura['importePendiente'])
+
+      let importePorPagarPesos = 0
+
+      importePorPagarPesos = factura['importe']-ImporteNotayPago
+      
+
+      //cell.value = this.formatCurrency(importePorPagarPesos)
+      cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : importePorPagarPesos)
 
       let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
       cell_dls.value =this.formatCurrency(0.0)
@@ -818,7 +825,8 @@ export class BusquedaCancelacionComponent implements OnInit {
       console.log(" importePorPagar " + importePorPagar)
 
       let cell_dls = worksheet.getCell(inicioFactura, columnaImportePendiente_dls)
-      cell_dls.value = this.formatCurrency(importePorPagar)
+      //cell_dls.value = this.formatCurrency(importePorPagar)
+      cell_dls.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : importePorPagar)
       }
       // Cálculos
       
