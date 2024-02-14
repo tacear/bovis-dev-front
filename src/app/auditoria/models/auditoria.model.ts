@@ -126,3 +126,8 @@ export interface TipoComentario {
   tipoComentario:   string;
   activo:           boolean;
 }
+
+export interface FechaAuditoria {
+  numProyecto:      number;
+  fechaAuditoria:            string;
+}
