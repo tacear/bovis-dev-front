@@ -233,8 +233,7 @@ export const equivalenteFacturaNota = Object.freeze([
   {padre: 'fechaCancelacion', hijo: 'nC_FechaCancelacion'},
   {padre: 'tipoCambio', hijo: 'nC_TipoCambio'},
   {padre: 'fechaEmision', hijo: 'nC_FechaNotaCredito'},
-  {id: 'numProyecto', padre: 'numProyecto'},
-  {padre: 'importePendientePorPagar', hijo: 'nC_Total'}
+  {id: 'numProyecto', padre: 'numProyecto'}
 ])
 
 export const equivalenteFacturaCobranza = Object.freeze([
@@ -251,6 +250,5 @@ export const equivalenteFacturaCobranza = Object.freeze([
   {padre: 'tipoCambio', hijo: 'c_TipoCambioP'},
   {padre: 'fechaEmision', hijo: 'c_FechaPago'},
   {padre: 'fechaCancelacion', hijo: 'c_FechaCancelacion'},
-  {id: 'numProyecto', padre: 'numProyecto'},
-  {padre: 'importePendientePorPagar', hijo: 'c_ImportePagado'}
+  {id: 'numProyecto', padre: 'numProyecto'}
 ])
