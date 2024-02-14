@@ -71,4 +71,8 @@ export class AuditoriaService {
     return this.http.post<GenericResponse>(`${this.baseUrl}api/Auditoria/Comentarios`, body)
   }
 
+  agregarFechaProxAuditoria(body: any) {
+    return this.http.put<GenericResponse>(`${this.baseUrl}api/pcs/Proyectos/FechaAuditoria`, body)
+  }
+
 }
