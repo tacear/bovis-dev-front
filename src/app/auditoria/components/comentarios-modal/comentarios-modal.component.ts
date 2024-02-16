@@ -27,6 +27,7 @@ export class ComentariosModalComponent implements OnInit {
   //fecha: Date;
   FechaAuditoProx: string;
   Estatus: string;
+  URLImagen: string;
   
   readOnly: boolean   = true
   numProyecto: number = null
@@ -78,8 +79,10 @@ export class ComentariosModalComponent implements OnInit {
 
     if(Porcentaje >= 80){
       this.Estatus = "Satisfactorio"
+      this.URLImagen = "assets/images/SemaforoVerde.png"
     }else{
       this.Estatus = "Regular / Malo"
+      this.URLImagen = "assets/images/SemaforoRojo.png"
     }
 
     
