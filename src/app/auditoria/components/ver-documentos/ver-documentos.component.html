@@ -30,7 +30,18 @@
                   <td class="text-center">
                     <p-inputSwitch
                       formControlName="valido"
+                      (onChange)="cambiarValorComentario(i, $event)"
+                      *ngIf="esEdicion"
                     ></p-inputSwitch>
+                    <textarea 
+                      id="comentario_rechazo"
+                      rows="5" 
+                      cols="30" 
+                      pInputTextarea 
+                      formControlName="comentario_rechazo"
+                      class="form-control"
+                      *ngIf="!documento.value.valido"
+                    ></textarea>
                   </td>
               </tr>
           </ng-template>
@@ -38,7 +49,7 @@
     </ng-container>
   </div>
   
-  <div class="d-flex justify-content-center mt-4">
+  <div class="d-flex justify-content-center mt-4" *ngIf="esEdicion">
     <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!formDocumentos.valid">Guardar</button>
   </div>
 </form>
