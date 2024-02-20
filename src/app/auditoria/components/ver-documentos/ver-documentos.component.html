@@ -40,8 +40,11 @@
                       pInputTextarea 
                       formControlName="comentario_rechazo"
                       class="form-control"
-                      *ngIf="!documento.value.valido"
+                      *ngIf="!documento.value.valido && esEdicion"
                     ></textarea>
+                    <div *ngIf="!esEdicion">
+                      <p><strong>{{documento.value.valido ? 'Sí' : 'No: '}}</strong>{{documento.value.comentario_rechazo}}</p>
+                    </div>
                   </td>
               </tr>
           </ng-template>
