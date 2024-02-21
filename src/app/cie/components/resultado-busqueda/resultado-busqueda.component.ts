@@ -273,6 +273,37 @@ export class ResultadoBusquedaComponent implements OnInit {
     })
   }
 
+  parseDate(str: string): Date {
+    let mdy: String[] = str.split('-');
+    return new Date(Number(mdy[0]), Number(mdy[1]) - 1, Number(mdy[2]));
+  }
+
+  esElmismomes(fechaemi: string, fechacancela: string): boolean {
+
+    console.log("fechaemi: " + fechaemi);
+
+    console.log("fechacancela: " + fechacancela);
+
+    if(fechacancela == null || fechacancela == ""){
+      return true;
+    }else{
+      let fIni: Date = this.parseDate(fechaemi);
+      let fFin: Date = this.parseDate(fechacancela);
+  
+      if(fIni.getMonth == fFin.getMonth){
+        return false;
+      }else{
+        return true;
+      }
+
+    }
+    
+    
+
+    //return this.form.get(campo).invalid && 
+      //      (this.form.get(campo).dirty || this.form.get(campo).touched)
+  }
+
 }
 
 // (onLazyLoad)="loadData($event)"
