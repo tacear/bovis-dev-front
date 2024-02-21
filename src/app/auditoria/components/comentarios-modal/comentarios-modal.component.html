@@ -7,7 +7,27 @@
         <form [formGroup]="formFecha" (ngSubmit)="guardarFechaAuditoria()">
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-4">
+                    <label for="fechaauditoriainicial">Fecha de Auditoria Inicial:</label>
+                      <p-calendar 
+                      id="fechaAuditoriaInicial"
+                      [showIcon]="true"
+                      dateFormat="dd/mm/yy"
+                      [style]="{ width: '100%' }"
+                      [ngClass]="{'ng-invalid ng-dirty': esInvalidoFecha('fechaAuditoriaInicial')}"
+                      formControlName="fechaAuditoriaInicial"
+                    ></p-calendar>
+                    <div *ngIf="esInvalidoFecha('fechaAuditoriaInicial')">
+                      <small
+                        class="error-msg"
+                      >
+                        {{ obtenerMensajeErrorFecha('fechaAuditoriaInicial') }}
+                      </small>
+                    </div>
+                  </div>
+
+
+                <div class="col-4">
                     <label for="email">Proxima Fecha de Auditoria:</label>
                       <p-calendar 
                       id="fechaAuditoria"
@@ -24,13 +44,31 @@
                         {{ obtenerMensajeErrorFecha('fechaAuditoria') }}
                       </small>
                     </div>
+                </div>
+
+                <div class="col-4">
+                    <label for="responsableAsignado">Responsable Asignado:</label>
+                    <input 
+                        id="responsableAsignado"
+                        pInputText
+                        class="full-width" 
+                        formControlName="responsableAsignado"
+                        [ngClass]="{'ng-invalid ng-dirty': esInvalidoFecha('responsableAsignado')}"
+                        >
+                    <div *ngIf="esInvalidoFecha('responsableAsignado')">
+                      <small
+                        class="error-msg"
+                      >
+                        {{ obtenerMensajeErrorFecha('responsableAsignado') }}
+                      </small>
+                    </div>
                   </div>
             </div>
 
             
 
             <div class="d-flex justify-content-end mt-2">
-                <button type="button" class="btn btn-info" (click)="guardarFechaAuditoria()" [disabled]="!formFecha.valid">Guardar Fecha Auditoria</button>
+                <button type="button" class="btn btn-info" (click)="guardarFechaAuditoria()" [disabled]="!formFecha.valid">Guardar Informacion de Auditoria</button>
             </div>
 
         </form>
@@ -112,15 +150,38 @@
         <hr>
         
         <div class="row">
+
             <div class="col-12">
                 <p class="text-center">
                     <strong>Resultado</strong>
                 </p>
                 <p class="text-center">
-                     El proyecto tuvo el siguiente resultado:  <img src="{{URLImagen}}"  width="20" height="20">  "{{Estatus}}".
+                    El proyecto tuvo el siguiente resultado:  <img src="{{URLImagen}}"  width="20" height="20">  "{{Estatus}}".
+                </p>               
+               
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left">
+                    <strong> Fecha de Auditoria: </strong> {{FechaAuditoIni | date:'dd-MMM-yyyy'}} / {{FechaAuditoProx | date:'dd-MMM-yyyy'}} 
                 </p>
-                <p class="text-center">
-                    Se informa que la próxima auditoría se llevará a cabo el {{FechaAuditoProx | date:'dd-MM-yyyy'}}.
+            </div>
+            <div class="col-6">
+                <p class="text-left">
+                    <strong> Nombre del Auditor:</strong> {{nombreAuditor}}
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <p class="text-left">
+                    <strong> Director Responsable: </strong> {{directorResponsable}}
+                </p>
+            </div>
+            <div class="col-6">
+                <p class="text-left">
+                    <strong> Responsable Asignado:</strong> {{responsableAsignado}}
                 </p>
             </div>
         </div>
