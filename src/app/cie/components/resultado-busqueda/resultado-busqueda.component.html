@@ -152,9 +152,18 @@
                 <td>{{record.centroCostos}}</td>
                 <td>{{record.proyecto}}</td>
                 <td>{{record.saldoInicial | currency}}</td>
-                <td>{{record.debe | currency}}</td>
-                <td>{{record.haber | currency}}</td>
-                <td>{{record.movimiento | currency}}</td>
+               <td *ngIf="esElmismomes(record.fecha,record.fechaCancelacion); then thendebe else elsedebe"> </td>
+                    <ng-template #thendebe> <td>{{record.debe|currency}}</td> </ng-template>
+                    <ng-template #elsedebe> <td>{{0.0|currency}}</td> </ng-template>
+                <!--td>{{record.debe | currency}}</td-->.
+                <td *ngIf="esElmismomes(record.fecha,record.fechaCancelacion); then thenhaber else elsehaber"> </td>
+                    <ng-template #thenhaber> <td>{{record.haber|currency}}</td> </ng-template>
+                    <ng-template #elsehaber> <td>{{0.0|currency}}</td> </ng-template>
+                <!--td>{{record.haber | currency}}</td-->
+                <td *ngIf="esElmismomes(record.fecha,record.fechaCancelacion); then thenmovimiento else elsemovimiento"> </td>
+                    <ng-template #thenmovimiento> <td>{{record.movimiento|currency}}</td> </ng-template>
+                    <ng-template #elsemovimiento> <td>{{0.0|currency}}</td> </ng-template>
+                <!--td>{{record.movimiento | currency}}</td-->
                 <td>{{record.empresa}}</td>
                 <td>{{record.numProyecto}}</td>
                 <td>{{record.tipoProyecto}}</td>
