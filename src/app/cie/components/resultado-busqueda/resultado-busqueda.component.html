@@ -155,7 +155,7 @@
                <td *ngIf="esElmismomes(record.fecha,record.fechaCancelacion); then thendebe else elsedebe"> </td>
                     <ng-template #thendebe> <td>{{record.debe|currency}}</td> </ng-template>
                     <ng-template #elsedebe> <td>{{0.0|currency}}</td> </ng-template>
-                <!--td>{{record.debe | currency}}</td-->.
+                <!--td>{{record.debe | currency}}</td-->
                 <td *ngIf="esElmismomes(record.fecha,record.fechaCancelacion); then thenhaber else elsehaber"> </td>
                     <ng-template #thenhaber> <td>{{record.haber|currency}}</td> </ng-template>
                     <ng-template #elsehaber> <td>{{0.0|currency}}</td> </ng-template>
