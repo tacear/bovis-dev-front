@@ -146,8 +146,14 @@
                 <td>{{record.cuenta}}</td>
                 <td>{{record.tipoPoliza}}</td>
                 <td>{{record.numero}}</td>
-                <td>{{record.fecha}}</td>
-                <td>{{record.mes}}</td>
+                <td *ngIf="record.fechaCancelacion == null || record.fechaCancelacion == ''; then thenfecha else elsefecha"> </td>
+                    <ng-template #thenfecha> <td>{{record.fecha}}</td> </ng-template>
+                    <ng-template #elsefecha> <td>{{record.fechaCancelacion}}</td> </ng-template>
+                <!--td>{{record.fecha}}</td-->
+                <td *ngIf="record.fechaCancelacion == null || record.fechaCancelacion == ''; then thenmes else elsemes"> </td>
+                    <ng-template #thenmes> <td>{{record.mes}}</td> </ng-template>
+                    <ng-template #elsemes> <td>{{regresames(record.fechaCancelacion)}}</td> </ng-template>
+                <!--td>{{record.mes}}</td-->
                 <td>{{record.concepto}}</td>
                 <td>{{record.centroCostos}}</td>
                 <td>{{record.proyecto}}</td>
