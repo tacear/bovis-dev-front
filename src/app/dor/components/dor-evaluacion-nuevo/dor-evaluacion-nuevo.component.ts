@@ -192,7 +192,14 @@ export class DorEvaluacionNuevoComponent implements OnInit {
           }
 
           this.totalObjetivosCualitativos += Number(obj.valor || '');
-          this.totalCualitativosResultado += (+obj.porcentajeReal >= +obj.valor ? +obj.valor : 0)
+          
+           if(obj.descripcion.startsWith("2")){
+            this.totalCualitativosResultado += (((+obj.porcentajeReal * 100)/ +obj.valor)  >= 80 ? +obj.porcentajeReal : 0)
+          }else{
+            this.totalCualitativosResultado += (+obj.porcentajeReal >= +obj.valor ? +obj.valor : 0)
+          }  
+          //this.totalCualitativosResultado += (+obj.porcentajeReal >= +obj.valor ? +obj.valor : 0)
+          
           this.totalRealCualitativos += Number(obj.real)
 
           if (obj.motivoR != null && obj.motivoR != '' && +obj.acepto != 2) {
