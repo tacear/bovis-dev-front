@@ -51,7 +51,7 @@
                         <div class="col-4">
                             <label><strong>Cumplimiento</strong></label>
                         </div>
-                        <div class="col-3 text-center">
+                        <div class="col-4 text-center">
                             <label><strong>Documentos de referencia</strong></label>
                         </div>
                         <div class="col-2 text-center">
@@ -69,7 +69,7 @@
                     <div class="col-4">
                         <label>{{ auditoria.get('cumplimiento').value }}</label>
                     </div>
-                    <div class="col-3 text-center">
+                    <div class="col-4 text-center">
                         <label *ngIf="auditoria.get('tieneDocumento').value; else sinDocumento">
               {{ auditoria.get('documentoRef').value }}
             </label>

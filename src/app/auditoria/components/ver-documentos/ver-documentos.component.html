@@ -25,7 +25,7 @@
                             </div>
                         </td>
                         <td>
-                            <textarea id="comentario_rechazo" rows="5" cols="30" pInputTextarea formControlName="comentario_rechazo" class="form-control" *ngIf="!documento.value.valido && esEdicion"></textarea>
+                            <textarea id="comentario_rechazo" rows="3" cols="30" style="resize:  none;" pInputTextarea formControlName="comentario_rechazo" class="form-control" *ngIf="!documento.value.valido && esEdicion"></textarea>
                             <div *ngIf="!esEdicion">
                                 <p>{{documento.value.comentario_rechazo}}</p>
                             </div>
