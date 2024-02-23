@@ -4,9 +4,7 @@
 <div class="main-container">
 
     <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2 text-right">
-        <button type="submit" class="btn btn-info" routerLink="/contratos/plantillas/registro">
-      Nuevo
-    </button>
+        <button type="submit" class="btn btn-info" routerLink="/contratos/plantillas/registro">Nuevo</button>
     </p-toolbar>
     <div class="table-container">
         <p-table [value]="plantillas" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" paginatorPosition="both">
@@ -25,11 +23,11 @@
             <ng-template pTemplate="body" let-plantilla>
                 <tr>
                     <td>
-                        <a class="text-success font-bold" [routerLink]="['/contratos/plantillas/registro', plantilla.idContratoTemplate]">
-              {{ plantilla.idContratoTemplate }}
-            </a>
+                        {{ plantilla.idContratoTemplate }}
                     </td>
-                    <td>{{ plantilla.titulo }}</td>
+                    <td>
+                        <a class="text-success font-bold" [routerLink]="['/contratos/plantillas/registro', plantilla.idContratoTemplate]">{{ plantilla.titulo }}</a>
+                    </td>
                     <td class="text-center">
                         <p-inputSwitch [ngModel]="plantilla.activo" (click)="toggleActivo(plantilla.idContratoTemplate, plantilla.activo)" [readonly]="true"></p-inputSwitch>
                     </td>
