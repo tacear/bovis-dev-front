@@ -696,13 +696,23 @@ export class BusquedaCancelacionComponent implements OnInit {
         let cell = worksheet.getCell(inicio, indexE + 1)
         cell.value = factura[encabezado.id]
         cell.fill = factura['fechaCancelacion'] ? fillNotaCancelada : fillFactura
-        const encabezadosRedondeados = ['total', 'importe', 'iva', 'ivaRet', 'importeEnPesos'] 
+        const encabezadosRedondeados = ['total', 'importe', 'ivaRet', 'importeEnPesos'] 
         if(encabezadosRedondeados.includes(encabezado.id)) {
           //cell.value = this.formatCurrency(+cell.value)
           cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : +cell.value)
         }
+        
+        if(encabezado.id == 'iva') {
 
-         if(encabezado.id == 'tipoCambio') {
+          let IVA = 0
+
+          IVA = factura['idMoneda'] === 'MXN' ? +cell.value : +cell.value * +factura['tipoCambio']
+          
+          cell.value = this.formatCurrency(factura['c_FechaCancelacion'] ? 0 : IVA)
+          //cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
+        }
+
+        if(encabezado.id == 'tipoCambio') {
           if(factura['tipoCambio'] == "0"){
             cell.value = ""
           }else{
@@ -730,11 +740,11 @@ export class BusquedaCancelacionComponent implements OnInit {
               ImporteNotayPago +=  nota['nC_Importe']
               console.log(" ImporteNotayPago " + ImporteNotayPago)
             }
-            if(encabezado.id == 'iva') {
-              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
-              //console.log(" +cell.value2 " + nota['nC_Iva'])
-              //ImporteNotayPago +=   nota['nC_Iva']
-              //console.log(" ImporteNotayPago2 " + ImporteNotayPago)
+           if(encabezado.id == 'iva') {
+              let IVA = 0
+              IVA = nota['nC_IdMoneda'] === 'MXN' ? +cell.value : +cell.value * +nota['nC_TipoCambio']              
+              cell.value = this.formatCurrency(nota['c_FechaCancelacion'] ? 0 : IVA)
+              //cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
@@ -785,21 +795,31 @@ export class BusquedaCancelacionComponent implements OnInit {
               //console.log(" ImporteNotayPago3 " + ImporteNotayPago)
             }
             if(encabezado.id == 'iva') {
-              //cell.value = this.formatCurrency(+cell.value)
-              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
-              //console.log(" +cell.value4 " + + cobranza['c_IvaP'])
-              //ImporteNotayPago +=  cobranza['c_IvaP']
-              //console.log(" ImporteNotayPago4 " + ImporteNotayPago)
+              let IVA = 0
+              IVA = cobranza['c_IdMonedaP'] === 'MXN' ? +cell.value : +cell.value * +cobranza['c_TipoCambioP']              
+              //cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : +cell.value)
+              cell.value = this.formatCurrency(cobranza['c_FechaCancelacion'] ? 0 : IVA)             
             }
             if(encabezado.id == 'numProyecto') {
               cell.value = factura['numProyecto']
             }
-            if(encabezado.id == 'importeEnPesos') {
+             if(encabezado.id == 'importeEnPesos') {
               let importeEnPesos = 0
               
               //importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['c_ImportePagado'] : cobranza['c_ImportePagado'] * +cobranza['c_TipoCambioP']
               importeEnPesos = cobranza['c_IdMonedaP'] === 'MXN' ? cobranza['base'] : cobranza['base'] * +cobranza['c_TipoCambioP']
-              cell.value = cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos
+              //cell.value = cobranza['c_FechaCancelacion'] ? 0 : importeEnPesos
+              console.log("importeEnPesos " + importeEnPesos)
+              if(cobranza['c_FechaCancelacion'] == null || cobranza['c_FechaCancelacion'] == ""){                
+                if(importeEnPesos == null){
+                  cell.value =  this.formatCurrency(0)
+                }else{
+                  cell.value =  this.formatCurrency(importeEnPesos) 
+                }                
+              }else{
+                cell.value =  this.formatCurrency(0)
+              }
+             
             }
 
             if(encabezado.id == 'mes') {
