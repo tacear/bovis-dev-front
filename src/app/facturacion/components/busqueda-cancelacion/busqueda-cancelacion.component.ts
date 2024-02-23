@@ -702,6 +702,15 @@ export class BusquedaCancelacionComponent implements OnInit {
           cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : +cell.value)
         }
 
+         if(encabezado.id == 'tipoCambio') {
+          if(factura['tipoCambio'] == "0"){
+            cell.value = ""
+          }else{
+            cell.value = factura['tipoCambio']
+          }
+          
+        }
+
       })
       inicio++
 
@@ -742,7 +751,14 @@ export class BusquedaCancelacionComponent implements OnInit {
               cell.value = nota['nC_Mes']
             }
 
-           
+            if(encabezado.id == 'tipoCambio') {
+              if(nota['nC_TipoCambio'] == "0"){
+                cell.value = ""
+              }else{
+                cell.value = nota['nC_TipoCambio']
+              }
+              
+            }           
 
           })
           inicio++
@@ -790,6 +806,14 @@ export class BusquedaCancelacionComponent implements OnInit {
               cell.value = factura['mes']
             }
 
+             if(encabezado.id == 'tipoCambio') {
+              if(cobranza['c_TipoCambioP'] == 0){
+                cell.value = ""
+              }else{
+                cell.value = cobranza['c_TipoCambioP']
+              }
+              
+            }
             
           })
           inicio++
