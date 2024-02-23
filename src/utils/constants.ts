@@ -162,7 +162,7 @@ export const meses: Item[] = [
   {value: 9, label: 'Septiembre'},
   {value: 10, label: 'Octubre'},
   {value: 11, label: 'Noviembre'},
-  {value: 12, label: 'Diciembre2'},
+  {value: 12, label: 'Diciembre'},
 ]
 
 export const mesesString: Item[] = [
@@ -177,7 +177,7 @@ export const mesesString: Item[] = [
   {value: '9', label: 'Septiembre'},
   {value: '10', label: 'Octubre'},
   {value: '11', label: 'Noviembre'},
-  {value: '12', label: 'Diciembre2'},
+  {value: '12', label: 'Diciembre'},
 ]
 
 export const PERMISOS = Object.freeze({
