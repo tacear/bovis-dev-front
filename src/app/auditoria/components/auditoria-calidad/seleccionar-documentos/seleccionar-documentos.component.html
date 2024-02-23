@@ -3,7 +3,7 @@
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
     <div class="main-container">
-        <div class="buttons-container">
+        <div class="buttons-container col-12 text-left">
             <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!form.valid">{{ !esActualizacion ? 'Guardar' : 'Actualizar'}}</button>
         </div>
 
@@ -24,8 +24,8 @@
             <div *ngFor="let auditoria of auditorias.controls; let i = index" [formGroupName]="i">
                 <div *ngIf="auditorias.at(i - 1).get('seccion').value != auditoria.get('seccion').value">
                     <p-divider align="left">
-                        <div class="inline-flex align-items-center bg-transparent border-bottom border-2">
-                            <b>{{ auditoria.get('id_seccion').value }}  {{ auditoria.get('seccion').value }}</b>
+                        <div class="inline-flex align-items-center">
+                            <b class="bg-transparent">{{ auditoria.get('id_seccion').value }}  {{ auditoria.get('seccion').value }}</b>
                         </div>
                     </p-divider>
                     <div class="row d-flex align-items-center">
