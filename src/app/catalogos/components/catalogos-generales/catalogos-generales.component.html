@@ -29,10 +29,9 @@
                     <div class="table-header">
                         Catalogo
                         <span class="p-input-icon-left">
-                  <i class="pi pi-search"></i>
-                  <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
-                   placeholder="Búsqueda por descripción" />
-              </span>
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')" placeholder="Búsqueda por descripción" />
+                        </span>
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
