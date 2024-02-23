@@ -1,9 +1,10 @@
-<div class="text-center">
-    <p-progressBar [value]="total"></p-progressBar>
+<div class="text-center">        
     <p *ngIf="total > 0; else sinDocumentos"> 
+        <p-progressBar [value]="total" [style]="{'background':'red'}"></p-progressBar>
         <span>{{totalDocumentosValidados}}/{{totalDocumentos}} tienen archivos cargados</span>    
     </p>
     <ng-template #sinDocumentos>
+        <p-progressBar [value]="total"></p-progressBar>
         <p>
             No existen documentos cargados aún.
         </p>
