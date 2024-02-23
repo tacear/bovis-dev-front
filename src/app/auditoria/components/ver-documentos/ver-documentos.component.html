@@ -20,11 +20,14 @@
                         </td>-->
                         <td class="text-center">
                             <p-inputSwitch formControlName="valido" (onChange)="cambiarValorComentario(i, $event)" *ngIf="esEdicion"></p-inputSwitch>
+                            <div *ngIf="!esEdicion">
+                                <p><strong>{{documento.value.valido ? 'Sí' : 'No'}}</strong></p>
+                            </div>
                         </td>
                         <td>
                             <textarea id="comentario_rechazo" rows="5" cols="30" pInputTextarea formControlName="comentario_rechazo" class="form-control" *ngIf="!documento.value.valido && esEdicion"></textarea>
                             <div *ngIf="!esEdicion">
-                                <p><strong>{{documento.value.valido ? 'Sí' : 'No: '}}</strong>{{documento.value.comentario_rechazo}}</p>
+                                <p>{{documento.value.comentario_rechazo}}</p>
                             </div>
                         </td>
                     </tr>
