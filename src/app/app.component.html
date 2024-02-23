@@ -4,12 +4,11 @@
 
 <div class="wrapper">
 
-  <app-menu-sidebar *ngIf="loginDisplay" (nameModule)="onEmitter($event)"></app-menu-sidebar>
+    <app-menu-sidebar *ngIf="loginDisplay" (nameModule)="onEmitter($event)"></app-menu-sidebar>
 
-  <div class="main-app">
+    <div class="main-app" style="position:relative; top:4rem;">
 
-    <router-outlet></router-outlet>
+        <router-outlet></router-outlet>
 
-  </div>
+    </div>
 </div>
-
