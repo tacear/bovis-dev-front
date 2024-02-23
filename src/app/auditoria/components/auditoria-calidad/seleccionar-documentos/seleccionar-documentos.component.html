@@ -3,8 +3,14 @@
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
     <div class="main-container">
-        <div class="buttons-container col-12 text-left">
-            <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!form.valid">{{ !esActualizacion ? 'Guardar' : 'Actualizar'}}</button>
+        <div class="row">
+            <div class="col-12">
+                <p-toolbar>
+                    <div class="w-100 text-right">
+                        <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!form.valid">{{ !esActualizacion ? 'Guardar' : 'Actualizar'}}</button>
+                    </div>
+                </p-toolbar>
+            </div>
         </div>
 
         <div class="row">
