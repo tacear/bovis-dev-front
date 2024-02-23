@@ -49,11 +49,18 @@ export class CargarDocumentosComponent implements OnInit {
   totalDocumentos: number = 0
   totalDocumentosValidados: number = 0
   numProyecto: number = null
+  Label_cumplimiento: string;
   
   constructor() { }
 
   ngOnInit(): void {
     this.verificarEstado()
+
+     if(this.auditoriaService.esLegal){
+      this.Label_cumplimiento = "Descripción del entregable"
+    }else{
+      this.Label_cumplimiento = "Cumplimiento"
+    }
 
     this.sharedService.cambiarEstado(true)
 
