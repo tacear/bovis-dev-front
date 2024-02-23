@@ -87,7 +87,7 @@ export class ComentariosModalComponent implements OnInit {
       this.Estatus = "Satisfactorio"
       this.URLImagen = "assets/images/SemaforoVerde.png"
     }else{
-      this.Estatus = "Regular / Malo"
+      this.Estatus = "No Cumple"
       this.URLImagen = "assets/images/SemaforoRojo.png"
     }
 
