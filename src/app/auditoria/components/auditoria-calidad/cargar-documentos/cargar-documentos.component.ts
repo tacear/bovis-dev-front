@@ -119,25 +119,26 @@ export class CargarDocumentosComponent implements OnInit {
   
   onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any) {
 
-    console.log(id);
-
-
+    
+    
     if (event.files.length === 0) return
-
+    
     const [ archivo ] = event.files;
-
+    
     if( archivo.size >= 100000000) {
       this.messageService.add({severity: 'error', summary: TITLES.error, detail: 'No es posible subir archivos mayores a 100 MB.'})
       fileUpload.clear()
       return
     }
-
+    
     const lector = new FileReader();
-
+    
     lector.onload = () => {
       const documento_base64 = lector.result as string;
-
+      
+      console.log(id);
       const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
+      console.log(auditoria);
       const body = {
         id_auditoria_proyecto:  auditoria.idAuditoriaCumplimiento,
         motivo:                 'Documento',
