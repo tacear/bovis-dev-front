@@ -183,9 +183,9 @@ export class SeguimientoComponent implements OnInit {
     return mensaje
   }
 
-  verDocumentos(idAuditoria: number, auditoria:any) {
+  verDocumentos(idAuditoria: number, idAuditoriaCumplimiento: number) {
     console.log(idAuditoria);
-    console.log(auditoria);
+    console.log(idAuditoriaCumplimiento);
     this.dialogService.open(VerDocumentosComponent, {
       header: 'Documentos cargados',
       width: '90%',
