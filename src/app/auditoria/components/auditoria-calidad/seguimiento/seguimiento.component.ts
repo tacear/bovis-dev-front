@@ -112,7 +112,7 @@ export class SeguimientoComponent implements OnInit {
           data.forEach(seccion => {
             seccion.auditorias.forEach(auditoria => {
               this.auditorias.push(this.fb.group({
-                id_auditoria_cumplimiento:  [auditoria.idAuditoriaCumplimiento],
+                id_auditoria_cumplimiento:  [auditoria['idAuditoriaProyecto']],
                 id_auditoria:           [auditoria.idAuditoria],
                 aplica:                 [auditoria.aplica],
                 motivo:                 [auditoria.motivo],
@@ -183,16 +183,15 @@ export class SeguimientoComponent implements OnInit {
     return mensaje
   }
 
-  verDocumentos(idAuditoria: number, idAuditoriaCumplimiento: number) {
-    console.log(idAuditoria);
-    console.log(idAuditoriaCumplimiento);
+  verDocumentos(idAuditoriaProyecto: number) {
+    console.log("ID Auditoria Documento: " + idAuditoriaProyecto);
     this.dialogService.open(VerDocumentosComponent, {
       header: 'Documentos cargados',
       width: '90%',
       height: '90%',
       contentStyle: {overflow: 'auto'},
       data: {
-        idAuditoria,
+        idAuditoriaProyecto,
         esEdicion: true
       }
     })

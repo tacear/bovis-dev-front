@@ -39,9 +39,9 @@ export class VerDocumentosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.config.data?.idAuditoria) {
+    if(this.config.data?.idAuditoriaProyecto) {
       this.esEdicion = !!this.config.data.esEdicion
-      this.auditoriaService.getDocumentos(this.config.data.idAuditoria)
+      this.auditoriaService.getDocumentos(this.config.data.idAuditoriaProyecto)
         .subscribe({
           next: ({data}) => {
             data.forEach(documento => {

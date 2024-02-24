@@ -175,7 +175,7 @@ export class CargarDocumentosComponent implements OnInit {
     lector.readAsDataURL(archivo);
   }
 
-  verDocumentos(idAuditoria: number) {
+  verDocumentos(idAuditoriaProyecto: number) {
 
     this.dialogService.open(VerDocumentosComponent, {
       header: 'Documentos cargados',
@@ -183,7 +183,7 @@ export class CargarDocumentosComponent implements OnInit {
       height: '90%',
       contentStyle: {overflow: 'auto'},
       data: {
-        idAuditoria
+        idAuditoriaProyecto
       }
     })
     .onClose.subscribe(data => {

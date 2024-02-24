@@ -1,13 +1,11 @@
-<app-backdrop *ngIf="sharedService.cargando" style="position:absolute; top: 0px; left: 0px; z-index: 99999999999999;"></app-backdrop>
+<app-backdrop *ngIf="sharedService.cargando"></app-backdrop>
 
-<app-header [currentModule]="tituloPaginaLocal" style="position: fixed; width:100%; z-index: 999999999;"></app-header>
+<app-header [currentModule]="tituloPaginaLocal"></app-header>
 
 <div class="wrapper">
-    <app-menu-sidebar *ngIf="loginDisplay" (nameModule)="onEmitter($event)" style="position: fixed; top: 4rem; z-index: 999999999;"></app-menu-sidebar>
+    <app-menu-sidebar *ngIf="loginDisplay" (nameModule)="onEmitter($event)"></app-menu-sidebar>
 
-    <div class="main-app" style="position: absolute; top: 4rem; width: 93%; left: 7rem;">
-
+    <div class="main-app">
         <router-outlet></router-outlet>
-
     </div>
 </div>
