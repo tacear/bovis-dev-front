@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
 import { SharedService } from 'src/app/shared/services/shared.service';
@@ -20,7 +20,7 @@ import { FacturacionService } from 'src/app/facturacion/services/facturacion.ser
   styleUrls: ['./consultar.component.css'],
   providers: [MessageService, ProyectoJoinPipe]
 })
-export class ConsultarComponent implements AfterViewInit {
+export class ConsultarComponent implements OnInit {
 
   activatedRoute      = inject(ActivatedRoute)
   cieService          = inject(CieService)
@@ -46,11 +46,15 @@ export class ConsultarComponent implements AfterViewInit {
 
   constructor() { }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.verificarEstado()
 
     this.sharedService.cambiarEstado(true)
 
+    if(!localStorage.getItem('esTimesheet')) {
+      localStorage.setItem('esTimesheet', '1')
+      window.location.reload()
+    }
     
     this.userService.getRolesRealTime()
       .subscribe(data => {

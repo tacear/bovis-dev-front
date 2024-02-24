@@ -246,8 +246,10 @@ export const MENU = [
               label: 'Consultar / Modificar',
               routerLink: ['timesheet/consultar'],
               id: 'consulta-y-modificacion',
-              command: () =>
-                localStorage.setItem('pageTitle', 'Timesheet'.toUpperCase()),
+              command: () => {
+                localStorage.setItem('pageTitle', 'Timesheet'.toUpperCase())
+                localStorage.removeItem('esTimesheet')
+              }
             },
             {
               label: 'Summary',
