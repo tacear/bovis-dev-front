@@ -112,7 +112,7 @@ export class SeguimientoComponent implements OnInit {
           data.forEach(seccion => {
             seccion.auditorias.forEach(auditoria => {
               this.auditorias.push(this.fb.group({
-                id_auditoria_cumplimiento:  [auditoria.idAuditoriaProyecto],
+                id_auditoria_cumplimiento:  [auditoria.idAuditoriaCumplimiento],
                 id_auditoria:           [auditoria.idAuditoria],
                 aplica:                 [auditoria.aplica],
                 motivo:                 [auditoria.motivo],
