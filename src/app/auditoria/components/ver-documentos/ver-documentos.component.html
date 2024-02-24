@@ -12,12 +12,12 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-documento let-i="rowIndex">
                     <tr [formGroupName]="i">
-                        <td>
-                            <a class="text-success font-bold pointer" (click)="descargarDocumento(documento.value.id_documento)">{{documento.value.fecha + '_' + documento.value.id_documento.toString()}}</a>
-                        </td>
                         <!--<td>
-                            <a class="text-success font-bold pointer" (click)="descargarDocumento(documento.value.id_documento)">{{documento.value.nombre_documento || '-'}}</a>
+                            <a class="text-success font-bold pointer" (click)="descargarDocumento(documento.value.id_documento)">{{documento.value.fecha + '_' + documento.value.id_documento.toString()}}</a>
                         </td>-->
+                        <td>
+                            <a class="text-success font-bold pointer" (click)="descargarDocumento(documento.value.id_documento)">{{documento.value.nombre_documento || '-'}}</a>
+                        </td>
                         <td class="text-center">
                             <p-inputSwitch formControlName="valido" (onChange)="cambiarValorComentario(i, $event)" *ngIf="esEdicion"></p-inputSwitch>
                             <div *ngIf="!esEdicion">
