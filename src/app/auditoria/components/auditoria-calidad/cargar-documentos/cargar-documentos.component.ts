@@ -117,7 +117,10 @@ export class CargarDocumentosComponent implements OnInit {
       })
   }
   
-  onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any, audit: Auditoria) {
+  onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any) {
+
+    console.log(id);
+
 
     if (event.files.length === 0) return
 
@@ -134,7 +137,7 @@ export class CargarDocumentosComponent implements OnInit {
     lector.onload = () => {
       const documento_base64 = lector.result as string;
 
-      const auditoria = audit; //this.secciones.at(iParent).auditorias.at(iChild)
+      const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
       const body = {
         id_auditoria_proyecto:  auditoria.idAuditoriaCumplimiento,
         motivo:                 'Documento',
