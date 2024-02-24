@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { finalize, forkJoin, map } from 'rxjs';
-import { Seccion } from 'src/app/auditoria/models/auditoria.model';
+import { Auditoria, Seccion } from 'src/app/auditoria/models/auditoria.model';
 import { AuditoriaService } from 'src/app/auditoria/services/auditoria.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { TimesheetService } from 'src/app/timesheet/services/timesheet.service';
@@ -183,8 +183,8 @@ export class SeguimientoComponent implements OnInit {
     return mensaje
   }
 
-  verDocumentos(idAuditoria: number) {
-
+  verDocumentos(idAuditoria: number, auditoria:Auditoria) {
+    console.log(auditoria);
     this.dialogService.open(VerDocumentosComponent, {
       header: 'Documentos cargados',
       width: '90%',
