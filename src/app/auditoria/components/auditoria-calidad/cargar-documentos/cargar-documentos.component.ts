@@ -138,7 +138,7 @@ export class CargarDocumentosComponent implements OnInit {
       const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
       console.log(auditoria);
       const body = {
-        id_auditoria_proyecto:  auditoria.idAuditoriaProyecto,
+        id_auditoria_proyecto:  auditoria['idAuditoriaProyecto'],
         motivo:                 'Documento',
         nombre_documento:       archivo.name,
         documento_base64
