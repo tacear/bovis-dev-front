@@ -1,7 +1,9 @@
 <p-toast></p-toast>
 
 <div class="content" style="margin:2%">
-    <p-toolbar styleClass="p-1 mb-4 d-flex justify-content-end gap-2 text-right">
+    <h1>{{nombreCatalogo}}</h1>
+
+    <p-toolbar styleClass="p-1 mt-5 mb-4 d-flex justify-content-end gap-2 text-right">
         <button type="button" class="btn btn-secondary" routerLink="/catalogos"><i class="fas fa-arrow-left"></i> Regresar</button>
         <button title="btnNuevo" label="Nuevo" icon="pi pi-plus" class="btn btn-primary p-mr-2" (click)="openDialog(null)"><i class="fas fa-plus"></i> Nuevo</button>
     </p-toolbar>
