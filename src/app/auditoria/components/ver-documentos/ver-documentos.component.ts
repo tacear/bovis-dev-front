@@ -51,7 +51,8 @@ export class VerDocumentosComponent implements OnInit {
                     id_documento:       [documento.idDocumento],
                     nombre_documento:   [documento.nombreDocumento],
                     valido:             [documento.valido],
-                    comentario_rechazo: [documento.comentarioRechazo]
+                    comentario_rechazo: [documento.comentarioRechazo],
+                    read_only:        [!documento.valido]
                   })
                 )
               }

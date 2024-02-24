@@ -19,14 +19,14 @@
                             {{documento.value.fecha | date:'dd-MMM-yyyy'}}
                         </td>
                         <td class="text-center">
-                            <p-inputSwitch formControlName="valido" (onChange)="cambiarValorComentario(i, $event)" *ngIf="esEdicion"></p-inputSwitch>
-                            <div *ngIf="!esEdicion">
+                            <p-inputSwitch formControlName="valido" (onChange)="cambiarValorComentario(i, $event)" *ngIf="esEdicion && !documento.value.read_only"></p-inputSwitch>
+                            <div *ngIf="!esEdicion || documento.value.read_only">
                                 <p><strong>{{documento.value.valido ? 'Sí' : 'No'}}</strong></p>
                             </div>
                         </td>
                         <td>
-                            <textarea id="comentario_rechazo" rows="3" cols="30" style="resize:  none;" pInputTextarea formControlName="comentario_rechazo" class="form-control" *ngIf="!documento.value.valido && esEdicion"></textarea>
-                            <div *ngIf="!esEdicion">
+                            <textarea id="comentario_rechazo" rows="3" cols="30" style="resize:  none;" pInputTextarea formControlName="comentario_rechazo" class="form-control" *ngIf="!documento.value.valido && esEdicion && !documento.value.read_only"></textarea>
+                            <div *ngIf="!esEdicion || documento.value.read_only">
                                 <p>{{documento.value.comentario_rechazo}}</p>
                             </div>
                         </td>

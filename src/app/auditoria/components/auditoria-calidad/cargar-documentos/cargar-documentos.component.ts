@@ -28,37 +28,37 @@ interface UploadEvent {
 })
 export class CargarDocumentosComponent implements OnInit {
 
-  sharedService     = inject(SharedService)
-  messageService    = inject(MessageService)
-  activatedRoute    = inject(ActivatedRoute)
-  location          = inject(Location)
-  fb                = inject(FormBuilder)
-  timesheetService  = inject(TimesheetService)
-  router            = inject(Router)
-  auditoriaService  = inject(AuditoriaService)
-  dialogService     = inject(DialogService)
+  sharedService = inject(SharedService)
+  messageService = inject(MessageService)
+  activatedRoute = inject(ActivatedRoute)
+  location = inject(Location)
+  fb = inject(FormBuilder)
+  timesheetService = inject(TimesheetService)
+  router = inject(Router)
+  auditoriaService = inject(AuditoriaService)
+  dialogService = inject(DialogService)
 
   form = this.fb.group({
-    id_proyecto:  ['', Validators.required],
-    auditorias:   this.fb.array([]),
+    id_proyecto: ['', Validators.required],
+    auditorias: this.fb.array([]),
   })
 
-  proyectos:  Opcion[] = []
-  secciones:  Seccion[] = []
+  proyectos: Opcion[] = []
+  secciones: Seccion[] = []
 
   totalDocumentos: number = 0
   totalDocumentosValidados: number = 0
   numProyecto: number = null
   Label_cumplimiento: string;
-  
+
   constructor() { }
 
   ngOnInit(): void {
     this.verificarEstado()
 
-     if(this.auditoriaService.esLegal){
+    if (this.auditoriaService.esLegal) {
       this.Label_cumplimiento = "Descripción del entregable"
-    }else{
+    } else {
       this.Label_cumplimiento = "Cumplimiento"
     }
 
@@ -67,14 +67,14 @@ export class CargarDocumentosComponent implements OnInit {
     forkJoin([
       this.auditoriaService.getCatProyectos()
     ])
-    .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
-    .subscribe({
-      next: (value) => {
-        const [proyectosR] = value
-        this.proyectos = proyectosR.data.map(proyecto => ({code: proyecto.numProyecto.toString(), name: `${proyecto.numProyecto} - ${proyecto.nombre}`}))
-      },
-      error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
-    })
+      .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+      .subscribe({
+        next: (value) => {
+          const [proyectosR] = value
+          this.proyectos = proyectosR.data.map(proyecto => ({ code: proyecto.numProyecto.toString(), name: `${proyecto.numProyecto} - ${proyecto.nombre}` }))
+        },
+        error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+      })
   }
 
   verificarEstado() {
@@ -82,11 +82,11 @@ export class CargarDocumentosComponent implements OnInit {
       // Access query parameters
       const success = params['success']
 
-      if(success) {
+      if (success) {
         Promise.resolve().then(() => this.messageService.add({ severity: 'success', summary: 'Registro guardado', detail: 'El registro ha sido guardado.' }))
       }
       let urlWithoutQueryParams = this.location.path().split('?')[0];
-      if(this.location.path().split('?')[1]?.includes('tipo=legal')) {
+      if (this.location.path().split('?')[1]?.includes('tipo=legal')) {
         urlWithoutQueryParams += '?tipo=legal'
       }
       this.location.replaceState(urlWithoutQueryParams);
@@ -95,8 +95,8 @@ export class CargarDocumentosComponent implements OnInit {
 
   getSecciones(event: any) {
     this.sharedService.cambiarEstado(true)
-    const {value: id} = event
-    
+    const { value: id } = event
+
     this.numProyecto = id
 
     this.totalDocumentos = 0
@@ -104,7 +104,7 @@ export class CargarDocumentosComponent implements OnInit {
     this.auditoriaService.getProyectoCumplimiento(id)
       .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
       .subscribe({
-        next: ({data}) => {
+        next: ({ data }) => {
           this.secciones = data
           this.secciones.forEach(seccion => {
             seccion.auditorias.forEach(auditoria => {
@@ -113,63 +113,63 @@ export class CargarDocumentosComponent implements OnInit {
             })
           })
         },
-        error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
+        error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
       })
   }
-  
+
   onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any) {
 
-    
-    
+
+
     if (event.files.length === 0) return
-    
-    const [ archivo ] = event.files;
-    
-    if( archivo.size >= 100000000) {
-      this.messageService.add({severity: 'error', summary: TITLES.error, detail: 'No es posible subir archivos mayores a 100 MB.'})
+
+    const [archivo] = event.files;
+
+    if (archivo.size >= 100000000) {
+      this.messageService.add({ severity: 'error', summary: TITLES.error, detail: 'No es posible subir archivos mayores a 100 MB.' })
       fileUpload.clear()
       return
     }
-    
+
     const lector = new FileReader();
-    
+
     lector.onload = () => {
       const documento_base64 = lector.result as string;
       const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
       console.log(auditoria);
       const body = {
-        id_auditoria_proyecto:  auditoria['idAuditoriaProyecto'],
-        motivo:                 'Documento',
-        nombre_documento:       archivo.name,
+        id_auditoria_proyecto: auditoria['idAuditoriaProyecto'],
+        motivo: 'Documento',
+        nombre_documento: archivo.name,
         documento_base64
       }
 
       this.dialogService.open(SubirArchivoComponent, {
         header: 'Subir documento',
         width: '50%',
-        contentStyle: {overflow: 'auto'},
+        contentStyle: { overflow: 'auto' },
         data: {
           archivoBase64: body.documento_base64,
         }
       })
-      .onClose.subscribe(({acepta, motivo}) => {
-        fileUpload.clear();
-        if(acepta) {
-          body.motivo = motivo
-          this.sharedService.cambiarEstado(true)
-          console.log(body)
-          this.auditoriaService.agregarDocumento(body)
-            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
-            .subscribe({
-              next: (data) => {
-                auditoria.tieneDocumento = true
-                auditoria.ultimoDocumentoValido = true
-                this.messageService.add({severity: 'success', summary: 'Documento cargado', detail: 'El documento ha sido cargado correctamente'})
-              },
-              error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: SUBJECTS.error})
-            })
-        }
-      })
+        .onClose.subscribe(({ acepta, motivo }) => {
+          fileUpload.clear();
+          if (acepta) {
+            body.motivo = motivo
+            this.sharedService.cambiarEstado(true)
+            console.log(body)
+            this.auditoriaService.agregarDocumento(body)
+              .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+              .subscribe({
+                next: (data) => {
+                  auditoria.tieneDocumento = true
+                  auditoria.ultimoDocumentoValido = true
+                  this.messageService.add({ severity: 'success', summary: 'Documento cargado', detail: 'El documento ha sido cargado correctamente' })
+                },
+                error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: SUBJECTS.error })
+              })
+          }
+        })
     };
 
     lector.readAsDataURL(archivo);
@@ -181,18 +181,18 @@ export class CargarDocumentosComponent implements OnInit {
       header: 'Documentos cargados',
       width: '90%',
       height: '90%',
-      contentStyle: {overflow: 'auto'},
+      contentStyle: { overflow: 'auto' },
       data: {
         idAuditoriaProyecto
       }
     })
-    .onClose.subscribe(data => {
-      // if(data) {
-      //   if(data.exito) {
-      //     this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'Los documentos han sido validados.'})
-      //   }
-      // }
-    })
+      .onClose.subscribe(data => {
+        // if(data) {
+        //   if(data.exito) {
+        //     this.messageService.add({severity: 'success', summary: TITLES.success, detail: 'Los documentos han sido validados.'})
+        //   }
+        // }
+      })
   }
 
   mostrarModalComentarios() {
@@ -201,19 +201,19 @@ export class CargarDocumentosComponent implements OnInit {
       header: 'Comentarios',
       width: '90%',
       height: '90%',
-      contentStyle: {overflow: 'auto'},
+      contentStyle: { overflow: 'auto' },
       data: {
         readOnly: true,
         numProyecto: this.numProyecto,
         totalDocumentos: this.totalDocumentos,
-        totalDocumentosValidados: this.totalDocumentosValidados 
+        totalDocumentosValidados: this.totalDocumentosValidados
       }
     })
-    .onClose.subscribe(data => {
-      if(data) {
-        console.log(data)
-      }
-    })
+      .onClose.subscribe(data => {
+        if (data) {
+          console.log(data)
+        }
+      })
   }
 
 }
