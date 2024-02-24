@@ -183,7 +183,7 @@ export class SeguimientoComponent implements OnInit {
     return mensaje
   }
 
-  verDocumentos(idAuditoria: number, auditoria:Auditoria) {
+  verDocumentos(idAuditoria: number, auditoria:any) {
     console.log(idAuditoria);
     console.log(auditoria);
     this.dialogService.open(VerDocumentosComponent, {
