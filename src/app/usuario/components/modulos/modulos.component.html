@@ -40,7 +40,7 @@
                     </div>
                 </th>
                 <th class="text-center">Pestaña</th>
-                <th>Activo</th>
+                <th class="text-center">Estatus</th>
                 <!-- <th class="text-center">Opciones</th> -->
             </tr>
         </ng-template>
@@ -50,9 +50,13 @@
                 <td>{{modulo.modulo}}</td>
                 <td>{{modulo.subModulo}}</td>
                 <td class="text-center">
-                    <p-badge severity="success" *ngIf="modulo.isTab" [value]="modulo.tab"></p-badge>
+                    <p-badge severity="info" *ngIf="modulo.isTab" [value]="modulo.tab"></p-badge>
+
                 </td>
-                <td>{{modulo.activo}}</td>
+                <td class="text-center">
+                    <p-tag severity="success" *ngIf="modulo.activo">Activo</p-tag>
+                    <p-tag severity="danger" *ngIf="!modulo.activo">Inactivo</p-tag>
+                </td>
                 <!-- <td class="text-align">
                 <div class="d-flex justify-content-center gap-3">
                     <button

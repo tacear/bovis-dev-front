@@ -2,12 +2,12 @@
 </p-toast>
 
 <div class="main-container">
-
-    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-end gap-2 text-right">
-        <button type="submit" class="btn btn-info" routerLink="/contratos/plantillas/registro">Nuevo</button>
+    <h1>Contratos</h1>
+    <p-toolbar styleClass="p-1 mt-5 mb-2 d-flex justify-content-end gap-2 text-right">
+        <button type="submit" class="btn btn-primary" routerLink="/contratos/plantillas/registro"><i class="fas fa-plus"></i> Nuevo contrato</button>
     </p-toolbar>
     <div class="table-container">
-        <p-table [value]="plantillas" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" paginatorPosition="both">
+        <p-table [value]="plantillas" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" paginatorPosition="both" styleClass="p-datatable-striped">
             <ng-template pTemplate="header">
                 <tr>
                     <th pSortableColumn="idContratoTemplate">ID

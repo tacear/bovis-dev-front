@@ -3,11 +3,13 @@
 
 <form [formGroup]="form" (ngSubmit)="guardar()">
     <div class="main-container">
-        <div class="buttons-container text-right">
-            <button type="button" class="btn btn-info" (click)="guardar()" [disabled]="!form.valid">{{ !esActualizacion ? 'Guardar' : 'Actualizar'}}</button>
-            <button type="button" class="btn btn-info" (click)="limpiar()">Clear data</button>
-            <button type="button" class="btn btn-info" routerLink="/empleados/persona">Regresar</button>
-        </div>
+        <h1>{{ !esActualizacion ? 'Nueva persona' : 'Persona'}}</h1>
+
+        <p-toolbar styleClass="p-1 mb-4 d-flex justify-content-end gap-2 text-right">
+            <button type="button" class="btn btn-secondary" routerLink="/empleados/persona"><i class="fas fa-arrow-left"></i> Regresar</button>
+            <button type="button" class="btn btn-dark" (click)="limpiar()"><i class="fas fa-eraser"></i> Limpiar campos</button>
+            <button type="button" class="btn btn-primary" (click)="guardar()" [disabled]="!form.valid"><i class="fas fa-save"></i> {{ !esActualizacion ? 'Guardar' : 'Actualizar'}}</button>
+        </p-toolbar>
 
         <div class="row" *ngIf="esEmpleado">
             <div class="col-12">
@@ -20,27 +22,21 @@
                 <label for="nombre">Nombre:</label>
                 <input id="nombre" pInputText class="form-control" maxlength="50" formControlName="nombre" [ngClass]="{'ng-invalid ng-dirty': esInvalido('nombre')}">
                 <div *ngIf="esInvalido('nombre')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('nombre') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('nombre') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="apellido_paterno">Apellido Paterno:</label>
                 <input id="apellido_paterno" pInputText class="form-control" maxlength="50" formControlName="apellido_paterno" [ngClass]="{'ng-invalid ng-dirty': esInvalido('apellido_paterno')}">
                 <div *ngIf="esInvalido('apellido_paterno')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('apellido_paterno') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('apellido_paterno') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="apellido_materno">Apellido Materno:</label>
                 <input id="apellido_materno" pInputText class="form-control" maxlength="50" formControlName="apellido_materno" [ngClass]="{'ng-invalid ng-dirty': esInvalido('apellido_materno')}">
                 <div *ngIf="esInvalido('apellido_materno')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('apellido_materno') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('apellido_materno') }}</small>
                 </div>
             </div>
         </div>
@@ -51,18 +47,14 @@
                 <p-dropdown id="id_edo_civil" [options]="catEstadoCivil" placeholder="Seleccionar un estado civil" optionLabel="name" [showClear]="true" [style]="{ width: '100%' }" formControlName="id_edo_civil" [ngClass]="{'ng-invalid ng-dirty': esInvalido('id_edo_civil')}"
                     optionValue="value"></p-dropdown>
                 <div *ngIf="esInvalido('id_edo_civil')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('id_edo_civil') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('id_edo_civil') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
                 <p-calendar id="fecha_nacimiento" [showIcon]="true" dateFormat="dd/mm/yy" [style]="{ width: '100%' }" [ngClass]="{'ng-invalid ng-dirty': esInvalido('fecha_nacimiento')}" formControlName="fecha_nacimiento"></p-calendar>
                 <div *ngIf="esInvalido('fecha_nacimiento')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('fecha_nacimiento') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('fecha_nacimiento') }}</small>
                 </div>
             </div>
             <div class="col-4">
@@ -70,9 +62,7 @@
                 <p-dropdown id="id_tipo_sangre" [options]="catTipoSangre" placeholder="Seleccione un tipo de sangre" optionLabel="name" [showClear]="true" [style]="{ width: '100%' }" [ngClass]="{'ng-invalid ng-dirty': esInvalido('id_tipo_sangre')}" formControlName="id_tipo_sangre"
                     optionValue="value"></p-dropdown>
                 <div *ngIf="esInvalido('id_tipo_sangre')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('id_tipo_sangre') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('id_tipo_sangre') }}</small>
                 </div>
             </div>
         </div>
@@ -82,18 +72,14 @@
                 <label for="id_sexo">Sexo:</label>
                 <p-dropdown id="id_sexo" [options]="catSexo" placeholder="Seleccionar un estado civil" optionLabel="name" [showClear]="true" [style]="{ width: '100%' }" formControlName="id_sexo" [ngClass]="{'ng-invalid ng-dirty': esInvalido('id_sexo')}" optionValue="value"></p-dropdown>
                 <div *ngIf="esInvalido('id_sexo')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('id_sexo') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('id_sexo') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="rfc">RFC:</label>
                 <input id="rfc" pInputText class="form-control" minlength="12" maxlength="13" formControlName="rfc" [ngClass]="{'ng-invalid ng-dirty': esInvalido('rfc')}">
                 <div *ngIf="esInvalido('rfc')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('rfc') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('rfc') }}</small>
                 </div>
             </div>
             <div class="col-4">
@@ -101,9 +87,7 @@
                 <p-dropdown id="id_tipo_persona" [options]="catTipoPersona" placeholder="Seleccione un tipo de persona" optionLabel="name" [showClear]="true" [style]="{ width: '100%' }" formControlName="id_tipo_persona" [ngClass]="{'ng-invalid ng-dirty': esInvalido('id_tipo_persona')}"
                     optionValue="value"></p-dropdown>
                 <div *ngIf="esInvalido('id_tipo_persona')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('id_tipo_persona') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('id_tipo_persona') }}</small>
                 </div>
             </div>
         </div>
@@ -113,27 +97,21 @@
                 <label for="email">Email:</label>
                 <input id="email" pInputText class="form-control" maxlength="60" formControlName="email" [ngClass]="{'ng-invalid ng-dirty': esInvalido('email')}">
                 <div *ngIf="esInvalido('email')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('email') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('email') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="telefono">Teléfono:</label>
                 <input id="telefono" pInputText class="form-control" maxlength="20" formControlName="telefono" [ngClass]="{'ng-invalid ng-dirty': esInvalido('telefono')}">
                 <div *ngIf="esInvalido('telefono')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('telefono') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('telefono') }}</small>
                 </div>
             </div>
             <div class="col-4">
                 <label for="celular">Celular:</label>
                 <input id="celular" pInputText class="form-control" maxlength="20" formControlName="celular" [ngClass]="{'ng-invalid ng-dirty': esInvalido('celular')}">
                 <div *ngIf="esInvalido('celular')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('celular') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('celular') }}</small>
                 </div>
             </div>
         </div>
@@ -143,9 +121,7 @@
                 <label for="curp">CURP:</label>
                 <input id="curp" pInputText class="form-control" maxlength="18" formControlName="curp" [ngClass]="{'ng-invalid ng-dirty': esInvalido('curp')}">
                 <div *ngIf="esInvalido('curp')">
-                    <small class="error-msg">
-            {{ obtenerMensajeError('curp') }}
-          </small>
+                    <small class="error-msg">{{ obtenerMensajeError('curp') }}</small>
                 </div>
             </div>
         </div>

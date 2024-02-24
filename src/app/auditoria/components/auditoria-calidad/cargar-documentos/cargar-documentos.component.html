@@ -5,7 +5,7 @@
         <div class="col-12">
             <p-toolbar>
                 <div class="w-100 text-right">
-                    <button type="button" class="btn btn-info" (click)="mostrarModalComentarios()">Resultados de la evaluación</button>
+                    <button type="button" class="btn btn-success" (click)="mostrarModalComentarios()"><i class="fas fa-medal"></i> Resultados de la evaluación</button>
                 </div>
             </p-toolbar>
         </div>
@@ -67,14 +67,14 @@
                 </div>
                 <div class="col-2 text-center">
                     <!-- <div *ngIf="auditoria.aplica && auditoria.tieneDocumento">
-            <label>Documento cargado</label>
-          </div>
-          <div *ngIf="auditoria.aplica && !auditoria.tieneDocumento">
-          </div> -->
-                    <p-fileUpload mode="basic" #fileUpload chooseLabel="Seleccionar" (onSelect)="onSeleccionArchivo($event, auditoria.idAuditoria, i, iChild, fileUpload)"></p-fileUpload>
+                                <label>Documento cargado</label>
+                            </div>
+                            <div *ngIf="auditoria.aplica && !auditoria.tieneDocumento">
+                            </div> -->
+                    <p-fileUpload mode="basic" #fileUpload chooseIcon="pi pi-upload" chooseLabel="Seleccionar" (onSelect)="onSeleccionArchivo($event, auditoria.idAuditoria, i, iChild, fileUpload)"></p-fileUpload>
                 </div>
                 <div class="col-2 text-center">
-                    <p-button label="Ver" [disabled]="!auditoria.tieneDocumento" (onClick)="auditoria.tieneDocumento ? verDocumentos(auditoria['idAuditoriaProyecto']) : null"></p-button>
+                    <p-button label="Ver" icon="pi pi-eye" [disabled]="!auditoria.tieneDocumento" (onClick)="auditoria.tieneDocumento ? verDocumentos(auditoria['idAuditoriaProyecto']) : null"></p-button>
                 </div>
                 <div class="col-12">
                     <p-divider></p-divider>

@@ -5,20 +5,18 @@
 
     <h1>Empleados</h1>
 
-    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2">
-        <button type="submit" class="btn btn-info" routerLink="/empleados/registro-empleado">
-      Nuevo
-    </button>
+    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-end gap-2">
+        <button type="submit" class="btn btn-primary" routerLink="/empleados/registro-empleado"><i class="fas fa-plus"></i> Nuevo empleado</button>
     </p-toolbar>
     <div class="table-container">
         <p-table #tablaPrincipal class="tabla-filtro" [value]="empleados" [paginator]="true" paginatorPosition="both" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]"
-            [rows]="10" [globalFilterFields]="['nunum_empleado_rr_hh', 'nombre_persona', 'chpuesto', 'boactivo']">
+            [rows]="10" [globalFilterFields]="['nunum_empleado_rr_hh', 'nombre_persona', 'chpuesto', 'boactivo']" styleClass="p-datatable-striped">
             <ng-template pTemplate="caption">
                 <div class="flex">
                     <span class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
-            </span>
+                        <i class="pi pi-search"></i>
+                        <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
+                    </span>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
@@ -217,7 +215,7 @@
                     </td>
                     <td>
                         <div class="d-flex gap-2">
-                            <button title="Modificar empleado" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" [routerLink]="['/empleados/edicion-empleado', empleado.nunum_empleado_rr_hh]"></button>
+                            <button title="Modificar empleado" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/empleados/edicion-empleado', empleado.nunum_empleado_rr_hh]"></button>
                             <button title="Contratos del empleado" pButton pRipple icon="pi pi-file" class="p-button-rounded p-button-success p-mr-2" [routerLink]="['/empleados/contratos', empleado.nunum_empleado_rr_hh]"></button>
                             <button title="Proyectos del empleado" pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-success p-mr-2" (click)="mostrarProyectos(empleado.nunum_empleado_rr_hh)"></button>
                         </div>

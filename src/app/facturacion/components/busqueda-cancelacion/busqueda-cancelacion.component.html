@@ -1,7 +1,8 @@
 <div class="main-container">
-    <!-- contenedor de filtros -->
-    <div class="container-fluid container-filter">
+    <h1>Búsqueda / Cancelación</h1>
 
+    <!-- contenedor de filtros -->
+    <div class="container-fluid container-filter mt-5">
         <div class="row mt-3 mx-2">
             <div class="col-4">
                 <label for="concepto">Proyecto:</label>
@@ -46,23 +47,20 @@
             </div>
         </div>
 
-        <div class="row border-top border-bottom">
-            <div class="col-12 text-center">
-                <p-button label="Limpiar filtros" styleClass="p-button-raised p-button-text p-button-secondary me-2 py-1" (click)="clearFiltros()"></p-button>
-                <p-button label="Buscar" icon="pi pi-search" styleClass="p-button-raised p-button-text p-button-secondary py-1" (click)="busqueda()"></p-button>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center align-items-center gap-2">
+                <button type="button" class="btn btn-dark" (click)="clearFiltros()"><i class="fas fa-eraser"></i> Limpiar filtros</button>
+                <button type="button" class="btn btn-primary" (click)="busqueda()"><i class="fas fa-save"></i> Buscar</button>
             </div>
         </div>
     </div>
 
     <!-- contenedor de Grid -->
     <!-- <div *ngIf="listBusquedaCompleto && listBusquedaCompleto.length > 0" class="container-fluid container-table">  -->
-    <div>
+    <div class="mt-5">
         <!-- barra de herramientas -->
-        <p-toolbar styleClass="p-1">
-            <div class="p-toolbar-group-start">
-                <p-button icon="pi pi-file-excel" pTooltip="Exportar Excel" styleClass="p-button-success f-2x" (click)="exportJsonToExcel()">
-                </p-button>
-            </div>
+        <p-toolbar styleClass="p-1 mb-0 d-flex justify-content-end gap-2 text-right border-none" *ngIf="totalRecords > 0">
+            <p-button icon="pi pi-file-excel" pTooltip="Exportar Excel" label="Exportar Excel" styleClass="p-button-success" (click)="exportJsonToExcel()"></p-button>
         </p-toolbar>
         <p-table [value]="listBusquedaCompleto" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Total: {totalRecords}" styleClass="p-datatable-striped" [scrollable]="true" paginatorPosition="both" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template pTemplate="header">

@@ -5,7 +5,7 @@
 
     <h1>Carga SAE</h1>
 
-    <div class="grid">
+    <div class="grid mt-5">
         <!-- Campo de empresa -->
         <div class="col">
             <label for="company">Empresa:</label>
@@ -15,7 +15,7 @@
         <!-- Campo de xlsx -->
         <div class="col">
             <label for="xlsxFile">Selección de SAE:</label>
-            <p-fileUpload id="xlsxFile" #fileUpload mode="basic" [customUpload]="true" accept=".xlsx" (onSelect)="onBasicUpload($event, fileUpload)" [multiple]="true" [maxFileSize]="fileSizeMax" chooseLabel="Cargar XLSX" [disabled]="isLoadingFile || !selectedOption"></p-fileUpload>
+            <p-fileUpload id="xlsxFile" #fileUpload mode="basic" [customUpload]="true" accept=".xlsx" (onSelect)="onBasicUpload($event, fileUpload)" [multiple]="true" [maxFileSize]="fileSizeMax" chooseIcon="pi pi-upload" chooseLabel="Cargar XLSX" [disabled]="isLoadingFile || !selectedOption"></p-fileUpload>
         </div>
     </div>
 

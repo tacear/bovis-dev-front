@@ -3,9 +3,10 @@
 
 
 <div class="main-container">
+    <h1>Requerimientos</h1>
 
-    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2 text-right">
-        <button type="submit" class="btn btn-info" routerLink="/empleados/generar-requerimiento">Nuevo</button>
+    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-end gap-2 text-right">
+        <button type="submit" class="btn btn-primary" routerLink="/empleados/generar-requerimiento"><i class="fas fa-plus"></i> Nuevo requerimiento</button>
     </p-toolbar>
 
     <div class="row mb-2">
@@ -23,7 +24,7 @@
         </div>
     </div>
 
-    <p-table [value]="data" [paginator]="true" [showCurrentPageReport]="true" paginatorPosition="both" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10">
+    <p-table [value]="data" [paginator]="true" [showCurrentPageReport]="true" paginatorPosition="both" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" styleClass="p-datatable-striped">
         <ng-template pTemplate="header">
             <tr>
                 <th [style]="{opacity: 0.8}" colspan="6"></th>

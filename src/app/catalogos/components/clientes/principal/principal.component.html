@@ -5,10 +5,9 @@
 
     <h1>Clientes</h1>
 
-    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2">
-        <button type="submit" class="btn btn-info" (click)="guardarCliente(null, null)">
-            Nuevo
-        </button>
+    <p-toolbar styleClass="p-1 mb-4 d-flex justify-content-end gap-2 text-right">
+        <button type="button" class="btn btn-secondary" routerLink="/catalogos"><i class="fas fa-arrow-left"></i> Regresar</button>
+        <button type="submit" class="btn btn-primary" (click)="guardarCliente(null, null)"><i class="fas fa-plus"></i> Nuevo cliente</button>
     </p-toolbar>
 
     <div class="table-container">
@@ -32,11 +31,11 @@
                         </div>
                     </th>
                     <th pSortableColumn="activo">
-                        <div class="d-flex align-items-center">Activo
+                        <div class="d-flex align-items-center">Estatus
                             <p-sortIcon field="activo"></p-sortIcon>
                         </div>
                     </th>
-                    <th>Opciones</th>
+                    <th class="text-center">Opciones</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-cliente let-i="rowIndex">
@@ -44,10 +43,13 @@
                     <td>{{cliente.idCliente}}</td>
                     <td>{{cliente.rfc}}</td>
                     <td>{{cliente.cliente}}</td>
-                    <td>{{cliente.activo ? 'Sí' : 'No'}}</td>
                     <td>
-                        <div class="d-flex gap-2">
-                            <button title="Modificar cliente" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="guardarCliente(cliente, i)"></button>
+                        <p-tag severity="success" *ngIf="cliente.activo">Activo</p-tag>
+                        <p-tag severity="danger" *ngIf="!cliente.activo">Inactivo</p-tag>
+                    </td>
+                    <td>
+                        <div class="text-center">
+                            <button title="Modificar cliente" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2 mr-3" (click)="guardarCliente(cliente, i)"></button>
                             <button title="Eliminar cliente" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger p-mr-2" (click)="eliminarCliente(cliente, i)"></button>
                         </div>
                     </td>

@@ -30,13 +30,16 @@
             <label>Mes:</label>
             <p-calendar view="month" dateFormat="m/yy" [readonlyInput]="true" (onSelect)="buscarRegistros($event, 'mes')" [style]="{width: '100%'}" placeholder="Seleccionar un mes..." [(ngModel)]="mes"></p-calendar>
         </div>
-        <div class="col-4 d-flex align-items-center">
-            <button type="button" class="btn btn-info" (click)="limpiar()">Limpiar filtros</button>
+
+    </div>
+    <div class="row">
+        <div class="col-12 d-flex align-items-center">
+            <button type="button" class="btn btn-dark" (click)="limpiar()"><i class="fas fa-eraser"></i> Limpiar filtros</button>
         </div>
     </div>
 
     <p-table [value]="timesheets" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10"
-        class="main-table" paginatorPosition="both">
+        class="main-table" paginatorPosition="both" styleClass="p-datatable-striped">
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="mes">

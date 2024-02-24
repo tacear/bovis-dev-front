@@ -43,7 +43,7 @@
                         <p-sortIcon field="descripcion"></p-sortIcon>
                     </div>
                 </th>
-                <th class="text-center">Activo</th>
+                <th class="text-center">Estatus</th>
                 <th class="text-center">Opciones</th>
             </tr>
         </ng-template>
@@ -53,12 +53,13 @@
                 <td>{{perfil.perfil}}</td>
                 <td>{{perfil.descripcion}}</td>
                 <td class="text-center">
-                    <p-badge severity="success" *ngIf="perfil.activo"></p-badge>
+                    <p-tag severity="success" *ngIf="perfil.activo">Activo</p-tag>
+                    <p-tag severity="danger" *ngIf="!perfil.activo">Inactivo</p-tag>
                 </td>
                 <td class="text-align">
                     <div class="d-flex justify-content-center gap-3">
-                        <button title="Modificar módulos" pButton pRipple icon="pi pi-cog" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/usuarios/perfiles/asignar-modulos', perfil.idPerfil]"></button>
-                        <button title="Modificar permisos" pButton pRipple icon="pi pi-unlock" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/usuarios/perfiles/asignar-permisos', perfil.idPerfil]"></button>
+                        <button title="Modificar módulos" pButton pRipple icon="fas fa-cubes" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/usuarios/perfiles/asignar-modulos', perfil.idPerfil]"></button>
+                        <button title="Modificar permisos" pButton pRipple icon="fas fa-shield-alt" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/usuarios/perfiles/asignar-permisos', perfil.idPerfil]"></button>
                         <button title="Eliminar perfil" pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-info p-mr-2 p-button-danger" (click)="eliminarPerfil(perfil.idPerfil, i)"></button>
                     </div>
                 </td>

@@ -6,7 +6,8 @@
     <h1>Costo por empleado</h1>
 
     <div class="table-container">
-        <p-table #tablaPrincipal class="tabla-filtro" [value]="costos" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" paginatorPosition="both">
+        <p-table #tablaPrincipal class="tabla-filtro" [value]="costos" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10" paginatorPosition="both"
+            styleClass="p-datatable-striped">
             <ng-template pTemplate="header">
                 <tr>
                     <!-- <th>Opcion</th> -->

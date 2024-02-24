@@ -17,7 +17,7 @@
     </p-toolbar> -->
 
     <p-table #tablaPrincipal class="tabla-filtro" [value]="usuarios" [paginator]="true" [showCurrentPageReport]="true" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10"
-        paginatorPosition="both" [globalFilterFields]="['numEmpleado', 'empleado']">
+        styleClass="p-datatable-striped" paginatorPosition="both" [globalFilterFields]="['numEmpleado', 'empleado']">
         <ng-template pTemplate="caption">
             <div class="flex">
                 <span class="p-input-icon-left ml-auto">
@@ -39,7 +39,7 @@
                         <p-sortIcon field="empleado"></p-sortIcon>
                     </div>
                 </th>
-                <th class="text-center">Activo</th>
+                <th class="text-center">Estatus</th>
                 <th pSortableColumn="ultimaSesion">
                     <div class="d-flex align-items-center">Última sesión
                         <p-sortIcon field="ultimaSesion"></p-sortIcon>
@@ -54,7 +54,8 @@
                 <td>{{usuario.numEmpleado}}</td>
                 <td>{{usuario.empleado}}</td>
                 <td class="text-center">
-                    <p-badge severity="success" *ngIf="usuario.activo"></p-badge>
+                    <p-tag severity="success" *ngIf="usuario.activo">Activo</p-tag>
+                    <p-tag severity="danger" *ngIf="!usuario.activo">Inactivo</p-tag>
                 </td>
                 <td>{{usuario.ultimaSesion}}</td>
                 <td class="text-center">

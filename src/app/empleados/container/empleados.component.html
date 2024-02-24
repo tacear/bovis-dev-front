@@ -5,19 +5,17 @@
 
     <h1>Personas</h1>
 
-    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-start gap-2 text-right">
-        <button type="submit" class="btn btn-info" routerLink="/empleados/registro-persona">
-      Nuevo
-    </button>
+    <p-toolbar styleClass="p-1 mb-2 d-flex justify-content-end gap-2 text-right">
+        <button type="submit" class="btn btn-primary" routerLink="/empleados/registro-persona"><i class="fas fa-plus"></i> Nueva persona</button>
     </p-toolbar>
     <p-table #tablaPrincipal [value]="personas" [paginator]="true" [showCurrentPageReport]="true" paginatorPosition="both" currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros" [rowsPerPageOptions]="[10, 25, 50]" [rows]="10"
-        [globalFilterFields]="['chnombre_completo', 'chrfc']">
+        [globalFilterFields]="['chnombre_completo', 'chrfc']" styleClass="p-datatable-striped">
         <ng-template pTemplate="caption">
             <div class="flex">
                 <span class="p-input-icon-left ml-auto">
-              <i class="pi pi-search"></i>
-              <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
-          </span>
+                    <i class="pi pi-search"></i>
+                    <input pInputText #buscador type="text" (input)="tablaPrincipal.filterGlobal(buscador.value, 'contains')" placeholder="Buscar..." />
+                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -89,9 +87,7 @@
         <ng-template pTemplate="body" let-empleado>
             <tr>
                 <td>
-                    <a class="text-success font-bold" [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]">
-            {{ empleado | fullName }}
-          </a>
+                    <a class="text-success font-bold" [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]">{{ empleado | fullName }}</a>
                 </td>
                 <td>{{ empleado.chrfc }}</td>
                 <td>{{ empleado.dtfecha_nacimiento | date:'Y/MM/dd' }}</td>
@@ -105,13 +101,13 @@
                 <td>{{ empleado.chtipo_sangre }}</td>
                 <td>{{ empleado.boempleado ? 'Sí' : 'No' }}</td>
                 <!--<td [ngClass]="{'text-danger': !empleado.boactivo, 'text-success': empleado.boactivo}">
-          {{ empleado.boactivo ? 'Activo' : 'Inactivo' }}
-        </td>-->
+                    {{ empleado.boactivo ? 'Activo' : 'Inactivo' }}
+                </td>-->
                 <td class="text-center">
                     <p-inputSwitch [ngModel]="empleado.boactivo" (click)="toggleActivo(empleado.nukidpersona, empleado.boactivo)" [readonly]="true"></p-inputSwitch>
                 </td>
                 <td class="text-center">
-                    <button title="Modificar persona" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]"></button>
+                    <button title="Modificar persona" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-info p-mr-2" [routerLink]="['/empleados/edicion-persona', empleado.nukidpersona]"></button>
                 </td>
             </tr>
         </ng-template>
