@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { finalize, forkJoin } from 'rxjs';
-import { Seccion } from 'src/app/auditoria/models/auditoria.model';
+import { Auditoria, Seccion } from 'src/app/auditoria/models/auditoria.model';
 import { AuditoriaService } from 'src/app/auditoria/services/auditoria.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { TimesheetService } from 'src/app/timesheet/services/timesheet.service';
@@ -117,7 +117,7 @@ export class CargarDocumentosComponent implements OnInit {
       })
   }
   
-  onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any) {
+  onSeleccionArchivo(event: UploadEvent, id: number, iParent: number, iChild: number, fileUpload: any, audit: Auditoria) {
 
     if (event.files.length === 0) return
 
@@ -134,9 +134,9 @@ export class CargarDocumentosComponent implements OnInit {
     lector.onload = () => {
       const documento_base64 = lector.result as string;
 
-      const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
+      const auditoria = audit; //this.secciones.at(iParent).auditorias.at(iChild)
       const body = {
-        id_auditoria_proyecto:  id, //auditoria.idAuditoriaCumplimiento,
+        id_auditoria_proyecto:  auditoria.idAuditoriaCumplimiento,
         motivo:                 'Documento',
         nombre_documento:       archivo.name,
         documento_base64
