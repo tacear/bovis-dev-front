@@ -135,12 +135,10 @@ export class CargarDocumentosComponent implements OnInit {
     
     lector.onload = () => {
       const documento_base64 = lector.result as string;
-      
-      console.log(id);
       const auditoria = this.secciones.at(iParent).auditorias.at(iChild)
       console.log(auditoria);
       const body = {
-        id_auditoria_proyecto:  auditoria.idAuditoriaCumplimiento,
+        id_auditoria_proyecto:  auditoria.idAuditoriaProyecto,
         motivo:                 'Documento',
         nombre_documento:       archivo.name,
         documento_base64
