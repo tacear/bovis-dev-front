@@ -21,7 +21,7 @@ export interface CostoEmpleado {
   numProyecto:                    number;
   proyecto:                       string;
   idUnidadNegocio:                number;
-  unidadHegocio:                  string;
+  unidadNegocio:                  string;
   idEmpresa:                      number;
   Empresa:                        string;
   timesheet:                      string;
@@ -34,7 +34,7 @@ export interface CostoEmpleado {
   sueldoNetoPercibidoMensual:     number;
   retencionImss:                  number;
   ispt:                           number;
-  sueldoBruto:                    number;
+  sueldoBrutoInflacion:           number;
   anual:                          number;
   aguinaldoCantMeses:             number;
   aguinaldoMontoProvisionMensual: number;
@@ -64,5 +64,7 @@ export interface CostoEmpleado {
   indiceCargaLaboral:             number;
   fechaActualizacion:             string;
   regHistorico:                   boolean;
+  ciudad:             string;
+  
 }
 
