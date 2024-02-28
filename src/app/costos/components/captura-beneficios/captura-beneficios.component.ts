@@ -1,12 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { finalize } from 'rxjs';
+import { finalize, forkJoin } from 'rxjs';
 import { EmpleadosService } from 'src/app/empleados/services/empleados.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
-import { Opcion } from 'src/models/general.model';
+import { Opcion} from 'src/models/general.model';
 import { TITLES, errorsArray } from 'src/utils/constants';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CostoEmpleado } from '../../models/costos.model';
+import { CostosService } from '../../services/costos.service';
 
 @Component({
   selector: 'app-captura-beneficios',
@@ -20,8 +22,13 @@ export class CapturaBeneficiosComponent implements OnInit {
   fb                = inject(FormBuilder)
   messageService    = inject(MessageService)
   sharedService     = inject(SharedService)
+  costosService   = inject(CostosService)
+  esActualizacion = true
+  costos: CostoEmpleado[] = []
 
-  constructor( private router: Router) { }
+  constructor( private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private empleadosServ: EmpleadosService) { }
 
   form = this.fb.group({
     num_empleado:                 [null],
@@ -41,7 +48,24 @@ export class CapturaBeneficiosComponent implements OnInit {
     costo_it:                     [0, Validators.required],
     costo_telefonia:              [0, Validators.required],
     sv_directivos:                [0, Validators.required],
-    facturacion_bpm:              [0, Validators.required]
+    facturacion_bpm:              [0, Validators.required],
+    id_persona:                   [null],
+    persona_nombre:               [null],
+    num_empleado_rr_hh:           [null],
+    numEmpleadoNoi:               [null],
+    ciudad:                       [null],
+    reubicacion:                  [null],
+    puesto:                       [null],
+    pvDiasVacasAnuales:           [null],
+    proyecto:                     [null],
+    unidadNegocio:                [null],
+    timesheet:                    [null],
+    nombreJefe:                   [null],
+    antiguedad:                   [null],
+    sueldoBrutoInflacion:         [null],
+    anual:                        [null],
+    ptuProvision:                 [null]
+
   })
 
   empleados: Opcion[] = []
@@ -52,6 +76,41 @@ export class CapturaBeneficiosComponent implements OnInit {
 
     this.sharedService.cambiarEstado(true)
 
+    this.activatedRoute.params
+    .subscribe(({id}) => {
+      forkJoin([
+        id ? this.empleadosServ.getPersonas() : this.empleadosServ.getPersonasDisponibles(),
+        this.empleadosServ.getCatEmpleados(),
+        this.empleadosServ.getCatCategorias(),
+        this.empleadosServ.getCatTiposContratos(),
+        this.empleadosServ.getCatNivelEstudios(),
+        this.empleadosServ.getCatFormasPago(),
+        this.empleadosServ.getCatJornadas(),
+        this.empleadosServ.getCatDepartamentos(),
+        this.empleadosServ.getCatClasificacion(),
+        this.empleadosServ.getCatUnidadNegocio(),
+        this.empleadosServ.getCatTurno(),
+        this.empleadosServ.getHabilidades(),
+        this.empleadosServ.getExperiencias(),
+        this.empleadosServ.getProfesiones(),
+        this.empleadosServ.getPuestos(),
+        this.empleadosServ.getEmpleados(),
+        this.empleadosServ.getCatEstados(),
+        this.empleadosServ.getCatPaises(),
+      ])
+      .pipe(finalize(() => this.verificarActualizacion()))
+      .subscribe({
+        next: ([
+          empleadosR
+        ]) => {
+          this.empleados = empleadosR.data.map(empleado => ({name: empleado.chnombre, code: empleado.chap_materno}))
+        },
+        error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
+      })
+    })
+
+    
+
     
 
     this.empleadosService.getEmpleados()
@@ -59,10 +118,83 @@ export class CapturaBeneficiosComponent implements OnInit {
       .subscribe({
         next: ({data}) => {
           this.empleados = data.map(empleado => ({name: empleado.nombre_persona, code: empleado.nunum_empleado_rr_hh.toString()}))
+          
           //NumEmpleado = this.empleados.num_empleado_rr_hh as any
         },
         error: (err) => this.messageService.add({severity: 'error', summary: TITLES.error, detail: err.error})
       })
+  }
+
+  //getEmpleado
+
+  verificarActualizacion() {
+
+    this.activatedRoute.params
+    .subscribe(({id}) => {
+      if(id) {
+        this.esActualizacion = true
+        this.costosService.getCostoID(id)
+          .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+          .subscribe({
+            next: ({data}) => {
+              // console.log(data)
+              const [costoR] = data
+        this.costos = data
+        //this.puestos = puestosR.data.map(puesto => ({value: puesto.chpuesto, label: puesto.chpuesto}))
+
+              //this.costos = data.map(empleado => (costoR.numEmpleadoRrHh))
+              //this.costos.numEmpleadoRrHh
+            
+              this.form.patchValue({
+                ciudad:                         data.map(empleado => (costoR.ciudad)),
+                num_empleado_rr_hh:             data.map(empleado => (costoR.numEmpleadoRrHh)),
+                numEmpleadoNoi:                 data.map(empleado => (costoR.numEmpleadoNoi)),
+                reubicacion:                    data.map(empleado => (costoR.reubicacion)),
+                puesto:                         data.map(empleado => (costoR.puesto)),
+                pvDiasVacasAnuales:             data.map(empleado => (costoR.pvDiasVacasAnuales)),
+                proyecto:                       data.map(empleado => (costoR.proyecto)),
+                unidadNegocio:                  data.map(empleado => (costoR.unidadNegocio)),
+                timesheet:                      data.map(empleado => (costoR.timesheet)),
+                //nombreJefe:                     data.map(empleado => (costoR.nombreJefe)),
+                antiguedad:                     data.map(empleado => (costoR.antiguedad)),
+                sueldoBrutoInflacion:           data.map(empleado => (costoR.sueldoBrutoInflacion)),
+                anual:                          data.map(empleado => (costoR.anual)),
+                ptuProvision:                   data.map(empleado => (costoR.ptuProvision))
+                
+              })
+            
+            },
+            error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
+          })
+      } 
+  })
+
+    this.activatedRoute.params
+      .subscribe(({id}) => {
+        if(id) {
+          this.esActualizacion = true
+          this.empleadosServ.getEmpleado(id)
+            .pipe(finalize(() => this.sharedService.cambiarEstado(false)))
+            .subscribe({
+              next: ({data}) => {
+                // console.log(data)
+              const habilidades = data.habilidades.map(habilidad => habilidad.idHabilidad.toString())
+              const experiencias = data.experiencias.map(experiencia => experiencia.idExperiencia.toString())
+                this.form.patchValue({
+                  num_empleado:           data.nunum_empleado_rr_hh?.toString(),
+                  id_persona:             data.nukidpersona?.toString(),
+                  persona_nombre:         data.nombre_persona,
+                  nombreJefe:             data.chjefe_directo
+                  
+                })
+              
+              },
+              error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
+            })
+        } 
+    })
+
+   
   }
 
   guardar() {
