@@ -5,10 +5,11 @@ import { finalize, forkJoin } from 'rxjs';
 import { EmpleadosService } from 'src/app/empleados/services/empleados.service';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { Opcion} from 'src/models/general.model';
-import { TITLES, errorsArray } from 'src/utils/constants';
+import { CALENDAR, SUBJECTS,TITLES, errorsArray } from 'src/utils/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CostoEmpleado } from '../../models/costos.model';
 import { CostosService } from '../../services/costos.service';
+import { differenceInCalendarYears, format } from 'date-fns';
 
 @Component({
   selector: 'app-captura-beneficios',
@@ -25,6 +26,8 @@ export class CapturaBeneficiosComponent implements OnInit {
   costosService   = inject(CostosService)
   esActualizacion = true
   costos: CostoEmpleado[] = []
+
+  disabledInput: boolean = false;
 
   constructor( private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -64,7 +67,38 @@ export class CapturaBeneficiosComponent implements OnInit {
     antiguedad:                   [null],
     sueldoBrutoInflacion:         [null],
     anual:                        [null],
-    ptuProvision:                 [null]
+    ptuProvision:                 [null],
+    costoMensualEmpleado:         [null],
+    costoMensualProyecto:         [null],
+    costoAnualEmpleado:           [null],
+    costoSalarioBruto:            [null],
+    costoSalarioNeto:             [null],
+    avgDescuentoEmpleado:         [null],
+    montoDescuentoMensual:        [null],
+    sueldoNetoPercibidoMensual:   [null],
+    retencionImss:                [null],
+    ispt:                         [null],
+    empresa:                      [null],
+    fechaIngreso:                 [null],
+    aguinaldoCantidadMeses:       [null],
+    aguinaldoMontoProvisionMensual: [null],
+    vaidComisionCostoMensual:     [null],
+    vaidCostoMensual:             [null],
+    svCostoMensual:               [null],
+    svCostoTotalAnual:            [null],
+    sgmmCostoMensual:             [null],
+    sgmmCostoTotalAnual:          [null],
+    bonoAnualProvisionMensual:    [null],
+    avgBonoAnualEstimado:         [null],
+    indemProvisionMensual:        [null],
+    pvProvisionMensual:           [null],
+    impuesto3sNomina:             [null],
+    imss:                         [null],
+    retiro2:                      [null],
+    cesantesVejez:                [null],
+    infonavit:                    [null],
+    cargasSociales:               [null]
+
 
   })
 
@@ -73,6 +107,55 @@ export class CapturaBeneficiosComponent implements OnInit {
   NumEmpleado = null
 
   ngOnInit(): void {
+
+    this.form.controls['num_empleado'].disable(); 
+    this.form.controls['persona_nombre'].disable();               
+    this.form.controls['num_empleado_rr_hh'].disable();           
+    this.form.controls['numEmpleadoNoi'].disable();               
+    this.form.controls['ciudad'].disable();                       
+    this.form.controls['reubicacion'].disable();                 
+    this.form.controls['puesto'].disable();                       
+    this.form.controls['pvDiasVacasAnuales'].disable();           
+    this.form.controls['proyecto'].disable();                     
+    this.form.controls['unidadNegocio'].disable();                
+    this.form.controls['timesheet'].disable();                    
+    this.form.controls['nombreJefe'].disable();                   
+    this.form.controls['antiguedad'].disable();                   
+    this.form.controls['sueldoBrutoInflacion'].disable();         
+    this.form.controls['anual'].disable();                        
+    this.form.controls['ptuProvision'].disable();                 
+    this.form.controls['costoMensualEmpleado'].disable();        
+    this.form.controls['costoMensualProyecto'].disable();        
+    this.form.controls['costoAnualEmpleado'].disable();           
+    this.form.controls['costoSalarioBruto'].disable();            
+    this.form.controls['costoSalarioNeto'].disable();             
+    this.form.controls['avgDescuentoEmpleado'].disable();         
+    this.form.controls['montoDescuentoMensual'].disable();        
+    this.form.controls['sueldoNetoPercibidoMensual'].disable();   
+    this.form.controls['retencionImss'].disable();                
+    this.form.controls['ispt'].disable();                         
+    this.form.controls['empresa'].disable();                      
+    this.form.controls['fechaIngreso'].disable();                 
+    this.form.controls['aguinaldoCantidadMeses'].disable();       
+    this.form.controls['aguinaldoMontoProvisionMensual'].disable();
+    this.form.controls['vaidComisionCostoMensual'].disable();     
+    this.form.controls['vaidCostoMensual'].disable();             
+    this.form.controls['svCostoMensual'].disable();               
+    this.form.controls['svCostoTotalAnual'].disable();            
+    this.form.controls['sgmmCostoMensual'].disable();             
+    this.form.controls['sgmmCostoTotalAnual'].disable();          
+    this.form.controls['bonoAnualProvisionMensual'].disable();    
+    this.form.controls['avgBonoAnualEstimado'].disable();         
+    this.form.controls['indemProvisionMensual'].disable();        
+    this.form.controls['pvProvisionMensual'].disable();           
+    this.form.controls['impuesto3sNomina'].disable();             
+    this.form.controls['imss'].disable();                         
+    this.form.controls['retiro2'].disable();                      
+    this.form.controls['cesantesVejez'].disable();                
+    this.form.controls['infonavit'].disable();                    
+    this.form.controls['cargasSociales'].disable();
+                   
+
 
     this.sharedService.cambiarEstado(true)
 
@@ -144,7 +227,8 @@ export class CapturaBeneficiosComponent implements OnInit {
 
               //this.costos = data.map(empleado => (costoR.numEmpleadoRrHh))
               //this.costos.numEmpleadoRrHh
-            
+              let newDate = new Date(data.map(empleado => (costoR.fechaIngreso))+"");
+              const date = new Date(data.map(empleado => (costoR.fechaIngreso))+"");
               this.form.patchValue({
                 ciudad:                         data.map(empleado => (costoR.ciudad)),
                 num_empleado_rr_hh:             data.map(empleado => (costoR.numEmpleadoRrHh)),
@@ -154,14 +238,45 @@ export class CapturaBeneficiosComponent implements OnInit {
                 pvDiasVacasAnuales:             data.map(empleado => (costoR.pvDiasVacasAnuales)),
                 proyecto:                       data.map(empleado => (costoR.proyecto)),
                 unidadNegocio:                  data.map(empleado => (costoR.unidadNegocio)),
+                empresa:                        data.map(empleado => (costoR.empresa)),
                 timesheet:                      data.map(empleado => (costoR.timesheet)),
+                fechaIngreso:                   format(new Date(newDate || null), 'dd/MM/y'),
                 //nombreJefe:                     data.map(empleado => (costoR.nombreJefe)),
-                antiguedad:                     data.map(empleado => (costoR.antiguedad)),
+                antiguedad:                      this.formateaValor(data.map(empleado => (costoR.antiguedad))),
                 sueldoBrutoInflacion:           data.map(empleado => (costoR.sueldoBrutoInflacion)),
                 anual:                          data.map(empleado => (costoR.anual)),
-                ptuProvision:                   data.map(empleado => (costoR.ptuProvision))
+                ptuProvision:                    this.formateaValor(data.map(empleado => (costoR.ptuProvision))),
+                costoMensualEmpleado:           this.formateaValor(data.map(empleado => (costoR.costoMensualEmpleado))),
+                costoMensualProyecto:           this.formateaValor(data.map(empleado => (costoR.costoMensualProyecto))),
+                costoAnualEmpleado:             this.formateaValor(data.map(empleado => (costoR.costoAnualEmpleado))),
+                costoSalarioBruto:              this.formateaValor(data.map(empleado => (costoR.costoSalarioBruto))),
+                costoSalarioNeto:               this.formateaValor(data.map(empleado => (costoR.costoSalarioNeto))),
+                avgDescuentoEmpleado:           data.map(empleado => (costoR.avgDescuentoEmpleado)),
+                montoDescuentoMensual:          data.map(empleado => (costoR.montoDescuentoMensual)),
+                sueldoNetoPercibidoMensual:     data.map(empleado => (costoR.sueldoNetoPercibidoMensual)),
+                retencionImss:                  data.map(empleado => (costoR.retencionImss)),
+                ispt:                           data.map(empleado => (costoR.ispt)),
+                aguinaldoCantidadMeses:         data.map(empleado => (costoR.aguinaldoCantidadMeses)),
+                aguinaldoMontoProvisionMensual: this.formateaValor(data.map(empleado => (costoR.aguinaldoMontoProvisionMensual))),
+                vaidComisionCostoMensual:       data.map(empleado => (costoR.vaidComisionCostoMensual)),
+                vaidCostoMensual:               data.map(empleado => (costoR.vaidCostoMensual)),
+                svCostoMensual:                 data.map(empleado => (costoR.vaidCostoMensual)),
+                svCostoTotalAnual:              data.map(empleado => (costoR.svCostoMensual)),
+                sgmmCostoMensual:               this.formateaValor(data.map(empleado => (costoR.sgmmCostoMensual))),
+                sgmmCostoTotalAnual:            data.map(empleado => (costoR.sgmmCostoTotalAnual)),
+                bonoAnualProvisionMensual:      data.map(empleado => (costoR.bonoAnualProvisionMensual)),
+                avgBonoAnualEstimado:           data.map(empleado => (costoR.avgBonoAnualEstimado)),
+                indemProvisionMensual:          this.formateaValor(data.map(empleado => (costoR.indemProvisionMensual))),
+                pvProvisionMensual:             this.formateaValor(data.map(empleado => (costoR.pvProvisionMensual))),
+                impuesto3sNomina:               this.formateaValor(data.map(empleado => (costoR.impuesto3sNomina))),
+                imss:                           data.map(empleado => (costoR.imss)),
+                retiro2:                        data.map(empleado => (costoR.retiro2)),
+                cesantesVejez:                  data.map(empleado => (costoR.cesantesVejez)),
+                infonavit:                      data.map(empleado => (costoR.infonavit)),
+                cargasSociales:                 this.formateaValor(data.map(empleado => (costoR.cargasSociales))),
                 
               })
+              //this.form.controls['ciudad'].disable();
             
             },
             error: (err) => this.messageService.add({ severity: 'error', summary: TITLES.error, detail: err.error })
@@ -629,6 +744,11 @@ this.empleadosService.guardarBeneficioCosto(bodyFacturacion_BPM)
     })
 
     return mensaje
+  }
+
+  formateaValor(valor) {
+    // si no es un número devuelve el valor, o lo convierte a número con 4 decimales
+    return isNaN(valor) ? valor : parseFloat(valor).toFixed(4);
   }
 
 }
