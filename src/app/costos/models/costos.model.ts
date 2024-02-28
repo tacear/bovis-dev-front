@@ -64,7 +64,11 @@ export interface CostoEmpleado {
   indiceCargaLaboral:             number;
   fechaActualizacion:             string;
   regHistorico:                   boolean;
-  ciudad:             string;
+  ciudad:                         string;
+  costoSalarioBruto:              number;
+  costoSalarioNeto:               number;
+  empresa:                        string;
+  aguinaldoCantidadMeses:         number;
   
 }
 
