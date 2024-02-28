@@ -36,7 +36,8 @@ export class CalcularResultadoObjetivosPipe implements PipeTransform {
       }
     }
 
-    return Math.round(resultado).toFixed(2);
+    //return Math.round(resultado).toFixed(2);
+    return resultado;
   }
 
 }
