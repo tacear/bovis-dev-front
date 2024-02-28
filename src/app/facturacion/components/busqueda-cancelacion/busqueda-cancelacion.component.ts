@@ -711,7 +711,7 @@ export class BusquedaCancelacionComponent implements OnInit {
 
           IVA = factura['idMoneda'] === 'MXN' ? +cell.value : +cell.value * +factura['tipoCambio']
 
-          cell.value = this.formatCurrency(factura['c_FechaCancelacion'] ? 0 : IVA)
+          cell.value = this.formatCurrency(factura['fechaCancelacion'] ? 0 : IVA)
           //cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
         }
 
@@ -746,7 +746,7 @@ export class BusquedaCancelacionComponent implements OnInit {
             if (encabezado.id == 'iva') {
               let IVA = 0
               IVA = nota['nC_IdMoneda'] === 'MXN' ? +cell.value : +cell.value * +nota['nC_TipoCambio']
-              cell.value = this.formatCurrency(nota['c_FechaCancelacion'] ? 0 : IVA)
+              cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : IVA)
               //cell.value = this.formatCurrency(nota['nC_FechaCancelacion'] ? 0 : +cell.value)
             }
             if (encabezado.id == 'numProyecto') {
