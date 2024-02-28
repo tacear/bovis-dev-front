@@ -17,4 +17,8 @@ export class CostosService {
   getCostosEmpleado() {
     return this.http.get<CostosEmpleadoResponse>(`${ this.baseUrl }api/Costo/costos/0`)
   }
+
+  getCostoID(id: string) {
+    return this.http.get<CostosEmpleadoResponse>(`${this.baseUrl}api/Costo/Empleado/${id}`)
+  }
 }
