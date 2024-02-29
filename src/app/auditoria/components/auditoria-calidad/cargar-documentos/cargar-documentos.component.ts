@@ -198,7 +198,7 @@ export class CargarDocumentosComponent implements OnInit {
   mostrarModalComentarios() {
 
     this.dialogService.open(ComentariosModalComponent, {
-      header: 'Comentarios',
+      header: 'Resultados de la evaluación',
       width: '90%',
       height: '90%',
       contentStyle: { overflow: 'auto' },
