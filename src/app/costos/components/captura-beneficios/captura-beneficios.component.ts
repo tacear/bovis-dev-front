@@ -121,7 +121,7 @@ export class CapturaBeneficiosComponent implements OnInit {
     this.form.controls['timesheet'].disable();                    
     this.form.controls['nombreJefe'].disable();                   
     this.form.controls['antiguedad'].disable();                   
-    this.form.controls['sueldoBrutoInflacion'].disable();         
+    //this.form.controls['sueldoBrutoInflacion'].disable();         
     this.form.controls['anual'].disable();                        
     this.form.controls['ptuProvision'].disable();                 
     this.form.controls['costoMensualEmpleado'].disable();        
@@ -139,13 +139,13 @@ export class CapturaBeneficiosComponent implements OnInit {
     this.form.controls['aguinaldoCantidadMeses'].disable();       
     this.form.controls['aguinaldoMontoProvisionMensual'].disable();
     this.form.controls['vaidComisionCostoMensual'].disable();     
-    this.form.controls['vaidCostoMensual'].disable();             
+    //this.form.controls['vaidCostoMensual'].disable();             
     this.form.controls['svCostoMensual'].disable();               
-    this.form.controls['svCostoTotalAnual'].disable();            
+    //this.form.controls['svCostoTotalAnual'].disable();            
     this.form.controls['sgmmCostoMensual'].disable();             
-    this.form.controls['sgmmCostoTotalAnual'].disable();          
+    //this.form.controls['sgmmCostoTotalAnual'].disable();          
     this.form.controls['bonoAnualProvisionMensual'].disable();    
-    this.form.controls['avgBonoAnualEstimado'].disable();         
+    //this.form.controls['avgBonoAnualEstimado'].disable();         
     this.form.controls['indemProvisionMensual'].disable();        
     this.form.controls['pvProvisionMensual'].disable();           
     this.form.controls['impuesto3sNomina'].disable();             
