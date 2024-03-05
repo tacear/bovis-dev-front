@@ -284,13 +284,29 @@ export class ResultadoBusquedaComponent implements OnInit {
 
     console.log("fechacancela: " + fechacancela);
 
+    let mdyEmi: String[] = fechaemi.split('-');
+
+      console.log("Number(mdy[1]) - 1: " + (Number(mdyEmi[1])));
+
+    //let fIni: Date = this.parseDate(fechaemi);
+     
+
     if(fechacancela == null || fechacancela == ""){
-      return true;
+     // return true;
+      
+      // Number(mdy[1])+""
+      if((Number(mdyEmi[1])) == 0){
+        return false;
+      }else{
+        return true;
+      }
     }else{
-      let fIni: Date = this.parseDate(fechaemi);
+      
+      let mdyCancela: String[] = fechacancela.split('-');
+
+      console.log("Number(mdy[1]) - 1: " + (Number(mdyCancela[1])));
       let fFin: Date = this.parseDate(fechacancela);
-  
-      if(fIni.getMonth == fFin.getMonth){
+      if((Number(mdyEmi[1])) == (Number(mdyCancela[1]))){
         return false;
       }else{
         return true;
@@ -303,6 +319,7 @@ export class ResultadoBusquedaComponent implements OnInit {
     //return this.form.get(campo).invalid && 
       //      (this.form.get(campo).dirty || this.form.get(campo).touched)
   }
+
 
    regresames(fechacancela: string): string {
 
