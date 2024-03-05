@@ -275,7 +275,7 @@ export class ResultadoBusquedaComponent implements OnInit {
 
   parseDate(str: string): Date {
     let mdy: String[] = str.split('-');
-    return new Date(Number(mdy[0]), Number(mdy[1]) - 1, Number(mdy[2]));
+    return new Date(Number(mdy[0]), Number(mdy[1]) , Number(mdy[2]));
   }
 
   esElmismomes(fechaemi: string, fechacancela: string): boolean {
@@ -320,8 +320,7 @@ export class ResultadoBusquedaComponent implements OnInit {
       //      (this.form.get(campo).dirty || this.form.get(campo).touched)
   }
 
-
-   regresames(fechacancela: string): string {
+  regresames(fechacancela: string): string {
 
     //console.log("fechaemi: " + fechaemi);
 
@@ -338,6 +337,33 @@ export class ResultadoBusquedaComponent implements OnInit {
       return "0"
     }
     
+  }
+
+  getHeadersTabla() {
+    return [
+      {key: 'NombreCuenta', label: 'NOMBRE CUENTA'},
+      {key: 'Cuenta', label: 'CUENTA'},
+      {key: 'TipoPoliza', label: 'TIPO POLIZA'},
+      {key: 'Numero', label: 'NUMERO'},
+      {key: 'Fecha', label: 'FECHA'},
+      {key: 'Mes', label: 'MES'},
+      {key: 'Concepto', label: 'CONCEPTO'},
+      {key: 'CentroCostos', label: 'CENTRO DE COSTOS'},
+      {key: 'Proyectos', label: 'PROYECTOS'},
+      {key: 'SaldoInicial', label: 'SALDO INICIAL'},
+      {key: 'Debe', label: 'DEBE'},
+      {key: 'Haber', label: 'HABER'},
+      {key: 'Movimiento', label: 'MOVIMIENTO'},
+      {key: 'Empresa', label: 'EMPRESA'},
+      {key: 'NumProyecto', label: 'NUM PROYECTO'},
+      {key: 'TipoProyecto', label: 'TIPO'},
+      {key: 'EdoResultados', label: 'EDO DE RESULTADOS'},      
+      {key: 'Responsable', label: 'RESPONSABLE'},      
+      {key: 'TipoCuenta', label: 'UNIDAD'},      
+      {key: 'TipoPy', label: 'TIPO PY'},      
+      {key: 'ClasificacionPy', label: 'CLASIFICACION PY'},
+      
+    ];
   }
 
 }
