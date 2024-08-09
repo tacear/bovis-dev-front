@@ -4,7 +4,7 @@ import { CieService } from '../../services/cie.service';
 import { MessageService } from 'primeng/api';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { CieElementPost, CieProyecto } from '../../models/cie.models';
-import { EXCEL_EXTENSION, SUBJECTS, TITLES, cieHeaders } from 'src/utils/constants';
+import { EXCEL_EXTENSION, SUBJECTS, TITLES, cieHeaders, cieHeadersFields } from 'src/utils/constants';
 import { finalize, forkJoin } from 'rxjs';
 
 interface Option {
@@ -24,9 +24,10 @@ export class CargaSaeComponent implements OnInit {
   messageService  = inject(MessageService)
   sharedService   = inject(SharedService)
 
-  excelData:        any
-  jsonData:         CieElementPost[] = []
-  cieHeadersLocal:  string[] = cieHeaders
+  excelData:              any
+  jsonData:               CieElementPost[] = []
+  cieHeadersLocal:        string[] = cieHeaders
+  cieHeadersFieldsLocal:  any = cieHeadersFields
 
   fileSizeMax: number = 10000000
   isLoadingFile = false
